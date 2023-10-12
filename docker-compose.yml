@@ -2,7 +2,6 @@ version: "3.5"
 
 services:
 
-  # Servicio para el servidor web Symfony (PHP-FPM)
   app_php:
     container_name: app_php
     build:
@@ -14,7 +13,6 @@ services:
     networks:
       - app_network
 
-  # Servicio para el servidor web Nginx
   app_nginx:
     container_name: app_nginx
     build:

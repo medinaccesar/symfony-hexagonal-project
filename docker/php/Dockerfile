@@ -9,7 +9,7 @@ RUN apk update \
     && apk add --no-cache \
     git \
     libzip-dev \
-    sqlite-dev \  
+    sqlite-dev \
     && docker-php-ext-install \
     zip
 

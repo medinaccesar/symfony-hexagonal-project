@@ -38,3 +38,10 @@ symfony server:start
 ```
 
 For more details on setting up Symfony, please refer to the [official Symfony documentation](https://symfony.com/doc/current/setup.html)
+
+## 🛠️ Bundles
+
+- ORM
+- MakerBundle
+- SecurityBundle
+- MonologBundle
