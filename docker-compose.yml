@@ -1,0 +1,32 @@
+version: "3.5"
+
+services:
+
+  # Servicio para el servidor web Symfony (PHP-FPM)
+  app_php:
+    container_name: app_php
+    build:
+      context: ./docker/php
+      args:
+        UID: $U_ID
+    volumes:
+      - .:/app
+    networks:
+      - app_network
+
+  # Servicio para el servidor web Nginx
+  app_nginx:
+    container_name: app_nginx
+    build:
+      context: ./docker/nginx
+    volumes:
+      - .:/app
+    ports:
+      - 8080:80
+    depends_on:
+      - app_php
+    networks:
+      - app_network
+
+networks:
+  app_network:
