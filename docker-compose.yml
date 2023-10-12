@@ -22,7 +22,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - 8080:80
+      - "8080:80"
     depends_on:
       - app_php
     networks:
@@ -30,3 +30,5 @@ services:
 
 networks:
   app_network:
+
+
