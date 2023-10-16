@@ -1,5 +1,7 @@
 # Symfony Docker base 🐳
 
+> Version:  **Symfony 6.3.5**
+
 Clone the repository from GitHub.
 
 ```shell
@@ -45,8 +47,15 @@ For more details on setting up Symfony, please refer to the [official Symfony do
 - MakerBundle
 - SecurityBundle
 - MonologBundle
+- DebugBundle
 
 
 ## 🤖 Database
 
 - MySql (MariaDB)
+
+```
+- Database: symfony_database 
+- user: root
+- password: root
+```
