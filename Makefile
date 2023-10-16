@@ -5,6 +5,9 @@ install:
 	U_ID=${UID} docker-compose up -d --build
 	docker exec --user ${UID} ${SERVICE} composer install --no-interaction
 
+migration:
+	docker exec --user ${UID} ${SERVICE} php bin/console make:migration --no-interaction
+
 migrations-migrate:
 	docker exec --user ${UID} ${SERVICE} php bin/console doctrine:migrations:migrate --no-interaction
 
