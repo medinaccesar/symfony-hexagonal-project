@@ -45,3 +45,8 @@ For more details on setting up Symfony, please refer to the [official Symfony do
 - MakerBundle
 - SecurityBundle
 - MonologBundle
+
+
+## 🤖 Database
+
+- MySql (MariaDB)

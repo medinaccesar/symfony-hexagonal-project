@@ -2,8 +2,8 @@ version: "3.5"
 
 services:
 
-  app_php:
-    container_name: app_php
+  symfony_php:
+    container_name: symfony_php
     build:
       context: ./docker/php
       args:
@@ -11,10 +11,10 @@ services:
     volumes:
       - .:/app
     networks:
-      - app_network
+      - symfony_network
 
-  app_nginx:
-    container_name: app_nginx
+  symfony_nginx:
+    container_name: symfony_nginx
     build:
       context: ./docker/nginx
     volumes:
@@ -22,11 +22,33 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - app_php
+      - symfony_php
     networks:
-      - app_network
+      - symfony_network
+
+  symfony_mysql:
+    container_name: symfony_mysql
+    image: mysql:latest
+    ports:
+      - '3336:3306'
+    environment:
+      MYSQL_DATABASE: symfony_database
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - symfony_mysql_data:/var/lib/mysql
+    networks:
+      - symfony_network
+    command:
+      [
+        'mysqld',
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci'
+      ]
 
 networks:
-  app_network:
+  symfony_network:
+
+volumes:
+  symfony_mysql_data:
 
 

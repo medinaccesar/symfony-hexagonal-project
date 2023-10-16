@@ -1,13 +1,15 @@
 UID = $(shell id -u)
-SERVICE = app_php
+SERVICE = symfony_php
 
 install:
 	U_ID=${UID} docker-compose up -d --build
 	docker exec --user ${UID} ${SERVICE} composer install --no-interaction
-	docker exec --user ${UID} ${SERVICE} php bin/console doctrine:migrations:migrate --no-interaction
-
+º
 migrations-migrate:
 	docker exec --user ${UID} ${SERVICE} php bin/console doctrine:migrations:migrate --no-interaction
+
+server-start:
+	docker exec --user ${UID} ${SERVICE} php bin/console server:start
 
 start: ## Start the containers
 	U_ID=${UID} docker-compose up -d
