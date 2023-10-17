@@ -5,11 +5,10 @@ namespace User\Application\UseCase;
 use User\Domain\Repository\UserRepositoryInterface;
 use User\Domain\Model\User;
 
-
-class GetUserByIdUseCase
+class GetUserById
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository
+        private readonly UserRepositoryInterface $userRepository
     ) {
     }
 

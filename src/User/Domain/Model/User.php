@@ -6,16 +6,16 @@ namespace User\Domain\Model;
 class User
 {
 
-    private readonly int $id;
-
     public function __construct(
-        private string $username,
-        private array $roles = ['ROLE_USER'],
-        private string $password
-    ) {
+        private readonly ?int $id,
+        private string       $username,
+        private string       $password,
+        private array        $roles = ['ROLE_USER']
+    )
+    {
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -33,12 +33,16 @@ class User
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->getUsername();
+        return (string)$this->getUsername();
     }
 
     public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function setRoles(array $roles): static

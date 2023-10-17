@@ -1,4 +1,3 @@
-
 parameters:
 
 services:
@@ -7,13 +6,7 @@ services:
     autowire: true # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-  App\:
-    resource: "../src/"
-    exclude:
-      - "../src/DependencyInjection/"
-      - "../src/Kernel.php"
-
   User\:
     resource: "../src/User"
     exclude:
-      - "../src/User/Domain/*"
+      - "../src/User/Domain/"

@@ -1,0 +1,3 @@
+user_health_check:
+  path: /health-check
+  controller: User\Infrastructure\Framework\HTTP\Controller\HealthCheckController
