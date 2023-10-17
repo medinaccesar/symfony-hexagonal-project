@@ -55,7 +55,7 @@ For more details on setting up Symfony, please refer to the [official Symfony do
 - MySql (MariaDB)
 
 ```
-- Database: symfony_database 
+- Database: symfony-database 
 - user: root
 - password: root
 ```

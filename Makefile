@@ -1,5 +1,5 @@
 UID = $(shell id -u)
-SERVICE = symfony_php
+SERVICE = symfony-php
 
 install:
 	U_ID=${UID} docker-compose up -d --build
