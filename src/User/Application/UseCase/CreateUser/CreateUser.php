@@ -14,7 +14,7 @@ class CreateUser
         $this->userRepository = $userRepository;
     }
 
-    public function execute(string $username, string $password, array $roles = ['ROLE_USER']): User
+    public function handle(string $username, string $password, array $roles = ['ROLE_USER']): User
     {
         $user = new User(null, $username, $password, $roles);
         $this->userRepository->save($user);

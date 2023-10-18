@@ -11,8 +11,7 @@ class User
         private string       $username,
         private string       $password,
         private array        $roles = ['ROLE_USER']
-    )
-    {
+    ) {
     }
 
     public function getId(): ?int
@@ -39,7 +38,6 @@ class User
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -60,11 +58,5 @@ class User
     {
         $this->password = $password;
         return $this;
-    }
-
-    public function eraseCredentials(): void
-    {
-        // Si almacenas datos temporales o sensibles en el usuario, límpialos aquí
-        // $this->plainPassword = null;
     }
 }
