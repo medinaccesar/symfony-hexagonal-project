@@ -7,16 +7,16 @@ use User\Application\UseCase\GetUserById;
 use User\Domain\Repository\UserRepositoryInterface;
 use User\Domain\Model\User;
 
-class GetUserByIdUseCaseTest extends TestCase
+class GetUserByIdTest extends TestCase
 {
     public function testGetUserById(): void
     {
         $userRepository = $this->createMock(UserRepositoryInterface::class);
-        $getUserByIdUseCase = new GetUserById($userRepository);
+        $getUserById = new GetUserById($userRepository);
         $user = new User(1, 'example_username', 'example_password');
 
         $userRepository->method('findById')->willReturn($user);
-        $resultUser = $getUserByIdUseCase->execute(1);
+        $resultUser = $getUserById->execute(1);
 
         $this->assertInstanceOf(User::class, $resultUser);
         $this->assertEquals(1, $resultUser->getId());

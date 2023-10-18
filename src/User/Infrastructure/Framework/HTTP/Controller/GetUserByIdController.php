@@ -7,12 +7,13 @@ namespace User\Infrastructure\Framework\HTTP\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use User\Infrastructure\Doctrine\Mapping\User;
 
-class HealthCheckController extends AbstractController
+class GetUserByIdController extends AbstractController
 {
-    #[Route('/health-check', name: 'user_health_check', methods: ['GET'], priority: 10)]
-    public function __invoke(): Response
+    #[Route('/{id}', name: 'get_user_by_id', methods: ['GET'])]
+    public function __invoke(User $user): Response
     {
-        return $this->json(['message' => 'Module User up and running!']);
+       return $this->json($user);
     }
 }
