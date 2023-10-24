@@ -6,6 +6,12 @@ services:
     autowire: true # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+
+  #Shared
+  Shared\:
+    resource: "../src/Shared"
+
+  #User
   User\:
     resource: "../src/User"
     exclude:
@@ -15,5 +21,5 @@ services:
     resource: '../src/User/Infrastructure/Framework/HTTP/Controller'
     tags: [ 'controller.service_arguments' ]
 
-  Shared\:
-    resource: "../src/Shared"
+
+
