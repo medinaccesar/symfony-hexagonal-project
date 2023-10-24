@@ -1,16 +1,13 @@
 <?php
 
-namespace User\Application\UseCase;
+namespace User\Application\UseCase\CreateUser\DTO;
 
-use User\Domain\Repository\UserRepositoryInterface;
-use User\Domain\Model\User;
-
-class CreateUserInputDTO
+readonly class CreateUserInputDTO
 {
     private function __construct(
-        public readonly string $username,
-        public readonly string $password,
-        public readonly ?array $roles
+        public string $username,
+        public string $password,
+        public ?array $roles
     ) {
     }
 

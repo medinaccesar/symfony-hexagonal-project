@@ -9,4 +9,11 @@ services:
   User\:
     resource: "../src/User"
     exclude:
-      - "../src/User/Domain/"
+      - "../src/User/Domain/Model"
+
+  User\Infrastructure\Framework\Http\Controller\:
+    resource: '../src/User/Infrastructure/Framework/HTTP/Controller'
+    tags: [ 'controller.service_arguments' ]
+
+  Shared\:
+    resource: "../src/Shared"

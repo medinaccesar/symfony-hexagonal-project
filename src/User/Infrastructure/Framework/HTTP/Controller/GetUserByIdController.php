@@ -7,13 +7,13 @@ namespace User\Infrastructure\Framework\HTTP\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use User\Infrastructure\Doctrine\Mapping\User;
+use User\Application\UseCase\GetUserById\GetUserByIdUseCase;
 
 class GetUserByIdController extends AbstractController
 {
-    #[Route('/{id}', name: 'get_user_by_id', methods: ['GET'])]
-    public function __invoke(User $user): Response
+    #[Route('/get/{id}', name: 'get_user_by_id', methods: ['GET'])]
+    public function get($id, GetUserByIdUseCase $useCase): Response
     {
-       return $this->json($user);
+        return $this->json($useCase->handle($id));
     }
 }

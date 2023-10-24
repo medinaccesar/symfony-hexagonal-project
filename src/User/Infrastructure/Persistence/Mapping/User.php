@@ -1,13 +1,13 @@
 <?php
 
-namespace User\Infrastructure\Doctrine\Mapping;
+namespace User\Infrastructure\Persistence\Mapping;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use User\Infrastructure\Doctrine\Repository\UserRepository;
+use User\Infrastructure\Persistence\Repository\DoctrineUserRepository;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrineUserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

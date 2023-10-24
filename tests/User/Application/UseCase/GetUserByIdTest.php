@@ -2,10 +2,10 @@
 
 namespace App\Tests\User\Application\UseCase;
 
+use App\User\Application\UseCase\GetUserById\GetUserById;
 use PHPUnit\Framework\TestCase;
-use User\Application\UseCase\GetUserById;
-use User\Domain\Repository\UserRepositoryInterface;
 use User\Domain\Model\User;
+use User\Domain\Repository\UserRepositoryInterface;
 
 class GetUserByIdTest extends TestCase
 {

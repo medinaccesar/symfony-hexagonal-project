@@ -4,9 +4,10 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
@@ -36,7 +37,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "User\\": "src/User"
+            "User\\": "src/User",
+            "Shared\\": "src/Shared"
 
         }
     },
