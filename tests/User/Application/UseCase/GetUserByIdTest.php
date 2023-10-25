@@ -2,7 +2,7 @@
 
 namespace App\Tests\User\Application\UseCase;
 
-use User\Application\UseCase\GetUserById\GetUserByIdUseCase;
+use App\User\Application\Query\GetUserByIdQuery;
 use PHPUnit\Framework\TestCase;
 use User\Domain\Model\User;
 use User\Domain\Repository\UserRepositoryInterface;
@@ -12,7 +12,7 @@ class GetUserByIdTest extends TestCase
     public function testGetUserById(): void
     {
         $userRepository = $this->createMock(UserRepositoryInterface::class);
-        $getUserById = new GetUserByIdUseCase($userRepository);
+        $getUserById = new GetUserByIdQuery($userRepository);
         $user = new User(1, 'example_username', 'example_password');
 
         $userRepository->method('findById')->willReturn($user);

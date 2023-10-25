@@ -1,13 +1,12 @@
 <?php
 
-namespace User\Application\UseCase\GetUserById;
+namespace App\User\Application\Query;
 
 use Shared\Exception\ResourceNotFoundException;
-use User\Application\Response\UserResponse;
 use User\Domain\Model\User;
 use User\Domain\Repository\UserRepositoryInterface;
 
-readonly class GetUserByIdUseCase
+readonly class GetUserByIdQuery
 {
     public function __construct(
         private UserRepositoryInterface $userRepository
@@ -26,7 +25,7 @@ readonly class GetUserByIdUseCase
             throw ResourceNotFoundException::createFromClassAndId(User::class, $id);
         }
 
-        return (new UserResponse())($user);
+        return $user;
     }
 }
 
