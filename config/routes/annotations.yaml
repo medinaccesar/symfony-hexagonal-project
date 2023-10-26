@@ -1,6 +1,6 @@
 # config/routes/annotations.yaml
 
 controllers:
-    resource: ../../src/User/Infrastructure/Framework/HTTP/Controller
+    resource: ../../src/User/Adapter/Framework/HTTP/Controller
     prefix: user
     type: annotation

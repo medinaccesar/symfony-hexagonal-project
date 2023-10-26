@@ -1,25 +1,3 @@
-parameters:
-
-services:
-
-  _defaults:
-    autowire: true # Automatically injects dependencies in your services.
-    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
-
-  #Shared
-  Shared\:
-    resource: "../src/Shared"
-
-  #User
-  User\:
-    resource: "../src/User"
-    exclude:
-      - "../src/User/Domain/Model"
-
-  User\Infrastructure\Framework\Http\Controller\:
-    resource: '../src/User/Infrastructure/Framework/HTTP/Controller'
-    tags: [ 'controller.service_arguments' ]
-
-
-
+imports:
+  - { resource: '../src/User/Adapter/Framework/Config/Service/user.yaml' }
+  - { resource: '../src/Api/Adapter/Framework/Config/Service/api.yaml' }

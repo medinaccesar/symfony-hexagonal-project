@@ -2,7 +2,7 @@
 
 namespace App\Tests\User\Application\UseCase;
 
-use App\User\Application\Query\GetUserByIdQuery;
+use User\Application\Query\GetUserByIdQuery;
 use PHPUnit\Framework\TestCase;
 use User\Domain\Model\User;
 use User\Domain\Repository\UserRepositoryInterface;

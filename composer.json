@@ -38,8 +38,8 @@
         "psr-4": {
             "App\\": "src/",
             "User\\": "src/User",
-            "Shared\\": "src/Shared"
-
+            "Core\\": "src/Core",
+            "Api\\": "src/Api"
         }
     },
     "autoload-dev": {

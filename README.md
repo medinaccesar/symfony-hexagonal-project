@@ -59,3 +59,39 @@ For more details on setting up Symfony, please refer to the [official Symfony do
 - user: root
 - password: root
 ```
+
+## 🎯 Hexagonal Architecture
+This project uses a Hexagonal Architecture and is organized in modules.
+
+```scala
+└── User
+    ├── Adapter
+    │  ├── Framework
+    │  │  └── HTTP
+    │  │      └── Controller
+    │  │          ├── CreateUserController.php
+    │  │          ├── GetUserByIdController.php
+    │  │          └── Security
+    │  │              └── SecurityController.php
+    │  └── Persistence
+    │      └── ORM
+    │          └── Doctrine
+    │              ├── Mapping
+    │              │  └── DoctrineUser.php
+    │              └── Repository
+    │                  └── DoctrineUserRepository.php
+    ├── Application
+    │  ├── Command
+    │  │  └── CreateUser
+    │  │      ├── CreateUser.php
+    │  │      └── DTO
+    │  │          └── CreateUserInputDTO.php
+    │  └── Query
+    │      └── GetUserByIdQuery.php
+    └── Domain
+        ├── Model
+        │  └── User.php
+        └── Repository
+            └── UserRepositoryInterface.php
+
+```
