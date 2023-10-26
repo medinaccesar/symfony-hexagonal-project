@@ -63,34 +63,45 @@ For more details on setting up Symfony, please refer to the [official Symfony do
 ## 🎯 Hexagonal Architecture
 This project uses a Hexagonal Architecture and is organized in modules.
 
-```scala
+> **Module example**:
+```
+$ tree ./src/
+
+./src/
 └── User
     ├── Adapter
-    │  ├── Framework
-    │  │  └── HTTP
-    │  │      └── Controller
-    │  │          ├── CreateUserController.php
-    │  │          ├── GetUserByIdController.php
-    │  │          └── Security
-    │  │              └── SecurityController.php
-    │  └── Persistence
-    │      └── ORM
-    │          └── Doctrine
-    │              ├── Mapping
-    │              │  └── DoctrineUser.php
-    │              └── Repository
-    │                  └── DoctrineUserRepository.php
+    │   ├── Framework
+    │   │   ├── Config
+    │   │   │   └── Service
+    │   │   │       └── user.yaml
+    │   │   └── HTTP
+    │   │       ├── Controller
+    │   │       │   ├── CreateUserController.php
+    │   │       │   └── GetUserByIdController.php
+    │   │       └── DTO
+    │   │           └── GetUserByIdRequestDTO.php
+    │   └── Persistence
+    │       └── ORM
+    │           └── Doctrine
+    │               ├── Mapping
+    │               │   └── User.orm.xml
+    │               └── Repository
+    │                   └── DoctrineUserRepository.php
     ├── Application
-    │  ├── Command
-    │  │  └── CreateUser
-    │  │      ├── CreateUser.php
-    │  │      └── DTO
-    │  │          └── CreateUserInputDTO.php
-    │  └── Query
-    │      └── GetUserByIdQuery.php
+    │   ├── Command
+    │   │   └── CreateUser
+    │   │       ├── CreateUserCommand.php
+    │   │       └── DTO
+    │   │           └── CreateUserInputDTO.php
+    │   └── Query
+    │       └── GetUserById
+    │           ├── DTO
+    │           │   ├── GetUserByIdInputDTO.php
+    │           │   └── GetUserByIdOutputDTO.php
+    │           └── GetUserByIdQuery.php
     └── Domain
         ├── Model
-        │  └── User.php
+        │   └── User.php
         └── Repository
             └── UserRepositoryInterface.php
 
