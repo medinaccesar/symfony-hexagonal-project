@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Api\Adapter\Framework\HTTP\Service\RequestArgumentRevolver;
+namespace Api\Adapter\Framework\HTTP\Service;
 
-use Api\Adapter\Framework\HTTP\RequestTransformer\RequestTransformer;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\HttpFoundation\Request;

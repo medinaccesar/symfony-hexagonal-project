@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Api\Adapter\Framework\HTTP\Service\RequestTransformer;
+namespace Api\Adapter\Framework\HTTP\Service;
 
 use Core\Exception\InvalidArgumentException;
 use JsonException;
