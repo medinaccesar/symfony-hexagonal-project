@@ -1,6 +1,8 @@
 <?php
 
-namespace Api\Adapter\Framework\HTTP\RequestArgumentRevolver;
+declare(strict_types=1);
+
+namespace Api\Adapter\Framework\HTTP\Service\RequestArgumentRevolver;
 
 use Api\Adapter\Framework\HTTP\RequestTransformer\RequestTransformer;
 use ReflectionClass;
@@ -8,7 +10,7 @@ use ReflectionException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use User\Adapter\Framework\HTTP\DTO\RequestDTO;
+use Api\Adapter\Framework\HTTP\DTO\RequestDTO;
 
 readonly class RequestArgumentResolver implements ValueResolverInterface
 {

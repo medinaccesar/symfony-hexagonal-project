@@ -8,4 +8,4 @@ services:
 
   Api\Adapter\Framework\Listener\JsonTransformerExceptionListener:
     tags:
-#      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

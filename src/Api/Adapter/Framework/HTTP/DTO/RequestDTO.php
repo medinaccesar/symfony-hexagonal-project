@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace User\Adapter\Framework\HTTP\DTO;
+namespace Api\Adapter\Framework\HTTP\DTO;
 
 use Symfony\Component\HttpFoundation\Request;
 

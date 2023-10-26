@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Api\Adapter\Framework\HTTP\RequestTransformer;
+namespace Api\Adapter\Framework\HTTP\Service\RequestTransformer;
 
 use Core\Exception\InvalidArgumentException;
 use JsonException;
