@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace User\Adapter\Framework\HTTP\DTO;
+namespace User\Adapter\Framework\HTTP\Controller\GetUserByIdController\DTO;
 
+use Api\Adapter\Framework\HTTP\Controller\DTO\RequestDTO;
 use Symfony\Component\HttpFoundation\Request;
-use Api\Adapter\Framework\HTTP\DTO\RequestDTO;
 
 readonly class GetUserByIdRequestDTO implements RequestDTO
 {
@@ -15,4 +15,5 @@ readonly class GetUserByIdRequestDTO implements RequestDTO
     {
         $this->id = $request->attributes->get('id');
     }
+
 }

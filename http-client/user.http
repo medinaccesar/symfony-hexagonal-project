@@ -1,0 +1,13 @@
+### getUserById
+GET {{host}}/user/get/11
+Content-Type: application/json
+
+### createUser - method to create a user
+POST {{host}}/user/create
+Content-Type: application/json
+
+{
+    "name": "Toni",
+    "username": "antonio.carreras"
+}
+###

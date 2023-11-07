@@ -6,6 +6,14 @@ services:
   Api\:
     resource: "../../../../../Api"
 
+  Api\Adapter\Framework\HTTP\Controller\:
+    resource: '../../../../../Api/Adapter/Framework/HTTP/Controller'
+    tags: [ 'controller.service_arguments' ]
+
+  Api\Adapter\Framework\HTTP\Service\:
+    resource: '../../../../../Api/Adapter/Framework/HTTP/Service'
+    tags: [ 'controller.service_arguments' ]
+
   Api\Adapter\Framework\Listener\JsonTransformerExceptionListener:
     tags:
       - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

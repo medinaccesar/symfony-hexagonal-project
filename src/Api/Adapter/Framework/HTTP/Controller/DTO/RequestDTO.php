@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Api\Adapter\Framework\HTTP\DTO;
+namespace Api\Adapter\Framework\HTTP\Controller\DTO;
 
 use Symfony\Component\HttpFoundation\Request;
 

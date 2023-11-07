@@ -8,6 +8,6 @@ services:
     exclude:
       - "../../../../../User/Domain/Model"
 
-  User\Adapter\Framework\Http\Controller\:
+  User\Adapter\Framework\HTTP\Controller\:
     resource: '../../../../../User/Adapter/Framework/HTTP/Controller'
     tags: [ 'controller.service_arguments' ]

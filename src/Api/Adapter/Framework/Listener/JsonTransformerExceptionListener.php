@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
-#[When(env: 'prod')]
+//#[When(env: 'prod')]
 class JsonTransformerExceptionListener
 {
     public function onKernelException(ExceptionEvent $event): void

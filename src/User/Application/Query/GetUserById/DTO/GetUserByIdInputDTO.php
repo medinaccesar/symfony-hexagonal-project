@@ -3,6 +3,7 @@
 namespace User\Application\Query\GetUserById\DTO;
 
 use Core\Validation\Trait\AssertNotNullTrait;
+use User\Adapter\Framework\HTTP\Controller\GetUserByIdController\DTO\GetUserByIdRequestDTO;
 
 readonly class GetUserByIdInputDTO
 {
@@ -10,14 +11,14 @@ readonly class GetUserByIdInputDTO
 
     private const ARGS = ['id'];
 
-    private function __construct(
+    public function __construct(
         public ?string $id
     ) {
         $this->assertNotNull(self::ARGS, [$this->id]);
     }
 
-    public static function create(?string $id): self
+    public static function create(GetUserByIdRequestDTO $requestDTO): self
     {
-        return new static($id);
+        return new static($requestDTO->id);
     }
 }

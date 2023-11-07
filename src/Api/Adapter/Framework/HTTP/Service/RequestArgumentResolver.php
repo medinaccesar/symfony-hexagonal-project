@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Api\Adapter\Framework\HTTP\Service;
 
-use ReflectionClass;
-use ReflectionException;
+use Generator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Api\Adapter\Framework\HTTP\DTO\RequestDTO;
 
 readonly class RequestArgumentResolver implements ValueResolverInterface
 {
@@ -18,19 +16,7 @@ readonly class RequestArgumentResolver implements ValueResolverInterface
     ) {
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function supports(Request $request, ArgumentMetadata $argument): bool
-    {
-        if (null === $argument->getType()) {
-            return false;
-        }
-
-        return (new ReflectionClass($argument->getType()))->implementsInterface(RequestDTO::class);
-    }
-
-    public function resolve(Request $request, ArgumentMetadata $argument): \Generator
+    public function resolve(Request $request, ArgumentMetadata $argument): Generator
     {
         $this->requestTransformer->transform($request);
 
@@ -38,4 +24,5 @@ readonly class RequestArgumentResolver implements ValueResolverInterface
 
         yield new $class($request);
     }
+
 }
