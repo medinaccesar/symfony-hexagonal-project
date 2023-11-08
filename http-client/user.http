@@ -1,5 +1,5 @@
 ### getUserById
-GET {{host}}/user/get/11
+GET {{host}}/user/get/2
 Content-Type: application/json
 
 ### createUser - method to create a user
@@ -8,6 +8,8 @@ Content-Type: application/json
 
 {
     "name": "Toni",
-    "username": "antonio.carreras"
+    "username": "antonio.carreras",
+    "password": "password",
+    "roles": "['ROLE_ADMINS']"
 }
 ###

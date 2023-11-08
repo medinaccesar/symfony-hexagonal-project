@@ -1,23 +1,28 @@
 <?php
 
 namespace User\Application\Command\CreateUser\DTO;
+use Core\Validation\Trait\AssertAllowedRolesTrait;
 
-use User\Adapter\Framework\HTTP\Controller\CreateUserController\DTO\CreateUserRequestDTO;
-
-readonly class CreateUserInputDTO
+class CreateUserInputDTO
 {
+    use AssertAllowedRolesTrait;
+
     private function __construct(
-        public string $username,
-        public string $password,
+        public ?string $username,
+        public ?string $password,
         public ?array $roles
     ) {
+        if(null !== $this->roles){
+            $this->assertAllowedRoles($this->roles);
+        }
     }
 
-    public static function create(CreateUserRequestDTO $requestDTO): self
+    public static function create($username, $password, $roles): self
     {
         return new static(
-            $requestDTO->username,
-            $requestDTO->password,
-            $requestDTO->roles);
+            $username,
+            $password,
+            $roles
+        );
     }
 }

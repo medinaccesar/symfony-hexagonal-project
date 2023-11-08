@@ -5,32 +5,38 @@ declare(strict_types=1);
 namespace Api\Adapter\Framework\HTTP\Service;
 
 use Core\Exception\InvalidArgumentException;
-use JsonException;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use function in_array;
+use const JSON_THROW_ON_ERROR;
 
 class RequestTransformer
 {
     private const ALLOWED_CONTENT_TYPE = 'application/json';
-
-    private const METHODS_TO_DECODE = [
-        Request::METHOD_POST,
-        Request::METHOD_PUT,
-        Request::METHOD_PATCH,
-    ];
+    private const SUPPORTED_METHODS = [Request::METHOD_GET, Request::METHOD_POST, Request::METHOD_PUT, Request::METHOD_PATCH];
 
     public function transform(Request $request): void
     {
-        if (self::ALLOWED_CONTENT_TYPE !== $request->headers->get('Content-Type')) {
-            throw InvalidArgumentException::createFromMessage(\sprintf('[%s] is the only Content-Type allowed', self::ALLOWED_CONTENT_TYPE));
+        $contentType = $request->headers->get('Content-Type');
+        if ($contentType !== self::ALLOWED_CONTENT_TYPE) {
+            throw new InvalidArgumentException(sprintf('[%s] is the only Content-Type allowed', self::ALLOWED_CONTENT_TYPE), Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
         }
 
-        if (in_array($request->getMethod(), self::METHODS_TO_DECODE, true)) {
+        $method = $request->getMethod();
+        if (!in_array($method, self::SUPPORTED_METHODS, true)) {
+            throw new InvalidArgumentException('HTTP method not supported', Response::HTTP_METHOD_NOT_ALLOWED);
+        }
+
+        if ($method === Request::METHOD_POST || $method === Request::METHOD_PUT || $method === Request::METHOD_PATCH) {
             try {
-                $request->request = new ParameterBag((array)\json_decode($request->getContent(), true, 512, \JSON_THROW_ON_ERROR));
-            } catch (JsonException) {
-                throw InvalidArgumentException::createFromMessage('Invalid JSON payload');
+                $content = $request->getContent();
+                $jsonData = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new InvalidArgumentException('Invalid JSON payload', Response::HTTP_BAD_REQUEST);
+                }
+                $request->request->replace($jsonData);
+            } catch (\JsonException) {
+                throw new InvalidArgumentException('Invalid JSON payload', Response::HTTP_BAD_REQUEST);
             }
         }
     }

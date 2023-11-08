@@ -9,12 +9,12 @@ class CreateUserRequestDTO implements RequestDTO
 {
     public ?string $username;
     public ?string $password;
-    public ?array  $roles;
+    public ?string $roles;
 
     public function __construct(Request $request)
     {
         $this->username = $request->request->get('username');
-        $this->username = $request->request->get('password');
-        $this->roles = $request->request->get('roles');
+        $this->password = $request->request->get('password');
+        $this->roles = json_decode($request->request->get('roles'));
     }
 }

@@ -24,5 +24,4 @@ readonly class RequestArgumentResolver implements ValueResolverInterface
 
         yield new $class($request);
     }
-
 }

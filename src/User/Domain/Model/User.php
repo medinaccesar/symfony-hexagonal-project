@@ -6,13 +6,17 @@ namespace User\Domain\Model;
 class User
 {
     public function __construct(
-        private readonly ?int $id,
+        private ?int $id,
         private string        $username,
         private string        $password,
-        private array         $roles = ['ROLE_USER']
+        private ?array        $roles
     )
     {
+        if ($this->roles === null) {
+            $this->roles = ['ROLE_USER'];
+        }
     }
+
 
     public function getId(): ?int
     {

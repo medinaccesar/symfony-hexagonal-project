@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace User\Adapter\Framework\HTTP\Controller\CreateUserController;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Api\Adapter\Framework\Service\Response\JsonApiResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use User\Adapter\Framework\HTTP\Controller\CreateUserController\DTO\CreateUserRequestDTO;
@@ -23,9 +23,9 @@ readonly class CreateUserController
     #[Route('/create', name: 'create_user', methods: ['POST'])]
     public function __invoke(CreateUserRequestDTO $requestDTO): Response
     {
-        $result = $this->command->handle(
-            CreateUserInputDTO::create($requestDTO)
+        $response = $this->command->handle(
+            CreateUserInputDTO::create($requestDTO->username, $requestDTO->password, $requestDTO->roles)
         );
-        return new JsonResponse($result);
+        return new JsonApiResponse($response);
     }
 }
