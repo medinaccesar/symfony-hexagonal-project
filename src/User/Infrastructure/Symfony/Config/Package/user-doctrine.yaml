@@ -1,0 +1,9 @@
+doctrine:
+  orm:
+    mappings:
+      User:
+        is_bundle: false
+        type: xml
+        dir: '%kernel.project_dir%/src/User/Infrastructure/Adapter/Persistence/ORM/Doctrine/Mapping'
+        prefix: 'User\Domain\Model'
+        alias: User

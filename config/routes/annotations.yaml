@@ -1,10 +1,10 @@
 # config/routes/annotations.yaml
 api_controllers:
-    resource: ../../src/Api/Adapter/Framework/HTTP/Controller
+    resource: ../../src/Common/Infrastructure/Adapter/UI/Controller
     type: annotation
 
 
 user_controllers:
-    resource: ../../src/User/Adapter/Framework/HTTP/Controller
+    resource: ../../src/User/Infrastructure/Adapter/REST/Controller
     prefix: user
     type: annotation

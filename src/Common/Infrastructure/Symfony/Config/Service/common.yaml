@@ -1,0 +1,23 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Common\:
+    resource: "../../../../../Common"
+
+  Common\Infrastructure\Adapter\REST\Listener\JsonTransformerExceptionListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+  #DependencyInyection
+  Common\Infrastructure\Adapter\REST\Resolver\:
+    resource: '../../../../../Common/Infrastructure/Adapter/REST/Resolver'
+    tags: [ 'controller.service_arguments' ]
+
+  Doctrine\ORM\EntityManagerInterface:
+    alias: doctrine.orm.entity_manager
+
+  User\Infrastructure\Adapter\Persistence\ORM\Doctrine\Repository\DoctrineUserRepository:
+    arguments:
+      $entityManager: '@Doctrine\ORM\EntityManagerInterface'

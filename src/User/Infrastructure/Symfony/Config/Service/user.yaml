@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  User\:
+    resource: "../../../../../User"
+    exclude:
+      - "../../../../../User/Domain/Model"
+
+  User\Infrastructure\Adapter\REST\Controller\:
+    resource: '../../../../../User/Infrastructure/Adapter/REST/Controller'
+    tags: [ 'controller.service_arguments' ]

@@ -38,13 +38,12 @@
         "psr-4": {
             "App\\": "src/",
             "User\\": "src/User",
-            "Core\\": "src/Core",
-            "Api\\": "src/Api"
+            "Common\\": "src/Common"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Common\\Tests\\": "tests/"
         }
     },
     "replace": {

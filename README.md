@@ -1,6 +1,6 @@
 # Symfony Docker base 🐳
 
-> Version:  **Symfony 6.3.5**
+> Version: **Symfony 6.3.5**
 
 Clone the repository from GitHub.
 
@@ -65,44 +65,47 @@ This project uses a Hexagonal Architecture and is organized in modules.
 
 > **Module example**:
 ```
-$ tree ./src/
-
-./src/
-└── User
-    ├── Adapter
-    │   ├── Framework
-    │   │   ├── Config
-    │   │   │   └── Service
-    │   │   │       └── user.yaml
-    │   │   └── HTTP
-    │   │       ├── Controller
-    │   │       │   ├── CreateUserController.php
-    │   │       │   └── GetUserByIdController.php
-    │   │       └── DTO
-    │   │           └── GetUserByIdRequestDTO.php
-    │   └── Persistence
-    │       └── ORM
-    │           └── Doctrine
-    │               ├── Mapping
-    │               │   └── User.orm.xml
-    │               └── Repository
-    │                   └── DoctrineUserRepository.php
-    ├── Application
-    │   ├── Command
-    │   │   └── CreateUser
-    │   │       ├── CreateUserCommand.php
-    │   │       └── DTO
-    │   │           └── CreateUserInputDTO.php
-    │   └── Query
-    │       └── GetUserById
-    │           ├── DTO
-    │           │   ├── GetUserByIdInputDTO.php
-    │           │   └── GetUserByIdOutputDTO.php
-    │           └── GetUserByIdQuery.php
-    └── Domain
-        ├── Model
-        │   └── User.php
-        └── Repository
-            └── UserRepositoryInterface.php
+Module/
+├── Application/
+│   ├── Command/
+│   │   ├── Handler/
+│   │   │   └── CreateHandler.php       # Handles the logic for creating s
+│   │   └── CreateCommand.php           # Defines the structure of the create command
+│   ├── Query/
+│   │   ├── Handler/
+│   │   │   └── GetByIdHandler.php      # Handles the logic for querying s by ID
+│   │   └── GetByIdQuery.php            # Defines the structure of the query by ID
+│   └── Service/
+│       └── Service.php                 # Application services that orchestrate the flow of use cases
+├── Domain/
+│   ├── Model/
+│   │   └── .php                    # The domain entity and any related value objects
+│   ├── Repository/
+│   │   └── RepositoryInterface.php # Repository interface to abstract the persistence of 
+│   ├── Service/
+│   │   └── DomainService.php       # Domain-specific business logic for 
+│   └── Event/
+│       └── CreatedEvent.php        # Domain event that is triggered when a is created
+├── Adapter/
+│   ├── Persistence/
+│   │   └── Repository.php          # Implementation of the repository (e.g., using Doctrine ORM)
+│   ├── Messaging/
+│   │   └── MessagePublisher.php    # Implementation for publishing events to a messaging system
+│   ├── Web/
+│   │   ├── Controller/
+│   │   │   └── Controller.php      # RESTful controllers for operations
+│   │   └── DTO/
+│   │       ├── CreateRequest.php   # DTO for create request
+│   │       └── Response.php        # DTO for response
+│   └── CLI/
+│       └── CreateCommand.php       # CLI command to create s
+└── UI/
+    ├── Web/
+    │   └── Controller/
+    │       └── Controller.php      # Web controller to interact with s through the web interface
+    ├── CLI/
+    │   └── CLIController.php       # CLI controller for operations through the command line
+    └── API/
+        └── Controller.php          # API controller for operations through the REST API
 
 ```
