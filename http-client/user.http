@@ -7,9 +7,5 @@ POST {{host}}/user/create
 Content-Type: application/json
 
 {
-    "name": "Toni",
-    "username": "antonio2.carreras",
-    "password": "password",
-    "roles": "['ROLE_ADMIN']"
 }
 ###

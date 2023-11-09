@@ -8,5 +8,7 @@ readonly class GetUserByIdResponse
         public string $id,
         public string $username,
         public array  $roles,
-    ) {}
+    )
+    {
+    }
 }

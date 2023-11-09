@@ -2,23 +2,24 @@
 
 namespace User\Application\Command\CreateUser;
 
-use Common\Domain\Service\Interface\UuidGeneratorInterface;
+use Common\Domain\Service\Interface\UuidGeneratorServiceInterface;
 use User\Domain\Model\User;
 use User\Domain\Repository\UserRepositoryInterface;
 
 readonly class CreateUserHandler
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository,
-        private UuidGeneratorInterface  $uuidGenerator
+        private UserRepositoryInterface       $userRepository,
+        private UuidGeneratorServiceInterface $uuidGenerator
     )
     {
     }
 
     public function handle(CreateUserCommand $command): CreateUserResponse
     {
-        $user = new User($this->uuidGenerator->generateUuid(), $command->username, $command->password, $command->roles);
+        $uuid = $this->uuidGenerator->generateUuid();
+        $user = new User($uuid, $command->username, $command->password, $command->roles);
         $this->userRepository->save($user);
-        return new CreateUserResponse($user->getId());
+        return new CreateUserResponse($uuid);
     }
 }
