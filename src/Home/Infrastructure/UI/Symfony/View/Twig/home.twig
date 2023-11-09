@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="EN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: center;
+        }
+
+        h1 {
+            color: rgba(24, 24, 91, 0.72);
+            margin-bottom: 2rem;
+        }
+
+        .api-meta, .api-description {
+            background-color: #fff;
+            border-left: 5px solid #5d647b;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-width: 600px; /* Ajustado para mayor amplitud */
+            width: 80%; /* Ajustado para que ocupe más espacio */
+        }
+
+        .api-meta p, .api-description p {
+            margin: 10px 0;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .api-meta p span, .api-description p span {
+            font-weight: bold;
+            color: #0275d8;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .api-meta, .api-description {
+                padding: 15px;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<h1>Symfony Hexagonal Project</h1>
+<div class="api-meta">
+    <p><span>Version:</span> {{ apiMeta.version }}</p>
+    <p><span>Date:</span> {{ apiMeta.date }}</p>
+</div>
+<div class="api-description">
+    <h2>Project Structure Description</h2>
+    <p>This API is structured on the tenets of Domain-Driven Design (DDD), embracing a model-centric strategy that
+        securely encapsulates business logic. It employs the Command Query Responsibility Segregation (CQRS) pattern to
+        distinctively separate read and write operations, thus enhancing clarity and scalability. Additionally, it is
+        organized as a modular monolith, which arranges the codebase into well-defined modules. This modularization
+        facilitates maintainability and allows for independent evolution of each module, laying a solid foundation for a
+        potential shift to a microservices architecture if needed.</p>
+</div>
+</body>
+</html>

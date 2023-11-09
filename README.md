@@ -61,51 +61,49 @@ For more details on setting up Symfony, please refer to the [official Symfony do
 ```
 
 ## 🎯 Hexagonal Architecture
-This project uses a Hexagonal Architecture and is organized in modules.
+This API is structured on the tenets of Domain-Driven Design (DDD), embracing a model-centric strategy that
+securely encapsulates business logic. It employs the Command Query Responsibility Segregation (CQRS) pattern to
+distinctively separate read and write operations, thus enhancing clarity and scalability. Additionally, it is
+organized as a modular monolith, which arranges the codebase into well-defined modules. This modularization
+facilitates maintainability and allows for independent evolution of each module, laying a solid foundation for a
+potential shift to a microservices architecture if needed.
 
-> **Module example**:
+> **Module example (Symfony)**:
 ```
-Module/
-├── Application/
-│   ├── Command/
-│   │   ├── Handler/
-│   │   │   └── CreateHandler.php       # Handles the logic for creating s
-│   │   └── CreateCommand.php           # Defines the structure of the create command
-│   ├── Query/
-│   │   ├── Handler/
-│   │   │   └── GetByIdHandler.php      # Handles the logic for querying s by ID
-│   │   └── GetByIdQuery.php            # Defines the structure of the query by ID
-│   └── Service/
-│       └── Service.php                 # Application services that orchestrate the flow of use cases
-├── Domain/
-│   ├── Model/
-│   │   └── .php                    # The domain entity and any related value objects
-│   ├── Repository/
-│   │   └── RepositoryInterface.php # Repository interface to abstract the persistence of 
-│   ├── Service/
-│   │   └── DomainService.php       # Domain-specific business logic for 
-│   └── Event/
-│       └── CreatedEvent.php        # Domain event that is triggered when a is created
-├── Adapter/
-│   ├── Persistence/
-│   │   └── Repository.php          # Implementation of the repository (e.g., using Doctrine ORM)
-│   ├── Messaging/
-│   │   └── MessagePublisher.php    # Implementation for publishing events to a messaging system
-│   ├── Web/
-│   │   ├── Controller/
-│   │   │   └── Controller.php      # RESTful controllers for operations
-│   │   └── DTO/
-│   │       ├── CreateRequest.php   # DTO for create request
-│   │       └── Response.php        # DTO for response
-│   └── CLI/
-│       └── CreateCommand.php       # CLI command to create s
-└── UI/
-    ├── Web/
-    │   └── Controller/
-    │       └── Controller.php      # Web controller to interact with s through the web interface
-    ├── CLI/
-    │   └── CLIController.php       # CLI controller for operations through the command line
-    └── API/
-        └── Controller.php          # API controller for operations through the REST API
+├── Application
+│   ├── Command
+│   │   └── CreateModule
+│   └── Query
+│       └── GetModuleById
+│           ├── GetModuleByIdHandler.php
+│           ├── GetModuleByIdQuery.php
+│           └── GetModuleByIdResponse.php
+├── Domain
+│   ├── Model
+│   │   └── Module.php
+│   └── Repository
+│       └── ModuleRepositoryInterface.php
+└── Infrastructure
+    ├── Adapter
+    │   ├── Persistence
+    │   │   └── ORM
+    │   │       └── Doctrine
+    │   │           ├── Mapping
+    │   │           │   └── Module.orm.xml
+    │   │           └── Repository
+    │   │               └── DoctrineModuleRepository.php
+    │   └── REST
+    │       └── Symfony
+    │           └── Controller
+    │               ├── CreateModuleController
+    │               │   ├── CreateModuleController.php
+    │               │   └── DTO
+    │               │       └── CreateModuleRequestDTO.php
+    │               └── GetModuleByIdController
+    │                   ├── DTO
+    │                   │   └── GetModuleByIdRequestDTO.php
+    │                   └── GetModuleByIdController.php
+    └── Config
+        └── (Framework config)
 
 ```

@@ -38,7 +38,8 @@
         "psr-4": {
             "App\\": "src/",
             "User\\": "src/User",
-            "Common\\": "src/Common"
+            "Common\\": "src/Common",
+            "Home\\": "src/Home"
         }
     },
     "autoload-dev": {

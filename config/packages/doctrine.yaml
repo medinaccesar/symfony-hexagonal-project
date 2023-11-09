@@ -1,5 +1,5 @@
 imports:
-  - { resource: '../../src/User/Infrastructure/Symfony/Config/Package/user-doctrine.yaml' }
+  - { resource: '../../src/User/Infrastructure/Config/Symfony/Package/user-doctrine.yaml' }
 
 doctrine:
   dbal:

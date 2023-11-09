@@ -1,10 +1,13 @@
 # config/routes/annotations.yaml
-api_controllers:
-    resource: ../../src/Common/Infrastructure/Adapter/UI/Controller
-    type: annotation
+home_ui_controllers:
+  resource: ../../src/Home/Infrastructure/UI/Symfony/Controller
+  type: annotation
 
+home_controllers:
+  resource: ../../src/Home/Infrastructure/REST/Symfony/Controller
+  type: annotation
 
 user_controllers:
-    resource: ../../src/User/Infrastructure/Adapter/REST/Controller
-    prefix: user
-    type: annotation
+  resource: ../../src/User/Infrastructure/Adapter/REST/Symfony/Controller
+  prefix: user
+  type: annotation

@@ -1,3 +1,4 @@
 imports:
-  - { resource: '../src/User/Infrastructure/Symfony/Config/Service/user.yaml' }
-  - { resource: '../src/Common/Infrastructure/Symfony/Config/Service/common.yaml' }
+  - { resource: '../src/Home/Infrastructure/Config/Symfony/Service/home.yaml' }
+  - { resource: '../src/User/Infrastructure/Config/Symfony/Service/user.yaml' }
+  - { resource: '../src/Common/Infrastructure/Config/Symfony/Service/common.yaml' }
