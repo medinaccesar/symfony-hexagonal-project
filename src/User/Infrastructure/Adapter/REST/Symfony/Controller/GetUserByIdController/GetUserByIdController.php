@@ -6,15 +6,14 @@ namespace User\Infrastructure\Adapter\REST\Symfony\Controller\GetUserByIdControl
 
 use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiResponse;
 use User\Infrastructure\Adapter\REST\Symfony\Controller\GetUserByIdController\DTO\GetUserByIdRequestDTO;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use User\Application\Query\GetUserById\GetUserByIdHandler;
 use User\Application\Query\GetUserById\GetUserByIdQuery;
 
-class GetUserByIdController extends AbstractController
+readonly class GetUserByIdController
 {
     public function __construct(
-        private readonly GetUserByIdHandler $handler
+        private GetUserByIdHandler $handler
     )
     {
     }

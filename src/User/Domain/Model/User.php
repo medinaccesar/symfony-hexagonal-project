@@ -6,10 +6,10 @@ namespace User\Domain\Model;
 class User
 {
     public function __construct(
-        private ?int $id,
-        private string        $username,
-        private string        $password,
-        private ?array        $roles
+        private readonly string $id,
+        private string          $username,
+        private string          $password,
+        private ?array          $roles
     )
     {
         if ($this->roles === null) {
@@ -18,7 +18,7 @@ class User
     }
 
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
