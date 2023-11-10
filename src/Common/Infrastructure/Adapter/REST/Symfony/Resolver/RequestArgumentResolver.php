@@ -20,9 +20,7 @@ readonly class RequestArgumentResolver implements ValueResolverInterface
     public function resolve(Request $request, ArgumentMetadata $argument): Generator
     {
         $this->requestTransformer->transform($request);
-
         $class = $argument->getType();
-
         yield new $class($request);
     }
 }

@@ -7,5 +7,7 @@ POST {{host}}/user/create
 Content-Type: application/json
 
 {
+  "username": "penelsop5sassdedd2",
+  "password": "passwsaord"
 }
 ###

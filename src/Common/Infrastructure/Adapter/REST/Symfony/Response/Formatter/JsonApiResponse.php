@@ -2,27 +2,39 @@
 
 namespace Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter;
 
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class JsonApiResponse extends JsonResponse
 {
-    public function __construct($data = null, int $status = 200, array $headers = [], bool $json = false)
-    {
-        $data = $this->formatData($data);
-        parent::__construct($data, $status, $headers, $json);
+    const DEFAULT_STATUS = 200;
+
+    public function __construct(
+        array  $data = null,
+        string $message = '',
+        int    $status = self::DEFAULT_STATUS
+    ) {
+        try {
+            $formattedData = $this->formatBody($data,$message);
+            parent::__construct($formattedData, $status);
+        } catch (Exception) {
+            // Handle exceptions if needed
+        }
     }
 
-    private function formatData($data): array
+    /**
+     * Formats the response body.
+     *
+     * @param array|null $data The response data.
+     * @param string $message The response message.
+     * @return array The formatted response body.
+     */
+    private function formatBody(?array $data,string $message): array
     {
-        // JSON:REST convention
         return [
-            'data' => $data,
-            'links' => [
-                // Enlaces relacionados
-            ],
-            'meta' => [
-                // Metadatos adicionales
-            ],
+            'message' => $message,
+            'status' => $this->statusCode, // Use the parent class's statusCode property
+            'data' => $data
         ];
     }
 }

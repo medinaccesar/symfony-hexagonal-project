@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace User\Infrastructure\Adapter\REST\Symfony\Controller\GetUserByIdController\DTO;
-
 use Common\Infrastructure\Adapter\REST\Symfony\Request\RequestDTO;
 use Symfony\Component\HttpFoundation\Request;
 
