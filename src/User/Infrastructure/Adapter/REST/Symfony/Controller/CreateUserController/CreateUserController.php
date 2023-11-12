@@ -26,6 +26,6 @@ readonly class CreateUserController
         $this->validator->validateAndThrows($requestDTO);
         $createUserCommand = new CreateUserCommand($requestDTO->username, $requestDTO->password, $requestDTO->roles);
         $response = $this->handler->handle($createUserCommand);
-        return new JsonApiResponse($response);
+        return new JsonApiResponse([$response]);
     }
 }

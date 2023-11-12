@@ -23,7 +23,7 @@ class DoctrineUserRepository implements UserRepositoryInterface
         return $this->userRepository->findOneBy(['username' => $username]);
     }
 
-    public function findById(int $id): ?User
+    public function findById(string $id): ?User
     {
         return $this->userRepository->find($id);
     }

@@ -1,5 +1,5 @@
 ### getUserById
-GET {{host}}/user/get/3
+GET {{host}}/user/get/12f44de7-7116-47f3-900f-c2d55d2cfaee
 Content-Type: application/json
 
 ### createUser - method to create a user
