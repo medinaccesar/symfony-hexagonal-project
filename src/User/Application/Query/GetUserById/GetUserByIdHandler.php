@@ -8,7 +8,9 @@ use User\Domain\Repository\UserRepositoryInterface;
 
 readonly class GetUserByIdHandler
 {
-    public function __construct(private UserRepositoryInterface $userRepository)
+    public function __construct(
+        private UserRepositoryInterface $userRepository
+    )
     {
     }
 
@@ -16,7 +18,7 @@ readonly class GetUserByIdHandler
     {
         $user = $this->userRepository->findById($query->userId);
         if ($user === null) {
-            Throw ResourceNotFoundException::createFromClassAndId(User::class, $query->userId);
+            throw ResourceNotFoundException::createFromClassAndId(User::class, $query->userId);
         }
         return new GetUserByIdResponse($user->getId(), $user->getUsername(), $user->getRoles());
     }

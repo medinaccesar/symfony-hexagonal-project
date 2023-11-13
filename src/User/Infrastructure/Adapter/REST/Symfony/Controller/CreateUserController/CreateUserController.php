@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace User\Infrastructure\Adapter\REST\Symfony\Controller\CreateUserController;
 
 use Common\Infrastructure\Service\Symfony\Validation\ValidationService;
+use Symfony\Component\HttpFoundation\Response;
 use User\Application\Command\CreateUser\CreateUserCommand;
 use User\Application\Command\CreateUser\CreateUserHandler;
 use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiResponse;
@@ -26,6 +27,7 @@ readonly class CreateUserController
         $this->validator->validateAndThrows($requestDTO);
         $createUserCommand = new CreateUserCommand($requestDTO->username, $requestDTO->password, $requestDTO->roles);
         $response = $this->handler->handle($createUserCommand);
-        return new JsonApiResponse([$response]);
+
+        return new JsonApiResponse($response, Response::HTTP_CREATED);
     }
 }

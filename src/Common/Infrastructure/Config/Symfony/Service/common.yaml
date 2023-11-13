@@ -5,10 +5,10 @@ services:
 
   Common\:
     resource: "../../../../../Common"
-#
-#  Common\Infrastructure\Adapter\REST\Symfony\Listener\JsonTransformerExceptionListener:
-#    tags:
-#      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+  Common\Infrastructure\Adapter\REST\Symfony\Listener\JsonTransformerExceptionListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
   #DependencyInyection
   Common\Infrastructure\Adapter\REST\Symfony\Resolver\:

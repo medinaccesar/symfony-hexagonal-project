@@ -2,43 +2,40 @@
 
 namespace Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter;
 
-use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class JsonApiResponse extends JsonResponse
 {
     const DEFAULT_STATUS = 200;
+    const DEFAULT_MESSAGE = 'success';
+
 
     public function __construct(
-        array  $data = null,
-        string $message = '',
-        int    $status = self::DEFAULT_STATUS,
-        bool   $error = false
+        object|array|null $data = null,
+        int               $status = self::DEFAULT_STATUS,
+        string            $message = self::DEFAULT_MESSAGE,
+        bool              $error = false
     )
     {
-        try {
-            $formattedData = $this->formatBody($error, $message, $status, $data);
-            parent::__construct($formattedData, $status);
-        } catch (Exception) {
-            // Handle exceptions if needed
-        }
+        $formattedData = $this->formatBody($error, $status, $message, $data);
+        parent::__construct($formattedData, $status);
     }
 
     /**
      * Formats the response body.
      *
-     * @param array|null $data The response data.
+     * @param bool $error Indicates if the response is an error.
      * @param string $message The response message.
      * @param int $status The HTTP status code.
-     * @param bool $error Indicates if the response is an error.
+     * @param object|array|null $data The response data.
      * @return array The formatted response body.
      */
-    private function formatBody(bool $error, string $message, int $status, ?array $data): array
+    private function formatBody(bool $error, int $status, string $message, object|array|null $data): array
     {
         return [
             'error' => $error,
+            'status' => $status,
             'message' => $message,
-            'status' => $status, // Use the parent class's statusCode property
             'data' => $data
         ];
     }

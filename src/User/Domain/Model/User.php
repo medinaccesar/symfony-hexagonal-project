@@ -12,9 +12,7 @@ class User
         private ?array          $roles
     )
     {
-        if ($this->roles === null) {
-            $this->roles = ['ROLE_USER'];
-        }
+        $this->roles[] = 'ROLE_USER';
     }
 
     public function getId(): ?string
@@ -42,7 +40,6 @@ class User
     {
         $roles = $this->roles;
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
