@@ -15,9 +15,3 @@ services:
     resource: '../../../../../Common/Infrastructure/Adapter/REST/Symfony/Resolver'
     tags: [ 'controller.service_arguments' ]
 
-  Doctrine\ORM\EntityManagerInterface:
-    alias: doctrine.orm.entity_manager
-
-  User\Infrastructure\Adapter\Persistence\ORM\Doctrine\Repository\DoctrineUserRepository:
-    arguments:
-      $entityManager: '@Doctrine\ORM\EntityManagerInterface'

@@ -25,3 +25,10 @@ restart: ## Restart the containers
 
 sh: ## sh into container
 	docker exec -it --user ${UID} ${SERVICE} sh
+
+cc: ## cache clear
+	docker exec --user ${UID} ${SERVICE} php bin/console doctrine:cache:clear-metadata
+	docker exec --user ${UID} ${SERVICE} php bin/console doctrine:cache:clear-query
+	docker exec --user ${UID} ${SERVICE} php bin/console doctrine:cache:clear-result
+	docker exec --user ${UID} ${SERVICE} php bin/console cache:clear
+

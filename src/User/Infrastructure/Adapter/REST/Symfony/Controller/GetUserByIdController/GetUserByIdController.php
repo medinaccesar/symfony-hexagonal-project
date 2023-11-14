@@ -13,7 +13,9 @@ use User\Application\Query\GetUserById\GetUserByIdQuery;
 
 readonly class GetUserByIdController
 {
-    public function __construct(private GetUserByIdHandler $handler)
+    public function __construct(
+        private GetUserByIdHandler $handler
+    )
     {
     }
 

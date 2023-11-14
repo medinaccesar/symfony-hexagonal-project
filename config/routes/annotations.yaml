@@ -9,5 +9,5 @@ home_controllers:
 
 user_controllers:
   resource: ../../src/User/Infrastructure/Adapter/REST/Symfony/Controller
-  prefix: user
+  prefix: /api/user
   type: annotation

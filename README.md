@@ -48,6 +48,7 @@ For more details on setting up Symfony, please refer to the [official Symfony do
 - SecurityBundle
 - MonologBundle
 - DebugBundle
+- LexikJWTAuthenticationBundle (JWT)
 
 
 ## 🤖 Database
