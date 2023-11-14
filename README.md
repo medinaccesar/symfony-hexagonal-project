@@ -1,4 +1,4 @@
-# Symfony Docker base 🐳
+# Symfony hexagonal project 🐳
 
 > Version: **Symfony 6.3.5**
 
