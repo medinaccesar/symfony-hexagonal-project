@@ -15,11 +15,6 @@ readonly class SymfonyUserAdapter implements UserInterface, PasswordAuthenticate
     {
     }
 
-    public function getUsername(): string
-    {
-        return $this->user->getUsername();
-    }
-
     public function getPassword(): string
     {
         return $this->user->getPassword();

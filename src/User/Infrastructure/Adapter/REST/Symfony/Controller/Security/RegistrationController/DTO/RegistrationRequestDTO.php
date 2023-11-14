@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace User\Infrastructure\Adapter\REST\Symfony\Controller\CreateUserController\DTO;
+namespace User\Infrastructure\Adapter\REST\Symfony\Controller\Security\RegistrationController\DTO;
 
 use Common\Infrastructure\Adapter\REST\Symfony\Request\RequestDTO;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateUserRequestDTO implements RequestDTO
+class RegistrationRequestDTO implements RequestDTO, PasswordAuthenticatedUserInterface
 {
     #[Assert\NotBlank(message: "Username should not be blank.")]
     #[Assert\Length(
@@ -42,5 +43,10 @@ class CreateUserRequestDTO implements RequestDTO
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new \InvalidArgumentException('Invalid JSON format for roles.');
         }
+    }
+
+    public function getPassword(): ?string
+    {
+        $this->getPassword();
     }
 }

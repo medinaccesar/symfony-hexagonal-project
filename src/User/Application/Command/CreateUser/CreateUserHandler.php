@@ -16,7 +16,7 @@ readonly class CreateUserHandler
     {
     }
 
-    public function handle(CreateUserCommand $command): CreateUserResponse
+    public function __invoke(CreateUserCommand $command): CreateUserResponse
     {
         $existingUser = $this->userRepository->findByUsername($command->username);
         if ($existingUser !== null) {
