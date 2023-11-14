@@ -3,6 +3,7 @@
 namespace User\Infrastructure\Adapter\Security\Symfony;
 
 use Common\Domain\Exception\ResourceNotFoundException;
+use Common\Domain\Exception\ValidationException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -19,8 +20,10 @@ readonly class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username): UserInterface
     {
+        if (empty($username)) {
+            throw new ValidationException(['username' => 'Username cannot be null']);
+        }
         $user = $this->userRepository->findByUsername($username);
-
         if (null === $user) {
             throw ResourceNotFoundException::createFromClassAndId(User::class, $username);
         }

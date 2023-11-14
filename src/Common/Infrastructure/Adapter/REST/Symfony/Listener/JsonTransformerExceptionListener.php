@@ -95,8 +95,7 @@ class JsonTransformerExceptionListener
      */
     private function getStandardErrorMessage(Throwable $e): string
     {
-        if ($e instanceof ValidationException ||
-            $e instanceof InvalidArgumentException ||
+        if ($e instanceof InvalidArgumentException ||
             $e instanceof UniqueConstraintViolationException) {
             return self::REQUEST_ERROR_MESSAGE;
         } elseif ($e instanceof NotFoundHttpException) {

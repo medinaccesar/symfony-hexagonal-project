@@ -23,6 +23,7 @@ class RegistrationRequestDTO implements RequestDTO, PasswordAuthenticatedUserInt
     #[Assert\NotBlank(message: "Password should not be blank.")]
     #[Assert\Length(
         min: 8,
+        max: 10,
         minMessage: "Password must be at least {{ limit }} characters long"
     )]
     public ?string $password;
@@ -47,6 +48,6 @@ class RegistrationRequestDTO implements RequestDTO, PasswordAuthenticatedUserInt
 
     public function getPassword(): ?string
     {
-        $this->getPassword();
+        return $this->getPassword();
     }
 }
