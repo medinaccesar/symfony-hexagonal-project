@@ -5,7 +5,7 @@
 Clone the repository from GitHub.
 
 ```shell
-git clone https://github.com/tonicarreras/symfony-docker-base.git
+git clone https://github.com/tonicarreras/symfony-hexagonal-project.git
 ```
 
 ## 🚀 Installation with Docker
