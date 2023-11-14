@@ -1,34 +1,26 @@
 security:
-    enable_authenticator_manager: true
+    # https://symfony.com/doc/current/security.html#c-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        users_in_memory: { memory: null }
+        app_user_provider:
+            id: 'User\Infrastructure\Adapter\Security\Symfony\UserProvider'
     firewalls:
-        login:
-            pattern: ^/api/login
+        dev:
+            pattern: ^/_(profiler|wdt)
+            security: false
+        api:
+            pattern: ^/api/
             stateless: true
+            provider: app_user_provider
+            jwt: ~
+        main:
             json_login:
-                check_path: /api/login_check
+                username_path: username
+                password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            lazy: true
-            provider: users_in_memory
-        api:
-            pattern: ^/api
-            stateless: true
-            jwt: ~
     access_control:
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-
-when@test:
-    security:
-        password_hashers:
-            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
-                algorithm: auto
-                cost: 4
-                time_cost: 3
-                memory_cost: 10

@@ -19,9 +19,8 @@ use Throwable;
 
 /**
  * Listener to transform exceptions into JSON API responses.
- *
- * @When(env: 'prod')
  */
+#[When(env: 'prod')]
 class JsonTransformerExceptionListener
 {
     const REQUEST_ERROR_MESSAGE = 'A request error occurred.';

@@ -1,20 +1,24 @@
 ### getUserById
 GET {{host}}/api/user/get/53bff728-31c7-4cad-9d67-944f8a197009
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
 
 ### createUser - method to create a user
 POST {{host}}/api/user/create
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
-  "username": "",
-  "password": ""
+  "username": "wellcome282",
+  "password": "wellcome_password"
 }
 ###
 
 ### loginCheck
-POST {{host}}/api/login_check
+POST {{host}}/login_check
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
   "username": "antonio",

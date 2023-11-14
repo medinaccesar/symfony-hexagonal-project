@@ -11,3 +11,4 @@ services:
   User\Infrastructure\Adapter\REST\Symfony\Controller\:
     resource: '../../../../../User/Infrastructure/Adapter/REST/Symfony/Controller'
     tags: [ 'controller.service_arguments' ]
+
