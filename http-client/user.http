@@ -1,5 +1,5 @@
 ### getUserById
-GET {{host}}/api/user/get/c08a0431-e82c-4fc5-82f7-7cd84cc251d1
+GET {{host}}/api/user/get/
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
@@ -10,8 +10,8 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-  "username": "wel3lcom3e",
-  "password": "wellcome_password"
+  "username": "",
+  "password": ""
 }
 ###
 
@@ -21,7 +21,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-  "username": "wel3lcom3e",
-  "password": "wellcome_password"
+  "username": "",
+  "password": ""
 }
 ###
