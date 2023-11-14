@@ -32,7 +32,7 @@ class CreateUserTest extends TestCase
         $uuid = 'some-uuid';
         $this->userRepository->method('findByUsername')->willReturn(null);
         $this->uuidGenerator->method('generateUuid')->willReturn($uuid);
-        $response = $this->createUserHandler->handle($command);
+        $response = ($this->createUserHandler)($command);
         $this->assertInstanceOf(CreateUserResponse::class, $response);
         $this->assertEquals($uuid, $response->userId);
     }
@@ -43,6 +43,6 @@ class CreateUserTest extends TestCase
         $existingUser = new User('existing-uuid', 'username', 'password', ['ROLE_USER']);
         $this->userRepository->method('findByUsername')->willReturn($existingUser);
         $this->expectException(DuplicateResourceException::class);
-        $this->createUserHandler->handle($command);
+        ($this->createUserHandler)($command);
     }
 }
