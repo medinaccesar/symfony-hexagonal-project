@@ -6,7 +6,7 @@ use Common\Domain\Exception\InvalidArgumentException;
 use function array_combine;
 use function is_null;
 
-trait AssertNotNullTrait
+trait NotNullTrait
 {
     public function assertNotNull(array $args, array $values): void
     {

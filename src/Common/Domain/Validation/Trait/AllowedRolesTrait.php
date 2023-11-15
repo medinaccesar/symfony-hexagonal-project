@@ -4,7 +4,7 @@ namespace Common\Domain\Validation\Trait;
 
 use Common\Domain\Exception\InvalidArgumentException;
 
-trait AssertAllowedRolesTrait
+trait AllowedRolesTrait
 {
     const ALLOWED = ['ROLE_USER', 'ROLE_ADMIN'];
 

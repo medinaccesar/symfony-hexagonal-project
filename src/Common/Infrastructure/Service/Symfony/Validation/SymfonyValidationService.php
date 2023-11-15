@@ -7,7 +7,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
-readonly class ValidationService
+readonly class SymfonyValidationService
 {
 
     public function __construct(

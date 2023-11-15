@@ -1,27 +1,24 @@
 ### getUserById
-GET {{host}}/api/user/get/
+GET {{host}}/api/user/get/f3825bde-6d21-48d1-b79f-9146e5944372
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
-
+Authorization: Bearer {{token}}
 
 ### register - method to create a user
 POST {{host}}/register
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
+Authorization: Bearer {{token}}
 
 {
-  "username": "",
-  "password": ""
+  "username": "antonio2"
 }
-###
 
 ### loginCheck
 POST {{host}}/login_check
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
+Authorization: Bearer {{token}}
 
 {
   "username": "",
-  "password": ""
+  "password": "antonio2"
 }
 ###
