@@ -1,67 +1,7 @@
-# Symfony hexagonal project 🐳
+# Symfony hexagonal project
+> - Version **Symfony 6.3.***
 
-> Version: **Symfony 6.3.5**
-
-Clone the repository from GitHub.
-
-```shell
-git clone https://github.com/tonicarreras/symfony-hexagonal-project.git
-```
-
-## 🚀 Installation with Docker
-
-### Build and run the Docker containers (Makefile).
-
-```shell
-# Build and run Docker containers
-Make install
-```
-
-```shell
-# Enter the Docker container's terminal
-Make sh
-```
-### Access the application
-
-You can access the application at http://localhost:8080/ in your web browser.
-
-## 🖥️ Installation without Docker
-
-```shell
-composer install
-```
-```shell
-php bin/console doctrine:migrations:migrate
-```
-
-```shell
-#Symfony CLI
-symfony server:start
-```
-
-For more details on setting up Symfony, please refer to the [official Symfony documentation](https://symfony.com/doc/current/setup.html)
-
-## 🛠️ Bundles
-
-- ORM
-- MakerBundle
-- SecurityBundle
-- MonologBundle
-- DebugBundle
-- LexikJWTAuthenticationBundle (JWT)
-
-
-## 🤖 Database
-
-- MySql (MariaDB)
-
-```
-- Database: symfony-database 
-- user: root
-- password: root
-```
-
-## 🎯 Hexagonal Architecture
+## Hexagonal Architecture 🎯
 This API is structured on the tenets of Domain-Driven Design (DDD), embracing a model-centric strategy that
 securely encapsulates business logic. It employs the Command Query Responsibility Segregation (CQRS) pattern to
 distinctively separate read and write operations, thus enhancing clarity and scalability. Additionally, it is
@@ -108,3 +48,86 @@ potential shift to a microservices architecture if needed.
         └── (Framework config)
 
 ```
+## Prerequisites for manual installation 🧾️
+- PHP 8.2 or higher
+- Composer
+- Symfony CLI
+- MySQL or MariaDB
+
+## Installation 🚀
+
+Clone the repository from GitHub.
+
+```shell
+git clone https://github.com/tonicarreras/symfony-hexagonal-project.git
+```
+
+### Docker 🐳
+
+- **Build and run the Docker containers (Makefile).**
+
+```shell
+# Build and run Docker containers
+Make install
+```
+
+```shell
+# Enter the Docker container's terminal
+Make sh
+```
+
+- **Database MySql (MariaDB)**
+
+```
+- Database: symfony-database 
+- user: root
+- password: root
+```
+
+- **Access the application**
+
+You can access the application at http://localhost:8080/ in your web browser.
+
+### Manual installation 🖥
+
+- Install dependencies:
+```shell
+composer install
+```
+
+- Database migrations:
+
+You will need to configure the database connection by modifying the DATABASE_URL in the .env file to match your MySQL settings.
+```shell
+php bin/console doctrine:migrations:migrate
+```
+
+#### JWT Configuration
+```shell
+## Recommended: With passphrase
+mkdir -p config/jwt
+openssl genrsa -out config/jwt/private.pem -aes256 4096
+openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+
+# Without passphrase
+mkdir -p config/jwt
+openssl genrsa -out config/jwt/private.pem 4096
+openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+```
+
+#### Start Symfony Server:
+```shell
+#Symfony CLI
+symfony server:start
+```
+
+For more details on setting up Symfony, please refer to the [official Symfony documentation](https://symfony.com/doc/current/setup.html)
+
+## Bundles 🛠
+
+- ORM
+- MakerBundle
+- SecurityBundle
+- MonologBundle
+- DebugBundle
+- LexikJWTAuthenticationBundle (JWT)

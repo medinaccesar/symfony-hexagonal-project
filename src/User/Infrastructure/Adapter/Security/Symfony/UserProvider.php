@@ -21,7 +21,7 @@ readonly class UserProvider implements UserProviderInterface
     public function loadUserByUsername($username): UserInterface
     {
         if (empty($username)) {
-            throw new ValidationException(['username' => 'Username cannot be null']);
+            throw new ValidationException(['username' => 'Username cannot be null.']);
         }
         $user = $this->userRepository->findByUsername($username);
         if (null === $user) {
