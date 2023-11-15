@@ -3,61 +3,32 @@
 namespace User\Domain\Validation;
 
 use Common\Domain\Exception\ValidationException;
+use Common\Domain\Validation\Trait\CommonValidationTrait;
+use User\Domain\Validation\Trait\RolesValidationTrait;
 
 class UserValidator
 {
-    public function validateAndThrows(object $user): bool
+    use CommonValidationTrait;
+    use RolesValidationTrait;
+
+    
+    public function validateAndThrows(object $user)
     {
-        $errors = [];
+        $violations = [];
 
-        $errors['username'] = $this->validateUsername($user->username);
-        $errors['password'] = $this->validatePassword($user->password);
-        $errors['roles'] = $this->validateRoles($user->roles);
+        $violations = array_merge($violations, $this->validateNotBlank($user->username, 'username'));
+        $violations = array_merge($violations, $this->validateLength($user->username, 4, 20, 'username'));
+        $violations = array_merge($violations, $this->validateNotNull($user->password, 'password'));
+        $violations = array_merge($violations, $this->validateRange(strlen($user->password), 6, 20, 'password'));
 
-        // Filtra los errores vacíos
-        $errors = array_filter($errors);
+        $violations = array_filter($violations);
 
-        if (!empty($errors)) {
-            throw ValidationException::createFromViolations($errors);
+        if (!empty($violations)) {
+            throw ValidationException::createFromViolations($violations);
         }
 
-        return true;
     }
 
-    private function validateUsername(?string $username): array
-    {
-        $errors = [];
-        if (empty($username)) {
-            $errors[] = "Username should not be blank.";
-        } elseif (strlen($username) < 4 || strlen($username) > 50) {
-            $errors[] = "Username must be between 4 and 50 characters long.";
-        }
-        return $errors;
-    }
-
-    private function validatePassword(?string $password): array
-    {
-        $errors = [];
-        if (empty($password)) {
-            $errors[] = "Password should not be blank.";
-        } elseif (strlen($password) < 8 || strlen($password) > 10) {
-            $errors[] = "Password must be between 8 and 10 characters long.";
-        }
-        return $errors;
-    }
-
-    private function validateRoles(?array $roles): array
-    {
-        $errors = [];
-        if (empty($roles)) {
-            $errors[] = "Roles should not be empty.";
-        } else {
-            foreach ($roles as $role) {
-                if (!in_array($role, ['ROLE_USER', 'ROLE_ADMIN'])) {
-                    $errors[] = "Invalid role: {$role}";
-                }
-            }
-        }
-        return $errors;
-    }
+ 
+    
 }
