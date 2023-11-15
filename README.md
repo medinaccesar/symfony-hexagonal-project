@@ -139,3 +139,9 @@ For more details on setting up Symfony, please refer to the [official Symfony do
 - MonologBundle
 - DebugBundle
 - LexikJWTAuthenticationBundle (JWT)
+
+## Acknowledgments
+
+This project has benefited from ideas and code from the following projects and resources:
+- [php-ddd-example](https://github.com/CodelyTV/php-ddd-example): Example of a PHP application using Domain-Driven Design (DDD) and Command Query Responsibility Segregation (CQRS) principles keeping the code as simple as possible (CodelyTV).
+- [modular-monolith-example](https://github.com/codenip-tech/modular-monolith-example): Modular Monolith Example (Codenip).
