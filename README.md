@@ -64,7 +64,7 @@ potential shift to a microservices architecture if needed.
 
 ## Installation 🚀
 
-Clone the repository from GitHub.
+- **Clone the repository from GitHub.**
 
 ```shell
 git clone https://github.com/tonicarreras/symfony-hexagonal-project.git
@@ -79,7 +79,7 @@ git clone https://github.com/tonicarreras/symfony-hexagonal-project.git
 Make install
 ```
 
-- **JWT Config**
+- **JWT PEM**
 
 ```shell
 ## Recommended: With passphrase
@@ -122,7 +122,7 @@ You will need to configure the database connection by modifying the DATABASE_URL
 php bin/console doctrine:migrations:migrate
 ```
 
-#### JWT Configuration
+- JWT PEM
 ```shell
 ## Recommended: With passphrase
 mkdir -p config/jwt
@@ -135,22 +135,23 @@ openssl genrsa -out config/jwt/private.pem 4096
 openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
 ```
 
-#### Start Symfony Server:
+- Start Symfony Server:
 ```shell
 #Symfony CLI
 symfony server:start
 ```
-
 For more details on setting up Symfony, please refer to the [official Symfony documentation](https://symfony.com/doc/current/setup.html)
+
+### JWT Configuration 🔑
+
+After generating the keys with a passphrase, you need to update your environment configuration to include the passphrase. You can do this by modifying your `.env` file:
+>JWT_PASSPHRASE=your_passphrase
+
+However, for enhanced security, it is advisable to create a `.env.local` file in your project root if it does not already exist, and define the `JWT_PASSPHRASE` there. This ensures that your passphrase is not committed to your version control system:
 
 ## Bundles 🛠
 
-- ORM
-- MakerBundle
-- SecurityBundle
-- MonologBundle
-- DebugBundle
-- LexikJWTAuthenticationBundle (JWT)
+[bundles.php](config/bundles.php)
 
 ## Acknowledgments
 

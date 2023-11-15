@@ -74,8 +74,7 @@ class JsonTransformerExceptionListener
      */
     private function getStandardStatusCode(Throwable $e): int
     {
-        if ($e instanceof InvalidArgumentException ||
-            $e instanceof UniqueConstraintViolationException) {
+        if ($e instanceof UniqueConstraintViolationException) {
             return Response::HTTP_BAD_REQUEST;
         } elseif ($e instanceof ValidationException) {
             return Response::HTTP_UNPROCESSABLE_ENTITY;
@@ -95,10 +94,7 @@ class JsonTransformerExceptionListener
      */
     private function getStandardErrorMessage(Throwable $e): string
     {
-        if ($e instanceof InvalidArgumentException ||
-            $e instanceof UniqueConstraintViolationException) {
-            return self::REQUEST_ERROR_MESSAGE;
-        } elseif ($e instanceof NotFoundHttpException) {
+        if ($e instanceof NotFoundHttpException) {
             return self::NOT_FOUND_ERROR_MESSAGE;
         }
         return $e->getMessage();
