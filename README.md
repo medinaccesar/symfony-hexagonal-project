@@ -79,6 +79,18 @@ git clone https://github.com/tonicarreras/symfony-hexagonal-project.git
 Make install
 ```
 
+- **JWT Config**
+
+```shell
+## Recommended: With passphrase
+Make jwt-pp-config
+
+# Without passphrase
+Make jwt-config
+```
+
+- **Terminal**
+
 ```shell
 # Enter the Docker container's terminal
 Make sh
@@ -94,7 +106,7 @@ Make sh
 
 - **Access the application**
 
-You can access the application at http://localhost:8080/ in your web browser.
+You can access the application at http://localhost:8080/ or http://localhost:8080/ui in your web browser
 
 ### Manual installation 🖥
 
