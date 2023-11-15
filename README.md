@@ -1,6 +1,14 @@
 # Symfony hexagonal project
 > - Version **Symfony 6.3.***
 
+## Índice
+- [Hexagonal Architecture](#hexagonal-architecture-)
+- [Prerequisites for manual installation](#prerequisites-for-manual-installation-)
+- [Installation](#installation-)
+  - [Docker](#docker-)
+  - [Manual installation](#manual-installation-)
+- [Bundles](#bundles-)
+
 ## Hexagonal Architecture 🎯
 This API is structured on the tenets of Domain-Driven Design (DDD), embracing a model-centric strategy that
 securely encapsulates business logic. It employs the Command Query Responsibility Segregation (CQRS) pattern to
