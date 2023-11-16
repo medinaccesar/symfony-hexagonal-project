@@ -11,11 +11,13 @@ class ValidationFormatter
      * @param string $message The validation message.
      * @return array An associative array containing the field and message.
      */
-    public static function format(string $message, string $field): array
+    public static function format(string $field, string $constraint, string $message, $value): array
     {
         return [
             'field' => $field,
-            'message' => $message
+            'constraint' => $constraint,
+            'message' => $message,
+            'value' => $value
         ];
     }
 }

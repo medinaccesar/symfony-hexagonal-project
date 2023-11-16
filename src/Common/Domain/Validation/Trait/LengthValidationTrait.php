@@ -2,6 +2,7 @@
 
 namespace Common\Domain\Validation\Trait;
 
+use Common\Domain\Validation\ConstraintTypes;
 use Common\Domain\Validation\Formatter\ValidationFormatter;
 
 trait LengthValidationTrait
@@ -10,7 +11,11 @@ trait LengthValidationTrait
     {
         $length = strlen($value);
         if ($length < $min || $length > $max) {
-            return ValidationFormatter::format("{$fieldName} must be between {$min} and {$max} characters long.", $fieldName);
+            return ValidationFormatter::format(
+                $fieldName,
+                ConstraintTypes::LENGTH,
+                "{$fieldName} must be between {$min} and {$max} characters long.",
+                $value);
         }
         return [];
     }

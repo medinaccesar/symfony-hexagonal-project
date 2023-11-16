@@ -1,8 +1,10 @@
 <?php
 
+
 namespace Common\Domain\Exception;
 
 use Common\Domain\Exception\Interface\ViolationExceptionInterface;
+use Common\Domain\Validation\Formatter\ValidationFormatter;
 use DomainException;
 use function sprintf;
 
@@ -28,10 +30,8 @@ class DuplicateValidationResourceException extends DomainException implements Vi
     public function getViolations(): array
     {
         return [
-            [
-                'field' => $this->key,
-                'message' => $this->value
-            ]
+            ValidationFormatter::format($this->key, 'duplicate', sprintf('Resource with value %s already exists.', $this->value), $this->value)
         ];
     }
 }
+
