@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace User\Infrastructure\Adapter\REST\Symfony\Controller\Security\RegistrationController\DTO;
+namespace User\Infrastructure\Adapter\REST\Symfony\Controller\RegistrationController\DTO;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 class RegistrationRequestDTO implements PasswordAuthenticatedUserInterface

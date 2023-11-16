@@ -2,16 +2,14 @@
 
 namespace User\Domain\Validation\Trait;
 
-use User\Domain\Model\Roles;
+use User\Domain\Security\Roles;
 
 trait RolesValidationTrait
 {
 
     /**
-     * Validate an array of roles.
-     *
-     * @param array 
-     * @return array 
+     * @param array $roles
+     * @return array
      */
     public function validateRoles(array $roles): array
     {
@@ -27,10 +25,7 @@ trait RolesValidationTrait
     }
 
     /**
-     * Comprueba si un rol es válido.
-     *
-     * @param string
-     * @param array 
+     * @param string $role
      * @return bool
      */
     protected function isRoleValid(string $role): bool

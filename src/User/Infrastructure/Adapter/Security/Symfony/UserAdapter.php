@@ -6,7 +6,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use User\Domain\Model\User;
 
-readonly class SymfonyUserAdapter implements UserInterface, PasswordAuthenticatedUserInterface
+readonly class UserAdapter implements UserInterface, PasswordAuthenticatedUserInterface
 {
 
     public function __construct(

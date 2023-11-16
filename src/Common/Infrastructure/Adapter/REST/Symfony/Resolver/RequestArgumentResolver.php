@@ -17,7 +17,7 @@ readonly class RequestArgumentResolver implements ValueResolverInterface
     ) {
     }
 
-    public function resolve(Request $request, ArgumentMetadata $argument): \Generator
+    public function resolve(Request $request, ArgumentMetadata $argument): Generator
     {
         yield $this->requestTransformer->transform($request, $argument->getType());
     }
