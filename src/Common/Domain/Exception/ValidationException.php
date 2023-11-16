@@ -4,7 +4,6 @@ namespace Common\Domain\Exception;
 
 use Common\Domain\Exception\Interface\ViolationExceptionInterface;
 use RuntimeException;
-use Throwable;
 
 class ValidationException extends RuntimeException implements ViolationExceptionInterface
 {

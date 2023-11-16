@@ -22,7 +22,7 @@ interface ViolationExceptionInterface
      * - 'field': The field or property that the violation pertains to.
      * - 'message': A descriptive message about the violation.
      *
-     * @return array An array of associative arrays, each representing a violation.
+     * @return array An array (ValidationFormatter) of associative arrays, each representing a violation.
      */
     public function getViolations(): array;
 }

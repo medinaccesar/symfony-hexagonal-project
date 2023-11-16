@@ -6,14 +6,15 @@ namespace Common\Infrastructure\Adapter\REST\Symfony\Listener;
 
 use Common\Domain\Exception\DuplicateValidationResourceException;
 use Common\Domain\Exception\Interface\ViolationExceptionInterface;
-use Common\Domain\Exception\InvalidArgumentException;
 use Common\Domain\Exception\ResourceNotFoundException;
 use Common\Domain\Exception\ValidationException;
 use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiResponse;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 /**
@@ -25,10 +26,11 @@ class JsonTransformerExceptionListener
 {
     private const EXCEPTION_MAP = [
         ResourceNotFoundException::class,
-        InvalidArgumentException::class,
+        BadRequestHttpException::class,
         DuplicateValidationResourceException::class,
         ValidationException::class,
-        MethodNotAllowedHttpException::class
+        MethodNotAllowedHttpException::class,
+        NotFoundHttpException::class
         // Add other exceptions as needed...
     ];
 

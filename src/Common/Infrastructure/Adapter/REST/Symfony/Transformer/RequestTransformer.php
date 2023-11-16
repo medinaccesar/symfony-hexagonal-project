@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Common\Infrastructure\Adapter\REST\Symfony\Transformer;
 
-use Common\Domain\Exception\InvalidArgumentException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -32,7 +32,7 @@ class RequestTransformer
      * @param Request $request The HTTP request to transform.
      * @param string $dtoClass The DTO class to which the request will be transformed.
      * @return object|void The transformed DTO.
-     * @throws InvalidArgumentException If the request cannot be transformed.
+     * @throws BadRequestException If the request cannot be transformed.
      */
     public function transform(Request $request, string $dtoClass)
     {
@@ -47,23 +47,23 @@ class RequestTransformer
 
     /**
      * @param Request $request The HTTP request.
-     * @throws InvalidArgumentException If the content type is not supported.
+     * @throws BadRequestException If the content type is not supported.
      */
     private function validateContentType(Request $request): void
     {
         if ($request->headers->get('Content-Type') !== self::ALLOWED_CONTENT_TYPE) {
-            throw new InvalidArgumentException(sprintf('[%s] is the only Content-Type allowed', self::ALLOWED_CONTENT_TYPE), Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
+            throw new BadRequestException(sprintf('[%s] is the only Content-Type allowed', self::ALLOWED_CONTENT_TYPE), Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
         }
     }
 
     /**
      * @param Request $request The HTTP request.
-     * @throws InvalidArgumentException If the method is not supported.
+     * @throws BadRequestException If the method is not supported.
      */
     private function validateRequestMethod(Request $request): void
     {
         if (!in_array($request->getMethod(), self::SUPPORTED_METHODS, true)) {
-            throw new InvalidArgumentException('REST method not supported', Response::HTTP_METHOD_NOT_ALLOWED);
+            throw new BadRequestException('REST method not supported', Response::HTTP_METHOD_NOT_ALLOWED);
         }
     }
 
@@ -80,18 +80,18 @@ class RequestTransformer
      * @param Request $request The HTTP request.
      * @param string $dtoClass The DTO class to which the content will be transformed.
      * @return mixed The transformed DTO.
-     * @throws InvalidArgumentException If the content is invalid or the transformation fails.
+     * @throws BadRequestException If the content is invalid or the transformation fails.
      */
     private function transformContent(Request $request, string $dtoClass): mixed
     {
         $content = trim($request->getContent());
         if (empty($content)) {
-            throw new InvalidArgumentException('Request body cannot be empty for this method', Response::HTTP_BAD_REQUEST);
+            throw new BadRequestException('Request body cannot be empty for this method', Response::HTTP_BAD_REQUEST);
         }
         try {
             return $this->serializer->deserialize($content, $dtoClass, 'json');
         } catch (\Throwable) {
-            throw new InvalidArgumentException('Invalid JSON payload', Response::HTTP_BAD_REQUEST);
+            throw new BadRequestException('Invalid JSON payload', Response::HTTP_BAD_REQUEST);
         }
     }
 }
