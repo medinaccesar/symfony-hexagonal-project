@@ -12,6 +12,7 @@ use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiRespons
 use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 
 #[When(env: 'prod')]
@@ -21,13 +22,14 @@ class JsonTransformerExceptionListener
         ResourceNotFoundException::class,
         InvalidArgumentException::class,
         DuplicateResourceException::class,
-        ValidationException::class
+        ValidationException::class,
+        MethodNotAllowedHttpException::class
+        //(...)
     ];
 
     public function onKernelException(ExceptionEvent $event): void
     {
         $e = $event->getThrowable();
-
         [$status, $message] = $this->resolveExceptionDetails($e);
         $errors = $e instanceof ValidationException ? $e->getViolations() : null;
         $dataKey = $errors ? 'violations' : null;
@@ -40,7 +42,7 @@ class JsonTransformerExceptionListener
     {
         $exceptionClass = get_class($e);
         if (in_array($exceptionClass, self::EXCEPTION_MAP)) {
-            $status = $e->getCode();
+            $status = $e->getCode() !== 0 ? $e->getCode() : $e->getStatusCode();
             $message = $e->getMessage();
             return [$status, $message];
         }
