@@ -26,6 +26,6 @@ class ValidationException extends RuntimeException
 
     public static function createFromViolations(array $violations): static
     {
-        return new static($violations, self::VALIDATION_MESSAGE, self::VALIDATION_ERROR_CODE);
+        return new static($violations, self::VALIDATION_MESSAGE);
     }
 }

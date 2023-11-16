@@ -19,9 +19,9 @@ readonly class GetUserByIdController
     }
 
     #[Route('/api/user/get/{id}', name: 'get_user_by_id', methods: ['GET'])]
-    public function __invoke(GetUserByIdRequestDTO $requestDTO): JsonApiResponse
+    public function __invoke($id): JsonApiResponse
     {
-        $query = new GetUserByIdQuery($requestDTO->id);
+        $query = new GetUserByIdQuery($id);
         $responseDTO = ($this->handler)($query);
         return new JsonApiResponse($responseDTO);
     }

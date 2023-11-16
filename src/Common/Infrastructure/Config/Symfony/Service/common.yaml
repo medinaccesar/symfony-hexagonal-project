@@ -10,7 +10,6 @@ services:
     tags:
       - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
-  #DependencyInyection
   Common\Infrastructure\Adapter\REST\Symfony\Resolver\:
     resource: '../../../../../Common/Infrastructure/Adapter/REST/Symfony/Resolver'
     tags: [ 'controller.service_arguments' ]

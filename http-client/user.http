@@ -9,7 +9,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "username": "antonio2"
+  "username": "antonio2",
+  "password": "antonio2"
 }
 
 ### loginCheck
@@ -18,7 +19,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "username": "",
+  "username": "antonio2",
   "password": "antonio2"
 }
 ###

@@ -5,65 +5,49 @@ namespace Common\Domain\Validation\Trait;
 trait CommonValidationTrait
 {
     /**
-     * Validate that a string is not blank.
+     * Generate a validation error array in a format similar to Symfony's.
      *
-     * @param string|null $value The value to validate.
+     * @param string $message The error message.
      * @param string $fieldName The name of the field being validated.
-     *
-     * @return array An array of error messages. Empty array if validation passes.
+     * @return array An array representing the validation error.
      */
-    public function validateNotBlank(?string $value, string $fieldName): array
+    private function createValidationError(string $message, string $fieldName): array
     {
-        return empty($value) ? ["{$fieldName} should not be blank."] : [];
+        return [
+            'field' => $fieldName,
+            'message' => $message
+        ];
     }
 
-
-    /**
-     * Validate the length of a string.
-     *
-     * @param string|null $value The value to validate.
-     * @param int $min The minimum allowed length.
-     * @param int $max The maximum allowed length.
-     * @param string $fieldName The name of the field being validated.
-     *
-     * @return array An array of error messages. Empty array if validation passes.
-     */
-    public function validateLength(?string $value, int $min, int $max, string $fieldName): array
+    public function validateNotBlank(?string $value, string $fieldName): array
     {
-        $length = strlen($value);
-        if ($length < $min || $length > $max) {
-            return ["{$fieldName} must be between {$min} and {$max} characters long."];
+        if (empty($value)) {
+            return [$this->createValidationError("{$fieldName} should not be blank.", $fieldName)];
         }
         return [];
     }
 
-
-    /**
-     * Validate that a value is not null.
-     *
-     * @param mixed
-     * @param string
-     * @return array
-     */
-    public function validateNotNull($value, string $fieldName): array
+    public function validateLength(?string $value, int $min, int $max, string $fieldName): array
     {
-        return is_null($value) ? ["{$fieldName} should not be null."] : [];
+        $length = strlen($value);
+        if ($length < $min || $length > $max) {
+            return [$this->createValidationError("{$fieldName} must be between {$min} and {$max} characters long.", $fieldName)];
+        }
+        return [];
     }
-    
 
-    /**
-     * Validate that a value is within a specified range.
-     *
-     * @param int|float 
-     * @param int|float
-     * @param int|float
-     * @param string
-     * @return array
-     */
-    public function validateRange($value, $min, $max, string $fieldName): array
+    public function validateNotNull(mixed $value, string $fieldName): array
+    {
+        if (is_null($value)) {
+            return [$this->createValidationError("{$fieldName} should not be null.", $fieldName)];
+        }
+        return [];
+    }
+
+    public function validateRange(float|int $value, float|int $min, float|int $max, string $fieldName): array
     {
         if ($value < $min || $value > $max) {
-            return ["{$fieldName} must be between {$min} and {$max}."];
+            return [$this->createValidationError("{$fieldName} must be between {$min} and {$max}.", $fieldName)];
         }
         return [];
     }

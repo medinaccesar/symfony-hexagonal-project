@@ -11,24 +11,27 @@ class UserValidator
     use CommonValidationTrait;
     use RolesValidationTrait;
 
-    
-    public function validateAndThrows(object $user)
+    public function validateAndThrows(object $user): void
     {
-        $violations = [];
-
-        $violations = array_merge($violations, $this->validateNotBlank($user->username, 'username'));
-        $violations = array_merge($violations, $this->validateLength($user->username, 4, 20, 'username'));
-        $violations = array_merge($violations, $this->validateNotNull($user->password, 'password'));
-        $violations = array_merge($violations, $this->validateRange(strlen($user->password), 6, 20, 'password'));
-
-        $violations = array_filter($violations);
-
+        $violations = $this->validateUsername($user->username);
         if (!empty($violations)) {
-            throw ValidationException::createFromViolations($violations);
+            throw ValidationException::createFromViolations(['violations' => $violations]);
         }
-
     }
 
- 
-    
+    private function validateUsername(?string $username): array
+    {
+        $violations = [];
+        $notBlankViolation = $this->validateNotBlank($username, 'username');
+        if (!empty($notBlankViolation)) {
+            $violations[] = $notBlankViolation;
+        }
+        if (empty($violations)) {
+            $lengthViolation = $this->validateLength($username, 4, 20, 'username');
+            if (!empty($lengthViolation)) {
+                $violations[] = $lengthViolation;
+            }
+        }
+        return $violations;
+    }
 }
