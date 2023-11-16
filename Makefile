@@ -4,6 +4,7 @@ SERVICE = symfony-php
 install:
 	U_ID=${UID} docker-compose up -d --build
 	docker exec --user ${UID} ${SERVICE} composer install --no-interaction
+	docker exec --user ${UID} ${SERVICE} php bin/console doctrine:migrations:migrate --no-interaction
 
 jwt-config:
 	docker exec --user ${UID} ${SERVICE} mkdir -p config/jwt

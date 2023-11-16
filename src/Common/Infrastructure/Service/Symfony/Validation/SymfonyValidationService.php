@@ -26,33 +26,4 @@ readonly class SymfonyValidationService
         return $this->validator->validate($object);
     }
 
-    /**
-     * Format the given constraint violations into an associative array.
-     *
-     * @param ConstraintViolationListInterface $violations The list of constraint violations.
-     * @return array The formatted array of errors.
-     */
-    public function formatViolations(ConstraintViolationListInterface $violations): array
-    {
-        $errors = [];
-        foreach ($violations as $violation) {
-            $errors[$violation->getPropertyPath()] = $violation->getMessage();
-        }
-        return $errors;
-    }
-
-    /**
-     * Validate the given object and throw a ValidationException if validation fails.
-     *
-     * @param mixed $object The object to be validated.
-     * @throws ValidationException If validation fails.
-     */
-    public function validateAndThrows(mixed $object): void
-    {
-        $violations = $this->validate($object);
-
-        if (count($violations) > 0) {
-            throw new ValidationException($this->formatViolations($violations));
-        }
-    }
 }

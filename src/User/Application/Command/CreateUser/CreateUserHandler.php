@@ -3,7 +3,7 @@
 namespace User\Application\Command\CreateUser;
 
 use Common\Domain\Service\Interface\UuidGeneratorServiceInterface;
-use Common\Domain\Exception\DuplicateResourceException;
+use Common\Domain\Exception\DuplicateValidationResourceException;
 use User\Domain\Model\User;
 use User\Domain\Repository\UserRepositoryInterface;
 
@@ -20,7 +20,7 @@ readonly class CreateUserHandler
     {
         $existingUser = $this->userRepository->findByUsername($command->username);
         if ($existingUser !== null) {
-            throw DuplicateResourceException::createFromValue($command->username);
+            throw DuplicateValidationResourceException::createFromValue($command->username, 'username');
         }
         $uuid = $this->uuidGenerator->generateUuid();
 

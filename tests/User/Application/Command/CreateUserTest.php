@@ -3,7 +3,7 @@
 namespace Common\Tests\User\Application\Command;
 
 
-use Common\Domain\Exception\DuplicateResourceException;
+use Common\Domain\Exception\DuplicateValidationResourceException;
 use Common\Domain\Service\Interface\UuidGeneratorServiceInterface;
 use PHPUnit\Framework\TestCase;
 use User\Application\Command\CreateUser\CreateUserCommand;
@@ -42,7 +42,7 @@ class CreateUserTest extends TestCase
         $command = new CreateUserCommand('username', 'password', ['ROLE_USER']);
         $existingUser = new User('existing-uuid', 'username', 'password', ['ROLE_USER']);
         $this->userRepository->method('findByUsername')->willReturn($existingUser);
-        $this->expectException(DuplicateResourceException::class);
+        $this->expectException(DuplicateValidationResourceException::class);
         ($this->createUserHandler)($command);
     }
 }

@@ -2,30 +2,25 @@
 
 namespace Common\Domain\Exception;
 
+use Common\Domain\Exception\Interface\ViolationExceptionInterface;
 use RuntimeException;
 use Throwable;
 
-class ValidationException extends RuntimeException
+class ValidationException extends RuntimeException implements ViolationExceptionInterface
 {
     const VALIDATION_ERROR_CODE = 422;
     const VALIDATION_MESSAGE = 'Validation failed';
-
     private array $violations;
 
-    public function __construct(array $violations, string $message = self::VALIDATION_MESSAGE , int $code = self::VALIDATION_ERROR_CODE, Throwable $previous = null)
+    public static function createFromViolations(array $violations): static
     {
-        $this->violations = $violations;
-
-        parent::__construct($message, $code, $previous);
+        $instance = new static(self::VALIDATION_MESSAGE, self::VALIDATION_ERROR_CODE);
+        $instance->violations = $violations;
+        return $instance;
     }
 
     public function getViolations(): array
     {
         return $this->violations;
-    }
-
-    public static function createFromViolations(array $violations): static
-    {
-        return new static($violations, self::VALIDATION_MESSAGE);
     }
 }
