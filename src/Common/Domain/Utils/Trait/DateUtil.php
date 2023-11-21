@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Common\Domain\Utils\Trait;
 
+use DateTimeImmutable;
 use DateTimeInterface;
+use Exception;
 
 /**
  * Trait providing utility methods for date manipulation.
@@ -27,5 +29,13 @@ trait DateUtil
     public static function dateToString(DateTimeInterface $date): string
     {
         return $date->format(DateTimeInterface::ATOM);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function stringToDate(string $date): DateTimeImmutable
+    {
+        return new DateTimeImmutable($date);
     }
 }

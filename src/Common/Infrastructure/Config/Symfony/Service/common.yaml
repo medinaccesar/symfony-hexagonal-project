@@ -3,24 +3,74 @@ services:
     autowire: true
     autoconfigure: true
 
-  common.domain_event_suscriber:
+  # Domain Event Subscriber Interface
+  common.domain_event_subscriber:
     class: Common\Domain\Bus\Event\DomainEventSubscriberInterface
 
+  # Tagging all DomainEventSubscriberInterface implementations
   _instanceof:
     Common\Domain\Bus\Event\DomainEventSubscriberInterface:
-      tags: [ 'common.domain_event_subscriber' ]
+      tags: ['common.domain_event_subscriber']
 
+  # Autoconfiguration for Common namespace
   Common\:
-    resource: "../../../../../Common"
+    resource: '../../../../../Common'
 
+  # Exception Listener
   Common\Infrastructure\Adapter\REST\Symfony\Listener\JsonTransformerExceptionListener:
     tags:
       - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
+  # Service Arguments Resolver
   Common\Infrastructure\Adapter\REST\Symfony\Resolver\:
     resource: '../../../../../Common/Infrastructure/Adapter/REST/Symfony/Resolver'
-    tags: [ 'controller.service_arguments' ]
+    tags: ['controller.service_arguments']
 
+  # In-Memory Event Bus
   Common\Infrastructure\Bus\Event\Symfony\InMemory\InMemorySymfonyEventBus:
-    arguments: [ !tagged common.domain_event_subscriber ]
+    arguments: ['!tagged_iterator common.domain_event_subscriber']
     lazy: true
+
+  # Domain Event Mapping
+  Common\Infrastructure\Bus\Event\DomainEventMapping:
+    arguments: ['!tagged_iterator common.domain_event_subscriber']
+
+  # Domain Event Subscriber Locator
+  Common\Infrastructure\Bus\Event\DomainEventSubscriberLocator:
+    arguments: ['!tagged_iterator common.domain_event_subscriber']
+
+  # RabbitMQ Connection Configuration
+  Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection:
+    arguments:
+      $configuration:
+        host: '%env(RABBITMQ_HOST)%'
+        port: '%env(RABBITMQ_PORT)%'
+        vhost: '%env(RABBITMQ_VHOST)%'
+        login: '%env(RABBITMQ_LOGIN)%'
+        password: '%env(RABBITMQ_PASSWORD)%'
+        read_timeout: 2
+        write_timeout: 2
+        connect_timeout: 5
+
+  # RabbitMQ Event Bus
+  Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqEventBus:
+    arguments:
+      $connection: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection'
+      $exchangeName: '%env(RABBITMQ_EXCHANGE)%'
+      $failoverPublisher: '@Common\Infrastructure\Bus\Event\MySql\MySqlDoctrineEventBus'
+
+  # RabbitMQ Domain Events Consumer
+  Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqDomainEventsConsumer:
+    arguments:
+      $connection: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection'
+      $deserializer: '@Common\Infrastructure\Bus\Event\DomainEventJsonDeserializer'
+      $exchangeName: '%env(RABBITMQ_EXCHANGE)%'
+      $maxRetries: '%env(RABBITMQ_MAX_RETRIES)%'
+
+  # RabbitMQ Configurer
+  Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConfigurer:
+    arguments:
+      $connection: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection'
+
+  # -- IMPLEMENTATIONS SELECTOR --
+  Common\Domain\Bus\Event\EventBusInterface: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqEventBus'

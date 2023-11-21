@@ -4,96 +4,165 @@ declare(strict_types=1);
 
 namespace Common\Infrastructure\Bus\Event\RabbitMQ;
 
-
+use AMQPChannelException;
+use AMQPConnectionException;
+use AMQPExchangeException;
 use AMQPQueue;
 use Common\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Common\Infrastructure\Bus\Event\RabbitMQ\Formatter\RabbitMqExchangeNameFormatter;
 use Common\Infrastructure\Bus\Event\RabbitMQ\Formatter\RabbitMqQueueNameFormatter;
 
-final readonly class RabbitMqConfigurer
+
+final class RabbitMqConfigurer
 {
-	public function __construct(private RabbitMqConnection $connection) {}
+    private RabbitMqConnection $connection;
 
-	public function configure(string $exchangeName, DomainEventSubscriberInterface ...$subscribers): void
-	{
-		$retryExchangeName = RabbitMqExchangeNameFormatter::retry($exchangeName);
-		$deadLetterExchangeName = RabbitMqExchangeNameFormatter::deadLetter($exchangeName);
+    /**
+     * Constructor for RabbitMqConfigurer.
+     *
+     * @param RabbitMqConnection $connection Connection instance for RabbitMQ.
+     */
+    public function __construct(RabbitMqConnection $connection)
+    {
+        $this->connection = $connection;
+    }
 
-		$this->declareExchange($exchangeName);
-		$this->declareExchange($retryExchangeName);
-		$this->declareExchange($deadLetterExchangeName);
+    /**
+     * Configures exchanges and queues for the given subscribers.
+     *
+     * @param string $exchangeName Name of the main exchange.
+     * @param DomainEventSubscriberInterface ...$subscribers The event subscribers.
+     */
+    public function configure(string $exchangeName, DomainEventSubscriberInterface ...$subscribers): void
+    {
+        // Declare exchanges for retry and dead letter mechanisms.
+        $retryExchangeName = RabbitMqExchangeNameFormatter::retry($exchangeName);
+        $deadLetterExchangeName = RabbitMqExchangeNameFormatter::deadLetter($exchangeName);
 
-		$this->declareQueues($exchangeName, $retryExchangeName, $deadLetterExchangeName, ...$subscribers);
-	}
+        $this->declareExchange($exchangeName);
+        $this->declareExchange($retryExchangeName);
+        $this->declareExchange($deadLetterExchangeName);
 
-	private function declareExchange(string $exchangeName): void
-	{
-		$exchange = $this->connection->exchange($exchangeName);
-		$exchange->setType(AMQP_EX_TYPE_TOPIC);
-		$exchange->setFlags(AMQP_DURABLE);
-		$exchange->declareExchange();
-	}
+        $this->declareQueues($exchangeName, $retryExchangeName, $deadLetterExchangeName, ...$subscribers);
+    }
 
-	private function declareQueues(
-		string $exchangeName,
-		string $retryExchangeName,
-		string $deadLetterExchangeName,
-		DomainEventSubscriberInterface ...$subscribers
-	): void {
-		each($this->queueDeclarator($exchangeName, $retryExchangeName, $deadLetterExchangeName), $subscribers);
-	}
+    /**
+     * Declares an exchange in RabbitMQ.
+     *
+     * @param string $exchangeName Name of the exchange to declare.
+     */
+    private function declareExchange(string $exchangeName): void
+    {
+        $exchange = $this->connection->exchange($exchangeName);
+        $exchange->setType(AMQP_EX_TYPE_TOPIC);
+        $exchange->setFlags(AMQP_DURABLE);
+        try {
+            $exchange->declareExchange();
+        } catch (AMQPChannelException|AMQPConnectionException|AMQPExchangeException) {
+        }
+    }
 
-	private function queueDeclarator(
-		string $exchangeName,
-		string $retryExchangeName,
-		string $deadLetterExchangeName
-	): callable {
-		return function (DomainEventSubscriberInterface $subscriber) use (
-			$exchangeName,
-			$retryExchangeName,
-			$deadLetterExchangeName
-		): void {
-			$queueName = RabbitMqQueueNameFormatter::format($subscriber);
-			$retryQueueName = RabbitMqQueueNameFormatter::formatRetry($subscriber);
-			$deadLetterQueueName = RabbitMqQueueNameFormatter::formatDeadLetter($subscriber);
+    /**
+     * Declares the necessary queues for the given subscribers.
+     *
+     * @param string $exchangeName Main exchange name.
+     * @param string $retryExchangeName Retry exchange name.
+     * @param string $deadLetterExchangeName Dead letter exchange name.
+     * @param DomainEventSubscriberInterface ...$subscribers Event subscribers.
+     */
+    private function declareQueues(
+        string                         $exchangeName,
+        string                         $retryExchangeName,
+        string                         $deadLetterExchangeName,
+        DomainEventSubscriberInterface ...$subscribers
+    ): void
+    {
+        foreach ($subscribers as $subscriber) {
+            $this->declareSubscriberQueues($subscriber, $exchangeName, $retryExchangeName, $deadLetterExchangeName);
+        }
+    }
 
-			$queue = $this->declareQueue($queueName);
-			$retryQueue = $this->declareQueue($retryQueueName, $exchangeName, $queueName, 1000);
-			$deadLetterQueue = $this->declareQueue($deadLetterQueueName);
+    /**
+     * Declares queues for a specific subscriber.
+     *
+     * @param DomainEventSubscriberInterface $subscriber The event subscriber.
+     * @param string $exchangeName Main exchange name.
+     * @param string $retryExchangeName Retry exchange name.
+     * @param string $deadLetterExchangeName Dead letter exchange name.
+     */
+    private function declareSubscriberQueues(
+        DomainEventSubscriberInterface $subscriber,
+        string                         $exchangeName,
+        string                         $retryExchangeName,
+        string                         $deadLetterExchangeName
+    ): void
+    {
+        $queueName = RabbitMqQueueNameFormatter::format($subscriber);
+        $retryQueueName = RabbitMqQueueNameFormatter::formatRetry($subscriber);
+        $deadLetterQueueName = RabbitMqQueueNameFormatter::formatDeadLetter($subscriber);
 
-			$queue->bind($exchangeName, $queueName);
-			$retryQueue->bind($retryExchangeName, $queueName);
-			$deadLetterQueue->bind($deadLetterExchangeName, $queueName);
+        $queue = $this->declareQueue($queueName);
+        $retryQueue = $this->declareQueue($retryQueueName, $exchangeName, $queueName, 1000);
+        $deadLetterQueue = $this->declareQueue($deadLetterQueueName);
 
-			foreach ($subscriber::subscribedTo() as $eventClass) {
-				$queue->bind($exchangeName, $eventClass::eventName());
-			}
-		};
-	}
+        try {
+            $queue->bind($exchangeName, $queueName);
+        } catch (AMQPChannelException|AMQPConnectionException) {
+        }
+        try {
+            $retryQueue->bind($retryExchangeName, $queueName);
+        } catch (AMQPChannelException|AMQPConnectionException) {
+        }
+        try {
+            $deadLetterQueue->bind($deadLetterExchangeName, $queueName);
+        } catch (AMQPChannelException|AMQPConnectionException) {
+        }
 
-	private function declareQueue(
-		string $name,
-		string $deadLetterExchange = null,
-		string $deadLetterRoutingKey = null,
-		int $messageTtl = null
-	): AMQPQueue {
-		$queue = $this->connection->queue($name);
+        foreach ($subscriber::subscribedTo() as $eventClass) {
+            try {
+                $queue->bind($exchangeName, $eventClass::eventName());
+            } catch (AMQPChannelException|AMQPConnectionException) {
+            }
+        }
+    }
 
-		if ($deadLetterExchange !== null) {
-			$queue->setArgument('x-dead-letter-exchange', $deadLetterExchange);
-		}
+    /**
+     * Declares a queue in RabbitMQ.
+     *
+     * @param string $name Queue name.
+     * @param string|null $deadLetterExchange Dead letter exchange name.
+     * @param string|null $deadLetterRoutingKey Dead letter routing key.
+     * @param int|null $messageTtl Time-to-live for messages in milliseconds.
+     * @return AMQPQueue The declared queue.
+     */
+    private function declareQueue(
+        string  $name,
+        ?string $deadLetterExchange = null,
+        ?string $deadLetterRoutingKey = null,
+        ?int    $messageTtl = null
+    ): AMQPQueue
+    {
+        $queue = $this->connection->queue($name);
 
-		if ($deadLetterRoutingKey !== null) {
-			$queue->setArgument('x-dead-letter-routing-key', $deadLetterRoutingKey);
-		}
+        if ($deadLetterExchange !== null) {
+            $queue->setArgument('x-dead-letter-exchange', $deadLetterExchange);
+        }
 
-		if ($messageTtl !== null) {
-			$queue->setArgument('x-message-ttl', $messageTtl);
-		}
+        if ($deadLetterRoutingKey !== null) {
+            $queue->setArgument('x-dead-letter-routing-key', $deadLetterRoutingKey);
+        }
 
-		$queue->setFlags(AMQP_DURABLE);
-		$queue->declareQueue();
+        if ($messageTtl !== null) {
+            $queue->setArgument('x-message-ttl', $messageTtl);
+        }
 
-		return $queue;
-	}
+        $queue->setFlags(AMQP_DURABLE);
+        try {
+            $queue->declareQueue();
+        } catch (AMQPChannelException|AMQPConnectionException|\AMQPQueueException) {
+            //TODO catch
+        }
+
+        return $queue;
+    }
 }

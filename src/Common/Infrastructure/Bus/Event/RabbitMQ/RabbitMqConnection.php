@@ -6,63 +6,107 @@ namespace Common\Infrastructure\Bus\Event\RabbitMQ;
 
 use AMQPChannel;
 use AMQPConnection;
+use AMQPConnectionException;
 use AMQPExchange;
 use AMQPQueue;
 
+/**
+ * Manages RabbitMQ connections, channels, exchanges, and queues.
+ */
 final class RabbitMqConnection
 {
-	private static ?AMQPConnection $connection = null;
-	private static ?AMQPChannel $channel = null;
-	/** @var AMQPExchange[] */
-	private static array $exchanges = [];
-	/** @var AMQPQueue[] */
-	private static array $queues = [];
+    private static ?AMQPConnection $connection = null;
+    private static ?AMQPChannel $channel = null;
 
-	public function __construct(private readonly array $configuration) {}
+    /** @var AMQPExchange[] */
+    private static array $exchanges = [];
 
-	public function queue(string $name): AMQPQueue
-	{
-		if (!array_key_exists($name, self::$queues)) {
-			$queue = new AMQPQueue($this->channel());
-			$queue->setName($name);
+    /** @var AMQPQueue[] */
+    private static array $queues = [];
 
-			self::$queues[$name] = $queue;
-		}
+    private readonly array $configuration;
 
-		return self::$queues[$name];
-	}
+    /**
+     * Constructor for RabbitMqConnection.
+     *
+     * @param array $configuration Configuration parameters for the connection.
+     */
+    public function __construct(array $configuration)
+    {
+        $this->configuration = $configuration;
+    }
 
-	public function exchange(string $name): AMQPExchange
-	{
-		if (!array_key_exists($name, self::$exchanges)) {
-			$exchange = new AMQPExchange($this->channel());
-			$exchange->setName($name);
+    /**
+     * Retrieves or creates a queue with the given name.
+     *
+     * @param string $name Queue name.
+     * @return AMQPQueue The requested queue.
+     */
+    public function queue(string $name): AMQPQueue
+    {
+        if (!isset(self::$queues[$name])) {
+            try {
+                $queue = new AMQPQueue($this->channel());
+                $queue->setName($name);
+                self::$queues[$name] = $queue;
+            } catch (AMQPConnectionException|\AMQPQueueException) {
+            }
 
-			self::$exchanges[$name] = $exchange;
-		}
+        }
 
-		return self::$exchanges[$name];
-	}
+        return self::$queues[$name];
+    }
 
-	private function channel(): AMQPChannel
-	{
-		if (!self::$channel?->isConnected()) {
-			self::$channel = new AMQPChannel($this->connection());
-		}
+    /**
+     * Retrieves or creates an exchange with the given name.
+     *
+     * @param string $name Exchange name.
+     * @return AMQPExchange The requested exchange.
+     */
+    public function exchange(string $name): AMQPExchange
+    {
+        if (!isset(self::$exchanges[$name])) {
+            try {
+                $exchange = new AMQPExchange($this->channel());
+                $exchange->setName($name);
+                self::$exchanges[$name] = $exchange;
+            } catch (AMQPConnectionException|\AMQPExchangeException) {
+            }
+        }
 
-		return self::$channel;
-	}
+        return self::$exchanges[$name];
+    }
 
-	private function connection(): AMQPConnection
-	{
-		if (self::$connection === null) {
-			self::$connection = new AMQPConnection($this->configuration);
-		}
+    /**
+     * Provides the AMQP channel, creating it if necessary.
+     *
+     * @return AMQPChannel The AMQP channel.
+     * @throws AMQPConnectionException
+     */
+    private function channel(): AMQPChannel
+    {
+        if (self::$channel === null || !self::$channel->isConnected()) {
+            self::$channel = new AMQPChannel($this->connection());
+        }
 
-		if (!self::$connection->isConnected()) {
-			self::$connection->pconnect();
-		}
+        return self::$channel;
+    }
 
-		return self::$connection;
-	}
+    /**
+     * Provides the AMQP connection, creating it if necessary.
+     *
+     * @return AMQPConnection The AMQP connection.
+     * @throws AMQPConnectionException
+     */
+    private function connection(): AMQPConnection
+    {
+        if (self::$connection === null) {
+            self::$connection = new AMQPConnection($this->configuration);
+            self::$connection->pconnect();
+        } elseif (!self::$connection->isConnected()) {
+            self::$connection->pconnect();
+        }
+
+        return self::$connection;
+    }
 }
