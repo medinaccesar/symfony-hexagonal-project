@@ -26,7 +26,6 @@ readonly final class RabbitMqQueueNameFormatter
     public static function format(DomainEventSubscriberInterface $subscriber): string
     {
         $subscriberClassPaths = explode('\\', $subscriber::class);
-
         $queueNameParts = [
             $subscriberClassPaths[0],
             $subscriberClassPaths[1],

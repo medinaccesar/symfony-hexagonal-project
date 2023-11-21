@@ -7,7 +7,6 @@ namespace Common\Domain\Validation\Trait;
 use Common\Domain\Validation\ConstraintType;
 use Common\Domain\Validation\Formatter\ValidationErrorFormatter;
 
-
 trait NotNullValidationTrait
 {
     /**

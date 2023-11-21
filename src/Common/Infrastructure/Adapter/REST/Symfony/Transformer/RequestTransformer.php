@@ -15,9 +15,7 @@ readonly class RequestTransformer
     private const ALLOWED_CONTENT_TYPE = 'application/json';
     private const SUPPORTED_METHODS = [
         Request::METHOD_GET,
-        Request::METHOD_POST,
-        Request::METHOD_PUT,
-        Request::METHOD_PATCH
+        Request::METHOD_POST
     ];
 
     public function __construct(
