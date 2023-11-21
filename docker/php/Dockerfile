@@ -12,7 +12,16 @@ RUN apk update \
     && apk add --no-cache \
     git \
     libzip-dev \
-    sqlite-dev
+    sqlite-dev \
+    # Adding build dependencies
+    autoconf \
+    gcc \
+    g++ \
+    make \
+    pkgconf \
+    rabbitmq-c-dev \
+    # Libraries for development
+    rabbitmq-c
 
 RUN docker-php-ext-install zip
 
@@ -24,6 +33,10 @@ RUN apk add --no-cache nodejs npm
 
 # Install PHP's PDO and PDO MySQL extensions
 RUN docker-php-ext-install pdo pdo_mysql
+
+# Install amqp extension
+RUN pecl install amqp \
+    && docker-php-ext-enable amqp
 
 USER appuser
 WORKDIR /app

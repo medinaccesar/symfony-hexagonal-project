@@ -44,6 +44,17 @@ services:
         '--character-set-server=utf8mb4',
         '--collation-server=utf8mb4_unicode_ci'
       ]
+  
+  symfony-rabbitmq:
+    container_name: symfony-rabbitmq
+    image: rabbitmq:3-management
+    volumes:
+      - ./docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - symfony-network
 
 networks:
   symfony-network:
