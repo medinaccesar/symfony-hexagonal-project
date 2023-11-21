@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Common\Domain\Validation\Formatter;
 
-class ValidationFormatter
+class ValidationErrorFormatter
 {
     /**
      * Format a validation message.
@@ -11,12 +13,11 @@ class ValidationFormatter
      * @param string $message The validation message.
      * @return array An associative array containing the field and message.
      */
-    public static function format(string $field, string $constraint, string $message, $value): array
+    public static function format(string $constraint, string $field, $value): array
     {
         return [
-            'field' => $field,
             'constraint' => $constraint,
-            'message' => $message,
+            'field' => $field,
             'value' => $value
         ];
     }

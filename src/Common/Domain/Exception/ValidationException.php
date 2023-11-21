@@ -1,21 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Common\Domain\Exception;
 
-use Common\Domain\Exception\Interface\ViolationExceptionInterface;
-use RuntimeException;
+use Common\Domain\Exception\Constant\ExceptionMessage;
+use Common\Domain\Exception\Constant\ExceptionType;
 
-class ValidationException extends RuntimeException implements ViolationExceptionInterface
+class ValidationException extends ApiException
 {
-    const VALIDATION_ERROR_CODE = 422;
-    const VALIDATION_MESSAGE = 'Validation failed';
     private array $violations;
 
-    public static function createFromViolations(array $violations): static
+    public function __construct(array $violations)
     {
-        $instance = new static(self::VALIDATION_MESSAGE, self::VALIDATION_ERROR_CODE);
-        $instance->violations = $violations;
-        return $instance;
+        parent::__construct(422, ExceptionMessage::VALIDATION, ExceptionType::VALIDATION);
+        $this->violations = $violations;
     }
 
     public function getViolations(): array
@@ -23,3 +22,5 @@ class ValidationException extends RuntimeException implements ViolationException
         return $this->violations;
     }
 }
+
+

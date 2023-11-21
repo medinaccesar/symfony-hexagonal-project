@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace User\Infrastructure\Adapter\Security\Symfony;
 
+use Common\Domain\Exception\Constant\ExceptionMessage;
 use Common\Domain\Exception\ResourceNotFoundException;
 use Common\Domain\Exception\ValidationException;
 use Common\Domain\Validation\Trait\NotBlankValidationTrait;
@@ -21,24 +24,32 @@ readonly class UserProvider implements UserProviderInterface
     {
     }
 
+    /**
+     * @throws ResourceNotFoundException
+     * @throws ValidationException
+     */
     public function loadUserByUsername($username): UserInterface
     {
         if ($violation = $this->validateNotBlank($username, 'username')) {
-            throw ValidationException::createFromViolations($violation);
+            throw new ValidationException($violation);
         }
         $user = $this->userRepository->findByUsername($username);
         if (null === $user) {
-            throw ResourceNotFoundException::createFromClassAndId(User::class, $username);
+            throw new ResourceNotFoundException();
         }
 
         return new UserAdapter($user);
     }
 
 
+    /**
+     * @throws ResourceNotFoundException
+     * @throws ValidationException
+     */
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof UserAdapter) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+            throw new UnsupportedUserException(ExceptionMessage::NOT_SUPPORTED);
         }
 
         $username = $user->getUsername();
@@ -50,6 +61,10 @@ readonly class UserProvider implements UserProviderInterface
         return UserAdapter::class === $class;
     }
 
+    /**
+     * @throws ResourceNotFoundException
+     * @throws ValidationException
+     */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         return $this->loadUserByUsername($identifier);

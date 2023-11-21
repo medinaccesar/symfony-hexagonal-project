@@ -1,13 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace User\Domain\Validation\Trait;
 
-use User\Domain\Security\Roles;
+use Common\Domain\Validation\ConstraintType;
+use Common\Domain\Validation\Formatter\ValidationErrorFormatter;
+use User\Domain\Security\AllowedRoles;
 
 trait RolesValidationTrait
 {
-
     /**
+     * Validates an array of roles.
+     *
      * @param array $roles
      * @return array
      */
@@ -17,7 +22,12 @@ trait RolesValidationTrait
 
         foreach ($roles as $role) {
             if (!$this->isRoleValid($role)) {
-                $errors[] = "Invalid role: $role";
+                $errors[] = ValidationErrorFormatter::format(
+                    'roles',
+                    ConstraintType::ROLE,
+                    $role,
+                    $role
+                );
             }
         }
 
@@ -25,12 +35,15 @@ trait RolesValidationTrait
     }
 
     /**
+     * Checks if a role is valid.
+     *
      * @param string $role
      * @return bool
      */
     protected function isRoleValid(string $role): bool
     {
-        return in_array($role, Roles::getRoles());
+        return in_array($role, AllowedRoles::getRoles());
     }
 }
+
 

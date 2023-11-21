@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Home\Infrastructure\UI\Symfony\Controller;
 
 use DateTime;
@@ -14,7 +16,7 @@ class HomeUIController extends AbstractController
     public function __invoke(): Response
     {
         $apiMeta = [
-            'version' => '0.0.1',
+            'version' => '0.9.0b',
             'date' => (new DateTime())->format(DateTimeInterface::RFC850),
         ];
         return $this->render('@Home/home.twig', [

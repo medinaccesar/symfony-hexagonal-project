@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace User\Application\Query\GetUserById;
 
 use Common\Domain\Exception\ResourceNotFoundException;
 use User\Domain\Model\User;
 use User\Domain\Repository\UserRepositoryInterface;
 
-readonly class GetUserByIdHandler
+readonly class GetUserByIdFinder
 {
     public function __construct(
         private UserRepositoryInterface $userRepository
@@ -18,7 +20,7 @@ readonly class GetUserByIdHandler
     {
         $user = $this->userRepository->findById($query->userId);
         if ($user === null) {
-            throw ResourceNotFoundException::createFromClassAndId(User::class, $query->userId);
+            throw new ResourceNotFoundException('id', $query->userId);
         }
         return new GetUserByIdResponse($user->getId(), $user->getUsername(), $user->getRoles());
     }

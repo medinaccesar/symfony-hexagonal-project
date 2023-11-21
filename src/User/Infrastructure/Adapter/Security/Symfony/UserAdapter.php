@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace User\Infrastructure\Adapter\Security\Symfony;
 
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;

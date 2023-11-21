@@ -10,20 +10,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use function in_array;
 
-
-class RequestTransformer
+readonly class RequestTransformer
 {
     private const ALLOWED_CONTENT_TYPE = 'application/json';
     private const SUPPORTED_METHODS = [
         Request::METHOD_GET,
         Request::METHOD_POST,
         Request::METHOD_PUT,
-        Request::METHOD_PATCH,
-
+        Request::METHOD_PATCH
     ];
 
     public function __construct(
-        private readonly SerializerInterface $serializer
+        private SerializerInterface $serializer
     )
     {
     }

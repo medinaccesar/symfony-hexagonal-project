@@ -6,13 +6,13 @@ namespace User\Infrastructure\Adapter\REST\Symfony\Controller\GetUserByIdControl
 
 use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use User\Application\Query\GetUserById\GetUserByIdHandler;
+use User\Application\Query\GetUserById\GetUserByIdFinder;
 use User\Application\Query\GetUserById\GetUserByIdQuery;
 
 readonly class GetUserByIdController
 {
     public function __construct(
-        private GetUserByIdHandler $handler
+        private GetUserByIdFinder $handler
     )
     {
     }

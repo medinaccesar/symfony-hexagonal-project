@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 namespace User\Infrastructure\Adapter\REST\Symfony\Controller\RegistrationController;
 
+use Common\Domain\Exception\ValidationException;
 use User\Infrastructure\Adapter\REST\Symfony\Controller\RegistrationController\DTO\RegistrationRequestDTO;
 use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use User\Application\Command\CreateUser\CreateUserCommand;
-use User\Application\Command\CreateUser\CreateUserHandler;
-use User\Domain\Validation\UserValidator;
+use User\Application\Command\CreateUser\CreateUserCommandHandler;
+use User\Domain\Validation\CreateUserValidator;
 
 
 readonly class RegistrationController
 {
     public function __construct(
-        private CreateUserHandler           $handler,
-        private UserValidator               $validator,
+        private CreateUserCommandHandler    $handler,
+        private CreateUserValidator         $validator,
         private UserPasswordHasherInterface $passwordHasher
     )
     {
     }
 
+    /**
+     * @throws ValidationException
+     */
     #[Route('/register', name: 'register_user', methods: ['POST'])]
     public function __invoke(RegistrationRequestDTO $requestDTO): JsonApiResponse
     {

@@ -1,18 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace User\Domain\Model;
 
+use User\Domain\Event\CreateUserDomainEvent;
+use Common\Domain\Aggregate\AggregateRoot;
 
-class User
+class User extends AggregateRoot
 {
     public function __construct(
         private readonly string $id,
-        private string          $username,
-        private string          $password,
-        private ?array          $roles
-    )
+        private string $username,
+        private string $password,
+        private readonly array $roles
+    ) {}
+
+    public static function create(string $id, string $username, string $password, array $roles): self
     {
-        $this->roles[] = 'ROLE_USER';
+        $user = new self($id, $username, $password, $roles);
+        $user->record(new CreateUserDomainEvent($id, $username));
+        return $user;
     }
 
     public function getId(): ?string
@@ -33,20 +41,12 @@ class User
 
     public function getUserIdentifier(): string
     {
-        return (string)$this->getUsername();
+        return $this->getUsername();
     }
 
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-        return $this;
+        return $this->roles;
     }
 
     public function getPassword(): string

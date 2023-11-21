@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace User\Domain\Validation;
 
 use Common\Domain\Validation\Trait\LengthValidationTrait;
@@ -8,7 +10,7 @@ use Common\Domain\Validation\Trait\NotBlankValidationTrait;
 use Common\Domain\Validation\Trait\RangeValidationTrait;
 use User\Domain\Validation\Trait\RolesValidationTrait;
 
-class UserValidator
+class CreateUserValidator
 {
     use RangeValidationTrait;
     use RolesValidationTrait;
@@ -20,6 +22,9 @@ class UserValidator
     private const PASSWORD_MIN_LENGTH = 8;
     private const PASSWORD_MAX_LENGTH = 255;
 
+    /**
+     * @throws ValidationException
+     */
     public function validateAndThrows(object $user): void
     {
         $violations = array_merge(
@@ -29,7 +34,7 @@ class UserValidator
         );
 
         if (!empty($violations)) {
-            throw ValidationException::createFromViolations($violations);
+            throw new ValidationException($violations);
         }
     }
 

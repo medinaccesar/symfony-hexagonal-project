@@ -17,6 +17,28 @@ organized as a modular monolith, which arranges the codebase into well-defined m
 facilitates maintainability and allows for independent evolution of each module, laying a solid foundation for a
 potential shift to a microservices architecture if needed.
 
+## Software Architecture Best Practices
+
+### Domain Layer
+- **Framework Agnostic**: Ensure the domain layer is free from external frameworks or libraries.
+- **Business Focus**: Include only business-related logic and rules. Avoid technical details.
+
+### Application Layer
+- **Thin Layer**: Focus on orchestrating the data flow between the domain and infrastructure.
+- **Framework Independence**: Interact with frameworks without embedding framework-specific logic.
+
+### Infrastructure Layer
+- **Environment-Specific**: Handles database access, file systems, external services.
+- **Framework Dependencies**: This is where framework-specific code belongs.
+
+### General Guidelines
+- **Avoid Leaky Abstractions**: No layer should leak into another.
+- **Dependency Direction**: Dependencies should point inwards, from outer layers to the Domain.
+- **Testing**: Independence of the domain layer eases unit testing for business logic.
+
+These principles guide towards a maintainable, scalable architecture adaptable to changes.
+
+
 > **Module example (Symfony)**:
 ```
 ├── Application

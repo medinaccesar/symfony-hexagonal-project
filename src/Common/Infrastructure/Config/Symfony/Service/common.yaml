@@ -3,6 +3,13 @@ services:
     autowire: true
     autoconfigure: true
 
+  common.domain_event_suscriber:
+    class: Common\Domain\Bus\Event\DomainEventSubscriberInterface
+
+  _instanceof:
+    Common\Domain\Bus\Event\DomainEventSubscriberInterface:
+      tags: [ 'common.domain_event_subscriber' ]
+
   Common\:
     resource: "../../../../../Common"
 
@@ -14,3 +21,6 @@ services:
     resource: '../../../../../Common/Infrastructure/Adapter/REST/Symfony/Resolver'
     tags: [ 'controller.service_arguments' ]
 
+  Common\Infrastructure\Bus\Event\Symfony\InMemory\InMemorySymfonyEventBus:
+    arguments: [ !tagged common.domain_event_subscriber ]
+    lazy: true

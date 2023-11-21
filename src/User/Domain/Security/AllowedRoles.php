@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace User\Domain\Security;
 
-readonly class Roles
+readonly class AllowedRoles
 {
     const ALLOWED_ROLES =  ['ROLE_ADMIN', 'ROLE_USER'];
 
