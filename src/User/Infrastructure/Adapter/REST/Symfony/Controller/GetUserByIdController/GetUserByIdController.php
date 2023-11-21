@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace User\Infrastructure\Adapter\REST\Symfony\Controller\GetUserByIdController;
 
+use Common\Domain\Exception\ResourceNotFoundException;
 use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use User\Application\Query\GetUserById\GetUserByIdFinder;
@@ -17,11 +18,15 @@ readonly class GetUserByIdController
     {
     }
 
+    /**
+     * @throws ResourceNotFoundException
+     */
     #[Route('/api/user/get/{id}', name: 'get_user_by_id', methods: ['GET'])]
     public function __invoke($id): JsonApiResponse
     {
         $query = new GetUserByIdQuery($id);
         $responseDTO = ($this->handler)($query);
-        return new JsonApiResponse($responseDTO);
+
+        return JsonApiResponse::get($responseDTO);
     }
 }

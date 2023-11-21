@@ -32,10 +32,11 @@ readonly class RegistrationController
     public function __invoke(RegistrationRequestDTO $requestDTO): JsonApiResponse
     {
         $this->validator->validateAndThrows($requestDTO);
+
         $password = $this->passwordHasher->hashPassword($requestDTO, $requestDTO->password);
         $createUserCommand = new CreateUserCommand($requestDTO->username, $password, $requestDTO->roles);
         $response = ($this->handler)($createUserCommand);
 
-        return new JsonApiResponse($response, Response::HTTP_CREATED);
+        return JsonApiResponse::create($response);
     }
 }

@@ -16,11 +16,14 @@ readonly class GetUserByIdFinder
     {
     }
 
+    /**
+     * @throws ResourceNotFoundException
+     */
     public function __invoke(GetUserByIdQuery $query): GetUserByIdResponse
     {
         $user = $this->userRepository->findById($query->userId);
         if ($user === null) {
-            throw new ResourceNotFoundException('id', $query->userId);
+            throw new ResourceNotFoundException();
         }
         return new GetUserByIdResponse($user->getId(), $user->getUsername(), $user->getRoles());
     }

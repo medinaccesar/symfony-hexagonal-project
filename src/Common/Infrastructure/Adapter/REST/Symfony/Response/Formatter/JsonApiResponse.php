@@ -13,11 +13,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  * for JSON API responses, including fields for error status, message, and additional
  * data. It is designed to make API responses more predictable and standardized.
  */
-class JsonApiResponse extends JsonResponse
+final class JsonApiResponse extends JsonResponse
 {
-    const DEFAULT_STATUS = 200;
     const DEFAULT_TYPE = 'success';
-    const DEFAULT_MESSAGE = 'OK';
+    const DEFAULT_MESSAGE = 'success_response';
 
     /**
      * Constructor for the JsonApiResponse class.
@@ -35,22 +34,43 @@ class JsonApiResponse extends JsonResponse
      */
     public function __construct(
         $data = null,
-        int $status = self::DEFAULT_STATUS,
-        string $type = self::DEFAULT_TYPE,
+        int $status = self::HTTP_OK,
         string $message = self::DEFAULT_MESSAGE,
-        bool $error = false,
-        string $timestamp = '',
-        string $path = ''
+        string $type = self::DEFAULT_TYPE,
+        bool $error = false
     )
     {
         $formattedData = [
             'error' => $error,
             'type' => $type,
             'message' => $message,
-            'data' => $data,
-            'timestamp' => $timestamp ?: date('c'),
-            'path' => $path
+            'data' => $data
         ];
         parent::__construct($formattedData, $status);
     }
+
+    /**
+     * Creates a standard get response.
+     *
+     * @param mixed|null $data The data to be returned.
+     * @param string $message The message.
+     * @return self
+     */
+    public static function get(mixed $data = null, string $message = self::DEFAULT_MESSAGE): self
+    {
+        return new self($data, self::HTTP_OK, $message, self::DEFAULT_TYPE, false);
+    }
+
+    /**
+     * Creates a standard create response.
+     *
+     * @param mixed|null $data The created data.
+     * @param string $message The success message for creation.
+     * @return self
+     */
+    public static function create(mixed $data = null, string $message = 'created'): self
+    {
+        return new self($data, self::HTTP_CREATED, $message, self::DEFAULT_TYPE, false);
+    }
+
 }

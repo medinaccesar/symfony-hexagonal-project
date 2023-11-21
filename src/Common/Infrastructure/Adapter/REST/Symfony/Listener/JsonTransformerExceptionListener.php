@@ -23,7 +23,6 @@ class JsonTransformerExceptionListener
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
-
         $response = $this->createJsonResponse($exception, $event->getRequest());
         $event->setResponse($response);
     }
@@ -38,18 +37,16 @@ class JsonTransformerExceptionListener
     private function createJsonResponse(Throwable $exception, Request $request): JsonApiResponse
     {
         $errorData = $this->getErrorData($exception);
+        $statusCode = $exception->getCode() ?: (method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500);
 
-        $statusCode = $exception->getCode() ?: $exception->getStatusCode();
         $message = $this->getErrorMessage($exception, $statusCode);
 
         return new JsonApiResponse(
             $errorData,
             $statusCode,
-            $this->getErrorType($exception),
             $message,
-            true,
-            date('c'),
-            $request->getPathInfo()
+            $this->getErrorType($exception),
+            true
         );
     }
 
@@ -65,7 +62,7 @@ class JsonTransformerExceptionListener
     }
 
     /**
-     * Generates an appropriate error message.
+     * Generates an appropriate error message or throws a ValidationException.
      *
      * @param Throwable $exception The caught exception.
      * @param int $statusCode The HTTP status code.
@@ -76,8 +73,8 @@ class JsonTransformerExceptionListener
         if ($statusCode === 500) {
             return ExceptionMessage::INTERNAL;
         }
-
         return $exception->getMessage();
+
     }
 
     /**
