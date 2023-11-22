@@ -1,5 +1,5 @@
 UID = $(shell id -u)
-SERVICE = symfony-php
+SERVICE = php
 
 install:
 	U_ID=${UID} docker-compose up -d --build
@@ -14,7 +14,7 @@ jwt-config:
 jwt-pp-config:
 	docker exec --user ${UID} ${SERVICE} mkdir -p config/jwt
 	docker exec -it --user ${UID} ${SERVICE} openssl genrsa -out config/jwt/private.pem -aes256 4096
-	docker exec -it --user 1000 symfony-php openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+	docker exec -it --user ${UID} ${SERVICE} openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
 
 migration:
 	docker exec --user ${UID} ${SERVICE} php bin/console make:migration --no-interaction
