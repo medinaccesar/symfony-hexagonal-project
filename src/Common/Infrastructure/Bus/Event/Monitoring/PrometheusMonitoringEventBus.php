@@ -18,9 +18,9 @@ use Common\Infrastructure\Monitor\PrometheusMonitor;
 final readonly class PrometheusMonitoringEventBus implements EventBusInterface
 {
     public function __construct(
+        private EventBusInterface $bus,
         private PrometheusMonitor $monitor,
-        private string            $appName,
-        private EventBusInterface $bus
+        private string            $appName
     )
     {
     }
