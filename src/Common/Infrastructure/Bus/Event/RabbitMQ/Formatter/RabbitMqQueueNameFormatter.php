@@ -6,11 +6,12 @@ namespace Common\Infrastructure\Bus\Event\RabbitMQ\Formatter;
 
 use Common\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Common\Domain\Utils\Trait\StringUtil;
+use Exception;
 
 /**
- * Formatter for generating RabbitMQ queue names based on event subscriber classes.
- * This class provides methods to format queue names for RabbitMQ, including variations like retry and dead letter queues,
- * based on the class names of domain event subscribers.
+ * A formatter class for generating RabbitMQ queue names based on event subscriber classes.
+ * This class provides methods to format queue names for RabbitMQ, including standard,
+ * retry, and dead letter queues, based on the class names of domain event subscribers.
  */
 readonly final class RabbitMqQueueNameFormatter
 {
@@ -18,14 +19,24 @@ readonly final class RabbitMqQueueNameFormatter
 
     /**
      * Formats a queue name based on the event subscriber class.
-     * The format uses the namespace and class name of the subscriber, transforming them into a snake_case representation.
+     * The format uses parts of the namespace and class name of the subscriber,
+     * transforming them into a snake_case representation.
      *
      * @param DomainEventSubscriberInterface $subscriber The event subscriber instance.
      * @return string The formatted queue name.
+     *
+     * @throws Exception If the subscriber class name structure is not as expected.
      */
     public static function format(DomainEventSubscriberInterface $subscriber): string
     {
         $subscriberClassPaths = explode('\\', $subscriber::class);
+
+        // Check if the class name has the expected structure.
+        if (count($subscriberClassPaths) < 4) {
+            // Handle the error or adjust the logic as needed.
+            throw new Exception("Unexpected class name structure for subscriber.");
+        }
+
         $queueNameParts = [
             $subscriberClassPaths[0],
             $subscriberClassPaths[1],
@@ -33,14 +44,25 @@ readonly final class RabbitMqQueueNameFormatter
             end($subscriberClassPaths),
         ];
 
-        return implode('.', array_map([self::class, 'transformToSnakeCase'], $queueNameParts));
+        return implode('.', array_map(fn($part) => self::toSnakeCase($part), $queueNameParts));
     }
 
     /**
-     * Formats a retry queue name for a given event subscriber.
+     * Formats a short queue name based solely on the class name of the subscriber.
+     * The class name is transformed into a snake_case representation.
      *
      * @param DomainEventSubscriberInterface $subscriber The event subscriber instance.
-     * @return string The formatted retry queue name.
+     * @return string The short formatted queue name.
+     */
+    public static function shortFormat(DomainEventSubscriberInterface $subscriber): string
+    {
+        $arraySubscriber = explode('\\', $subscriber::class);
+        $subscriberCamelCaseName = end($arraySubscriber);
+        return self::toSnakeCase($subscriberCamelCaseName);
+    }
+
+    /**
+     * @throws Exception
      */
     public static function formatRetry(DomainEventSubscriberInterface $subscriber): string
     {
@@ -50,10 +72,7 @@ readonly final class RabbitMqQueueNameFormatter
     }
 
     /**
-     * Formats a dead letter queue name for a given event subscriber.
-     *
-     * @param DomainEventSubscriberInterface $subscriber The event subscriber instance.
-     * @return string The formatted dead letter queue name.
+     * @throws Exception
      */
     public static function formatDeadLetter(DomainEventSubscriberInterface $subscriber): string
     {
@@ -62,29 +81,5 @@ readonly final class RabbitMqQueueNameFormatter
         return "dead_letter.$queueName";
     }
 
-    /**
-     * Formats a short queue name based on the class name of the subscriber.
-     * Only uses the class name of the subscriber, transforming it into a snake_case representation.
-     *
-     * @param DomainEventSubscriberInterface $subscriber The event subscriber instance.
-     * @return string The short formatted queue name.
-     */
-    public static function shortFormat(DomainEventSubscriberInterface $subscriber): string
-    {
-        $subscriberClassParts = explode('\\', $subscriber::class);
-        $subscriberCamelCaseName = end($subscriberClassParts);
 
-        return self::toSnakeCase($subscriberCamelCaseName);
-    }
-
-    /**
-     * Transforms a given text to snake_case.
-     *
-     * @param string $text The text to transform.
-     * @return string The transformed text in snake_case.
-     */
-    private static function transformToSnakeCase(string $text): string
-    {
-        return self::toSnakeCase($text);
-    }
 }

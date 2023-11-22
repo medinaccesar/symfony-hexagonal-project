@@ -21,7 +21,7 @@ readonly class CreateUserDomainEvent extends DomainEvent
 
     public static function eventName(): string
     {
-        return 'user.created';
+        return 'user.create';
     }
 
     public static function fromPrimitives(

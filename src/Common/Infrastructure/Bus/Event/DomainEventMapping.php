@@ -5,12 +5,16 @@ namespace Common\Infrastructure\Bus\Event;
 use Common\Domain\Bus\Event\DomainEventSubscriberInterface;
 use RuntimeException;
 
+/**
+ * Manages the mapping between domain event names and their corresponding subscriber classes.
+ */
 final class DomainEventMapping
 {
     private array $mapping;
 
     /**
-     * Constructor for DomainEventMapping.
+     * Initializes the mapping from an iterable set of DomainEventSubscribers.
+     * The mapping is created by associating domain event names with the corresponding subscriber class.
      *
      * @param iterable $mapping An iterable of DomainEventSubscribers.
      */
@@ -19,19 +23,30 @@ final class DomainEventMapping
         $this->mapping = array_reduce(
             (array)$mapping,
             fn (array $carry, DomainEventSubscriberInterface $subscriber) =>
-            [...$carry, ...array_combine(
-                array_map(
-                    fn (string $eventClass) => $eventClass::eventName(),
-                    $subscriber::subscribedTo()
-                ),
-                array_fill(0, count($subscriber::subscribedTo()), get_class($subscriber))
-            )],
+            [...$carry, ...$this->mapSubscribersToEventNames($subscriber)],
             []
         );
     }
 
     /**
-     * Retrieves the corresponding DomainEventSubscriber class for the given event name.
+     * Maps a DomainEventSubscriber to its event names.
+     *
+     * @param DomainEventSubscriberInterface $subscriber The event subscriber.
+     * @return array The mapping of event names to the subscriber class.
+     */
+    private function mapSubscribersToEventNames(DomainEventSubscriberInterface $subscriber): array
+    {
+        $eventClasses = $subscriber::subscribedTo();
+        $subscriberClass = get_class($subscriber);
+
+        return array_combine(
+            array_map(fn (string $eventClass) => $eventClass::eventName(), $eventClasses),
+            array_fill(0, count($eventClasses), $subscriberClass)
+        );
+    }
+
+    /**
+     * Retrieves the corresponding DomainEventSubscriber class for a given event name.
      *
      * @param string $name The event name.
      * @return string The DomainEventSubscriber class name.

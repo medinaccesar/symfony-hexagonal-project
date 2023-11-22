@@ -13,7 +13,7 @@ final readonly class UserCreator
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
-        private EventBusInterface $bus
+        private EventBusInterface       $bus
     )
     {
     }

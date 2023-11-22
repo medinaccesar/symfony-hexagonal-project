@@ -12,36 +12,33 @@ use Common\Infrastructure\Bus\Event\MySql\MySqlDoctrineEventBus;
 use Exception;
 
 /**
- * RabbitMQ implementation of an event bus.
+ * RabbitMQ's implementation of an event bus.
+ * This class is responsible for publishing domain events to a RabbitMQ exchange.
  */
-final class RabbitMqEventBus implements EventBusInterface
+final readonly class RabbitMqEventBus implements EventBusInterface
 {
-    private RabbitMqConnection $connection;
-    private string $exchangeName;
-    private MySqlDoctrineEventBus $failoverPublisher;
-
     /**
      * Constructor for RabbitMqEventBus.
+     * Initializes the connection to RabbitMQ, the exchange name, and the failover publisher.
      *
      * @param RabbitMqConnection $connection Connection instance for RabbitMQ.
      * @param string $exchangeName Name of the main exchange.
      * @param MySqlDoctrineEventBus $failoverPublisher Failover event publisher.
      */
     public function __construct(
-        RabbitMqConnection $connection,
-        string $exchangeName,
-        MySqlDoctrineEventBus $failoverPublisher
-    ) {
-        $this->connection = $connection;
-        $this->exchangeName = $exchangeName;
-        $this->failoverPublisher = $failoverPublisher;
+        private RabbitMqConnection    $connection,
+        private string                $exchangeName,
+        private MySqlDoctrineEventBus $failoverPublisher
+    )
+    {
     }
 
     /**
      * Publishes domain events to the RabbitMQ exchange.
+     * If publishing fails, it falls back to a fail over publisher.
      *
      * @param DomainEvent ...$events Domain events to publish.
-     * @throws Exception
+     * @throws Exception If an error occurs during publishing.
      */
     public function publish(DomainEvent ...$events): void
     {
@@ -51,10 +48,12 @@ final class RabbitMqEventBus implements EventBusInterface
     }
 
     /**
-     * Publishes a single domain event, with failover handling.
+     * Publishes a single domain event, with fail over handling.
+     * It serializes the event and publishes it to the specified exchange.
+     * In case of an AMQPException, it delegates to the fail over publisher.
      *
      * @param DomainEvent $event The domain event to publish.
-     * @throws Exception
+     * @throws Exception If an error occurs during publishing.
      */
     private function publishEvent(DomainEvent $event): void
     {
@@ -77,6 +76,4 @@ final class RabbitMqEventBus implements EventBusInterface
             $this->failoverPublisher->publish($event);
         }
     }
-
-    // Additional private methods if needed.
 }

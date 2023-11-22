@@ -10,7 +10,10 @@ services:
   # Tagging all DomainEventSubscriberInterface implementations
   _instanceof:
     Common\Domain\Bus\Event\DomainEventSubscriberInterface:
-      tags: ['common.domain_event_subscriber']
+      tags: [ 'common.domain_event_subscriber' ]
+
+    Common\Domain\Bus\Command\CommandHandlerInterface:
+      tags: [ 'common.command_handler' ]
 
   # Autoconfiguration for Common namespace
   Common\:
@@ -24,20 +27,20 @@ services:
   # Service Arguments Resolver
   Common\Infrastructure\Adapter\REST\Symfony\Resolver\:
     resource: '../../../../../Common/Infrastructure/Adapter/REST/Symfony/Resolver'
-    tags: ['controller.service_arguments']
+    tags: [ 'controller.service_arguments' ]
 
   # In-Memory Event Bus
   Common\Infrastructure\Bus\Event\Symfony\InMemory\InMemorySymfonyEventBus:
-    arguments: ['!tagged_iterator common.domain_event_subscriber']
+    arguments: [ '!tagged_iterator common.domain_event_subscriber' ]
     lazy: true
 
   # Domain Event Mapping
   Common\Infrastructure\Bus\Event\DomainEventMapping:
-    arguments: ['!tagged_iterator common.domain_event_subscriber']
+    arguments: [ '!tagged_iterator common.domain_event_subscriber' ]
 
   # Domain Event Subscriber Locator
   Common\Infrastructure\Bus\Event\DomainEventSubscriberLocator:
-    arguments: ['!tagged_iterator common.domain_event_subscriber']
+    arguments: [ '!tagged_iterator common.domain_event_subscriber' ]
 
   # RabbitMQ Connection Configuration
   Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection:
@@ -67,10 +70,15 @@ services:
       $exchangeName: '%env(RABBITMQ_EXCHANGE)%'
       $maxRetries: '%env(RABBITMQ_MAX_RETRIES)%'
 
-  # RabbitMQ Configurer
-  Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConfigurer:
+  # RabbitMQ Configure
+  Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConfigure:
     arguments:
       $connection: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection'
 
   # -- IMPLEMENTATIONS SELECTOR --
   Common\Domain\Bus\Event\EventBusInterface: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqEventBus'
+  Common\Infrastructure\Bus\Event\Monitoring\PrometheusMonitoringEventBus:
+    arguments:
+      - '@Common\Infrastructure\Monitor\PrometheusMonitor'
+      - 'symfony-project'
+      - '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqEventBus'

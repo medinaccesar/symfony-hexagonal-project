@@ -2,8 +2,8 @@ version: "3.5"
 
 services:
 
-  symfony-php:
-    container_name: symfony-php
+  php:
+    container_name: php
     build:
       context: ./docker/php
       args:
@@ -11,10 +11,10 @@ services:
     volumes:
       - .:/app
     networks:
-      - symfony-network
+      - symfony_network
 
-  symfony-nginx:
-    container_name: symfony-nginx
+  nginx:
+    container_name: nginx
     build:
       context: ./docker/nginx
     volumes:
@@ -22,31 +22,32 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - symfony-php
+      - php
     networks:
-      - symfony-network
+      - symfony_network
 
-  symfony-mysql:
-    container_name: symfony-mysql
-    image: mysql:latest
+  mysql:
+    container_name: mysql
+    image: mysql:8.2
+    restart: always
     ports:
-      - '3336:3306'
+      - "3336:3306"
     environment:
-      MYSQL_DATABASE: symfony-database
+      MYSQL_DATABASE: symfony_database
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - symfony-mysql-data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     networks:
-      - symfony-network
+      - symfony_network
     command:
       [
-        'mysqld',
-        '--character-set-server=utf8mb4',
-        '--collation-server=utf8mb4_unicode_ci'
+        "mysqld",
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci"
       ]
   
-  symfony-rabbitmq:
-    container_name: symfony-rabbitmq
+  rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:3-management
     volumes:
       - ./docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
@@ -54,12 +55,61 @@ services:
       - "15672:15672"
       - "5672:5672"
     networks:
-      - symfony-network
+      - symfony_network
 
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.48.0
+    volumes:
+      - ./src/Common/Infrastructure/Config/Prometheus/:/etc/prometheus/
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    ports:
+      - "9090:9090"
+    networks:
+      - symfony_network
+
+  mysqld_exporter:
+    container_name: mysqld_exporter
+    build:
+      context: ./docker/mysqld_exporter
+    user: root
+    ports:
+      - "9104:9104"
+    restart: unless-stopped
+    command:
+      - "--mysqld.username=root:root"
+      - "--mysqld.address=mysql:3306"
+    environment:
+      - "collect.info_schema.tablestats=true"
+      - "collect.info_schema.userstats=true"
+      - "collect.info_schema.query_response_time=true"
+      - "collect.auto_increment.columns=true"
+      - "collect.perf_schema.tableiowaits=true"
+      - "collect.perf_schema.tablelocks=true"
+    depends_on:
+      - mysql
+    networks:
+      - symfony_network
+
+  grafana:
+    container_name: grafana
+    build:
+      context: ./docker/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./docker/grafana/datasource.yml:/etc/grafana/provisioning/"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=123456
+      - GF_USERS_ALLOW_SIGN_UP=false
 networks:
-  symfony-network:
+  symfony_network:
 
 volumes:
-  symfony-mysql-data:
+  mysql_data:
 
 

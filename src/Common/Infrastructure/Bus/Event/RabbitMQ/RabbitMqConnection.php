@@ -24,20 +24,15 @@ final class RabbitMqConnection
     /** @var AMQPQueue[] */
     private static array $queues = [];
 
-    private readonly array $configuration;
-
-    /**
-     * Constructor for RabbitMqConnection.
-     *
-     * @param array $configuration Configuration parameters for the connection.
-     */
-    public function __construct(array $configuration)
+    public function __construct(
+        private readonly array $configuration
+    )
     {
-        $this->configuration = $configuration;
     }
 
     /**
      * Retrieves or creates a queue with the given name.
+     * Utilizes a static array to manage queue instances.
      *
      * @param string $name Queue name.
      * @return AMQPQueue The requested queue.
@@ -50,8 +45,8 @@ final class RabbitMqConnection
                 $queue->setName($name);
                 self::$queues[$name] = $queue;
             } catch (AMQPConnectionException|\AMQPQueueException) {
+                //TODO catch
             }
-
         }
 
         return self::$queues[$name];
@@ -59,6 +54,7 @@ final class RabbitMqConnection
 
     /**
      * Retrieves or creates an exchange with the given name.
+     * Utilizes a static array to manage exchange instances.
      *
      * @param string $name Exchange name.
      * @return AMQPExchange The requested exchange.
@@ -70,7 +66,7 @@ final class RabbitMqConnection
                 $exchange = new AMQPExchange($this->channel());
                 $exchange->setName($name);
                 self::$exchanges[$name] = $exchange;
-            } catch (AMQPConnectionException|\AMQPExchangeException) {
+            } catch (AMQPConnectionException|\AMQPExchangeException $e) {
             }
         }
 
@@ -79,9 +75,10 @@ final class RabbitMqConnection
 
     /**
      * Provides the AMQP channel, creating it if necessary.
+     * Ensures the channel is connected before returning it.
      *
      * @return AMQPChannel The AMQP channel.
-     * @throws AMQPConnectionException
+     * @throws AMQPConnectionException If the channel creation fails.
      */
     private function channel(): AMQPChannel
     {
@@ -94,19 +91,19 @@ final class RabbitMqConnection
 
     /**
      * Provides the AMQP connection, creating it if necessary.
+     * Ensures the connection is active before returning it.
      *
      * @return AMQPConnection The AMQP connection.
-     * @throws AMQPConnectionException
+     * @throws AMQPConnectionException If the connection creation fails.
      */
     private function connection(): AMQPConnection
     {
-        if (self::$connection === null) {
+        if (self::$connection === null || !self::$connection->isConnected()) {
             self::$connection = new AMQPConnection($this->configuration);
-            self::$connection->pconnect();
-        } elseif (!self::$connection->isConnected()) {
             self::$connection->pconnect();
         }
 
         return self::$connection;
     }
+
 }
