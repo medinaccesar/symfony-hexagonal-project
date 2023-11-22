@@ -2,7 +2,7 @@ global:
   scrape_interval:     15s
   evaluation_interval: 15s
   external_labels:
-    monitor: 'symfony-project'
+    monitor: 'symfony_project'
 
 scrape_configs:
 
@@ -11,7 +11,7 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'mysql-exporter'
+  - job_name: 'mysql_exporter'
     scrape_interval: 5s
     static_configs:
       - targets: [ 'mysql-exporter:9104' ]
