@@ -1,7 +1,7 @@
 # Symfony hexagonal project
 > - Version **Symfony 6.3.***
 
-## Índice
+## Index 📖
 - [Hexagonal Architecture](#hexagonal-architecture-)
 - [Prerequisites for manual installation](#prerequisites-for-manual-installation-)
 - [Installation](#installation-)
@@ -83,6 +83,8 @@ These principles guide towards a maintainable, scalable architecture adaptable t
 - Composer
 - Symfony CLI
 - MySQL or MariaDB
+- RabbitMQ (optional)
+- Grafana (optional
 
 ## Installation 🚀
 
@@ -128,7 +130,11 @@ Make sh
 
 - **Access the application**
 
-You can access the application at http://localhost:8080/ or http://localhost:8080/ui in your web browser
+You can access the application in your web browser at: 
+- http://localhost:8080/ or http://localhost:8080/ui
+- http://localhost:15672/ (RabbitMQ)
+- http://localhost:9090/ (Prometheus)
+- http://localhost:3000/ (Grafana
 
 ### Manual installation 🖥
 

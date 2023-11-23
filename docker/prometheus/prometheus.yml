@@ -15,3 +15,7 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: [ 'mysql-exporter:9104' ]
+
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis_exporter:9121']

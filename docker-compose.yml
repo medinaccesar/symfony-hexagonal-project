@@ -4,12 +4,15 @@ services:
 
   php:
     container_name: php
+    restart: unless-stopped
     build:
       context: ./docker/php
       args:
         UID: $U_ID
     volumes:
       - .:/app
+    depends_on:
+      - prometheus
     networks:
       - symfony_network
 
@@ -50,7 +53,7 @@ services:
     container_name: rabbitmq
     image: rabbitmq:3-management
     volumes:
-      - ./docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./docker/rabbitmq/rabbitmq.conf.d:/etc/rabbitmq/rabbitmq.conf.d
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -61,7 +64,7 @@ services:
     container_name: prometheus
     image: prom/prometheus:v2.48.0
     volumes:
-      - ./src/Common/Infrastructure/Config/Prometheus/:/etc/prometheus/
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
@@ -102,14 +105,41 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - "./docker/grafana/provisioning/:/etc/grafana/provisioning/"
+      - "./docker/grafana/provisioning/datasource.yaml:/etc/grafana/provisioning/datasource.yaml"
     environment:
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SECURITY_ADMIN_PASSWORD=123456
+    networks:
+      - symfony_network
+
+  redis:
+    container_name: redis
+    image: redis:7.0.9
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    networks:
+      - symfony_network
+
+  redis_exporter:
+    container_name: redis_exporter
+    image: oliver006/redis_exporter
+    ports:
+      - "9121:9121"
+    volumes:
+      - redis_data:/data
+    environment:
+      - REDIS_ADDR=redis:6379
+    depends_on:
+      - redis
+    networks:
+      - symfony_network
+
 networks:
   symfony_network:
 
 volumes:
   mysql_data:
+  redis_data:
 
 

@@ -4,6 +4,7 @@ namespace Common\Infrastructure\Monitor;
 
 use Prometheus\CollectorRegistry;
 use Prometheus\Storage\APC;
+use Prometheus\Storage\Redis;
 
 /**
  * Manages a Prometheus metrics collection registry.
@@ -21,7 +22,7 @@ final class PrometheusMonitor
      */
     public function __construct()
     {
-        $this->registry = new CollectorRegistry(new APC());
+        $this->registry = new CollectorRegistry(new Redis(['host' => $_ENV["REDIS_HOST"], 'port' => $_ENV["REDIS_PORT"]]));
     }
 
     /**

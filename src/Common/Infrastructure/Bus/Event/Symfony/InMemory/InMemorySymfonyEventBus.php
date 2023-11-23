@@ -45,8 +45,7 @@ class InMemorySymfonyEventBus implements EventBusInterface
             try {
                 $this->bus->dispatch($event);
             } catch (NoHandlerForMessageException) {
-                // Exception handling logic can be added here if needed.
-                // For instance, logging the exception or performing a fallback action.
+                // TODO catch
             }
         }
     }

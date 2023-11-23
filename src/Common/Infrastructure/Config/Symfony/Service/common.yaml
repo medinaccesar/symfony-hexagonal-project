@@ -76,10 +76,10 @@ services:
       $connection: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection'
 
   # -- IMPLEMENTATIONS SELECTOR --
-  Common\Domain\Bus\Event\EventBusInterface: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqEventBus'
+  Common\Domain\Bus\Event\EventBusInterface: '@Common\Infrastructure\Bus\Event\Monitoring\PrometheusMonitoringEventBus'
 
   Common\Infrastructure\Bus\Event\Monitoring\PrometheusMonitoringEventBus:
     arguments:
       - '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqEventBus' # EventBusInterface
-      - '@Common\Infrastructure\Monitor\PrometheusMonitor'           # PrometheusMonitor
-      - 'symfony_app'                                                        # string appName
+      - '@Common\Infrastructure\Monitor\PrometheusMonitor'          # PrometheusMonitor
+      - 'symfony_app'                                                      # string appName

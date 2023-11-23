@@ -1,42 +1,50 @@
 FROM php:8.2-fpm-alpine
 
-# Define a UID argument to allow the user to set the user ID when creating the container
 ARG UID
+ENV AMQP_VERSION=2.1.0
+ENV XDEBUG_VERSION=3.2.2
 
 # Add a non-privileged user 'appuser' with the specified UID
-RUN adduser -u ${UID} --disabled-password --gecos "" appuser
-RUN chown -R appuser:appuser /home/appuser/
+RUN adduser -u ${UID} --disabled-password --gecos "" appuser \
+    && chown -R appuser:appuser /home/appuser/
 
-# Update packages and install necessary dependencies
-RUN apk update \
+# Update and upgrade apk packages, then install necessary dependencies
+RUN apk --update upgrade \
     && apk add --no-cache \
-    git \
-    libzip-dev \
-    sqlite-dev \
-    # Adding build dependencies
     autoconf \
+    automake \
+    make \
     gcc \
     g++ \
-    make \
-    pkgconf \
+    git \
+    bash \
+    icu-dev \
+    libzip-dev \
     rabbitmq-c-dev \
-    # Libraries for development
-    rabbitmq-c
+    linux-headers
 
-RUN docker-php-ext-install zip
+# Install PHP extensions
+RUN docker-php-ext-install \
+    zip  \
+    pdo  \
+    bcmath \
+    opcache \
+    intl \
+    pdo_mysql \
+    &&  pecl install  \
+    amqp-${AMQP_VERSION}  \
+    xdebug-${XDEBUG_VERSION} \
+    redis \
+    && docker-php-ext-enable  \
+    amqp  \
+    xdebug \
+    redis
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-# If you want to use Webpack, install Node.js and npm
-RUN apk add --no-cache nodejs npm
+# Install Composer globally
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install PHP's PDO and PDO MySQL extensions
-RUN docker-php-ext-install pdo pdo_mysql
-
-# Install amqp extension
-RUN pecl install amqp \
-    && docker-php-ext-enable amqp
+COPY conf /usr/local/etc/php/
 
 USER appuser
 WORKDIR /app
