@@ -131,7 +131,7 @@ Make sh
 - **Access the application**
 
 You can access the application in your web browser at: 
-- http://localhost:8080/ or http://localhost:8080/ui
+- http://localhost:8000/ or http://localhost:8000/ui
 - http://localhost:15672/ (RabbitMQ)
 - http://localhost:9090/ (Prometheus)
 - http://localhost:3000/ (Grafana)
