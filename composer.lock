@@ -146,7 +146,6 @@
             "homepage": "https://www.doctrine-project.org/projects/cache.html",
             "keywords": [
                 "abstraction",
-                "apcu",
                 "cache",
                 "caching",
                 "couchdb",
@@ -1427,7 +1426,6 @@
                 "phpunit/phpunit": "4.1.0"
             },
             "suggest": {
-                "ext-apc": "Required if using APCu.",
                 "ext-redis": "Required if using Redis."
             },
             "type": "library",

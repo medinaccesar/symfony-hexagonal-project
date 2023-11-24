@@ -53,7 +53,7 @@ services:
     container_name: rabbitmq
     image: rabbitmq:3-management
     volumes:
-      - ./docker/rabbitmq/rabbitmq.conf.d:/etc/rabbitmq/rabbitmq.conf.d
+      - ./docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
     ports:
       - "15672:15672"
       - "5672:5672"
