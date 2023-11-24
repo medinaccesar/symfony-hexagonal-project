@@ -25,7 +25,6 @@ trait RolesValidationTrait
                 $errors[] = ValidationErrorFormatter::format(
                     'roles',
                     ConstraintType::ROLE,
-                    $role,
                     $role
                 );
             }
