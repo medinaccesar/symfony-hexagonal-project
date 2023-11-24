@@ -10,80 +10,74 @@
 - [Bundles](#bundles-)
 
 ## Hexagonal Architecture 🎯
-This API is structured on the tenets of Domain-Driven Design (DDD), embracing a model-centric strategy that
-securely encapsulates business logic. It employs the Command Query Responsibility Segregation (CQRS) pattern to
-distinctively separate read and write operations, thus enhancing clarity and scalability. Additionally, it is
-organized as a modular monolith, which arranges the codebase into well-defined modules. This modularization
-facilitates maintainability and allows for independent evolution of each module, laying a solid foundation for a
-potential shift to a microservices architecture if needed.
-
-## Software Architecture Best Practices
-
-### Domain Layer
-- **Framework Agnostic**: Ensure the domain layer is free from external frameworks or libraries.
-- **Business Focus**: Include only business-related logic and rules. Avoid technical details.
-
-### Application Layer
-- **Thin Layer**: Focus on orchestrating the data flow between the domain and infrastructure.
-- **Framework Independence**: Interact with frameworks without embedding framework-specific logic.
-
-### Infrastructure Layer
-- **Environment-Specific**: Handles database access, file systems, external services.
-- **Framework Dependencies**: This is where framework-specific code belongs.
-
-### General Guidelines
-- **Avoid Leaky Abstractions**: No layer should leak into another.
-- **Dependency Direction**: Dependencies should point inwards, from outer layers to the Domain.
-- **Testing**: Independence of the domain layer eases unit testing for business logic.
-
-These principles guide towards a maintainable, scalable architecture adaptable to changes.
-
 
 > **Module example (Symfony)**:
 ```
-├── Application
-│   ├── Command
-│   │   └── CreateModule
-│   └── Query
-│       └── GetModuleById
-│           ├── GetModuleByIdHandler.php
-│           ├── GetModuleByIdQuery.php
-│           └── GetModuleByIdResponse.php
-├── Domain
-│   ├── Model
-│   │   └── Module.php
-│   └── Repository
-│       └── ModuleRepositoryInterface.php
-└── Infrastructure
-    ├── Adapter
-    │   ├── Persistence
-    │   │   └── ORM
-    │   │       └── Doctrine
-    │   │           ├── Mapping
-    │   │           │   └── Module.orm.xml
-    │   │           └── Repository
-    │   │               └── DoctrineModuleRepository.php
-    │   └── REST
-    │       └── Symfony
-    │           └── Controller
-    │               ├── CreateModuleController
-    │               │   ├── CreateModuleController.php
-    │               │   └── DTO
-    │               │       └── CreateModuleRequestDTO.php
-    │               └── GetModuleByIdController
-    │                   ├── DTO
-    │                   │   └── GetModuleByIdRequestDTO.php
-    │                   └── GetModuleByIdController.php
-    └── Config
-        └── (Framework config)
+└── Module
+    ├── Application
+    │   ├── Command
+    │   │   └── CreateModule
+    │   │       ├── CreateModuleCommand.php
+    │   │       ├── CreateModuleCommandHandler.php
+    │   │       ├── CreateModuleResponse.php
+    │   │       └── ModuleCreator.php
+    │   └── Query
+    │       └── GetModuleById
+    │           ├── GetModuleByIdFinder.php
+    │           ├── GetModuleByIdQuery.php
+    │           └── GetModuleByIdResponse.php
+    ├── Domain
+    │   ├── Event
+    │   │   └── CreateModuleDomainEvent.php
+    │   ├── Model
+    │   │   └── Module.php
+    │   ├── Repository
+    │   │   └── ModuleRepositoryInterface.php
+    │   ├── Security
+    │   │   └── AllowedRoles.php
+    │   └── Validation
+    │       ├── CreateModuleValidator.php
+    │       └── Trait
+    │           └── RolesValidationTrait.php
+    └── Infrastructure
+        ├── Adapter
+        │   ├── Persistence
+        │   │   └── ORM
+        │   │       └── Doctrine
+        │   │           ├── Mapping
+        │   │           │   └── Module.orm.xml
+        │   │           └── Repository
+        │   │               └── DoctrineModuleRepository.php
+        │   ├── REST
+        │   │   └── Symfony
+        │   │       └── Controller
+        │   │           ├── GetModuleByIdController
+        │   │           │   └── GetModuleByIdController.php
+        │   │           └── HealthCheckController
+        │   │               └── HealthCheckController.php
+        │   │           
+        │   │               
+        │   │               
+        │   │               
+        │   └── Security
+        │       └── Symfony
+        │           ├── ModuleAdapter.php
+        │           └── ModuleProvider.php
+        └── Config
+            └── Symfony
+                ├── Package
+                │   └── user-doctrine.yaml
+                └── Service
+                    └── user.yaml
 
 ```
 ## Prerequisites for manual installation 🧾️
 - PHP 8.2 or higher
 - Composer
-- Symfony CLI
 - MySQL or MariaDB
 - RabbitMQ
+- Redis
+- Symfony CLI (optional)
 - Grafana (optional)
 
 ## Installation 🚀
