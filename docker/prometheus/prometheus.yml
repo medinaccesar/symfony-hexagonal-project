@@ -11,10 +11,10 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'mysql_exporter'
+  - job_name: 'mysqld_exporter'
     scrape_interval: 5s
     static_configs:
-      - targets: [ 'mysql_exporter:9104' ]
+      - targets: [ 'mysqld_exporter:9104' ]
 
   - job_name: 'redis'
     static_configs:
