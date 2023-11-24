@@ -43,10 +43,10 @@ RUN docker-php-ext-install \
 
 # Install Composer globally
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://get.symfony.com/cli/installer | bash -s - --install-dir /usr/local/bin
+
 
 COPY conf /usr/local/etc/php/
 
 USER appuser
 WORKDIR /app
-
-EXPOSE 8080

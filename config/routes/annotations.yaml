@@ -10,3 +10,7 @@ home_controllers:
 user_controllers:
   resource: ../../src/User/Infrastructure/Adapter/REST/Symfony/Controller
   type: annotation
+
+common_controllers:
+  resource: ../../src/Common/Infrastructure/Adapter/REST/Symfony/Controller
+  type: annotation

@@ -1,21 +1,21 @@
 global:
-  scrape_interval:     15s
+  scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    monitor: 'symfony_project'
+    monitor: 'symfony_app'
 
 scrape_configs:
 
-  - job_name: 'prometheus'
+  - job_name: 'symfony_php'
     scrape_interval: 5s
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: [ 'symfony_php:8080' ]
 
-  - job_name: 'mysqld_exporter'
+  - job_name: 'app_mysqld_exporter'
     scrape_interval: 5s
     static_configs:
       - targets: [ 'mysqld_exporter:9104' ]
 
-  - job_name: 'redis'
+  - job_name: 'app_redis_exporter'
     static_configs:
-      - targets: ['redis_exporter:9121']
+      - targets: [ 'redis_exporter:9121' ]

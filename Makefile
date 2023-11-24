@@ -1,6 +1,8 @@
 UID = $(shell id -u)
-PHP_CONTAINER = php
-REDIS_CONTAINER = php
+
+PHP_CONTAINER = symfony_php
+REDIS_CONTAINER = redis
+
 
 install:
 	U_ID=${UID} docker-compose up -d --build

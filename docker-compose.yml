@@ -3,8 +3,10 @@ version: "3.5"
 services:
 
   php:
-    container_name: php
+    container_name: symfony_php
     restart: unless-stopped
+    ports:
+      - "8000:8000"
     build:
       context: ./docker/php
       args:
@@ -15,19 +17,8 @@ services:
       - prometheus
     networks:
       - symfony_network
+    command: symfony serve --dir=./public --port=8000
 
-  nginx:
-    container_name: nginx
-    build:
-      context: ./docker/nginx
-    volumes:
-      - .:/app
-    ports:
-      - "8080:80"
-    depends_on:
-      - php
-    networks:
-      - symfony_network
 
   mysql:
     container_name: mysql
@@ -105,7 +96,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - "./docker/grafana/provisioning/datasource.yaml:/etc/grafana/provisioning/datasource.yaml"
+      - "./docker/grafana/provisioning/datasource.yml:/etc/grafana/provisioning/datasource.yml"
     environment:
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SECURITY_ADMIN_PASSWORD=123456

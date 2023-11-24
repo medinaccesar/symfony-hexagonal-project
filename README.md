@@ -83,8 +83,8 @@ These principles guide towards a maintainable, scalable architecture adaptable t
 - Composer
 - Symfony CLI
 - MySQL or MariaDB
-- RabbitMQ (optional)
-- Grafana (optional
+- RabbitMQ
+- Grafana (optional)
 
 ## Installation 🚀
 
@@ -134,7 +134,7 @@ You can access the application in your web browser at:
 - http://localhost:8080/ or http://localhost:8080/ui
 - http://localhost:15672/ (RabbitMQ)
 - http://localhost:9090/ (Prometheus)
-- http://localhost:3000/ (Grafana
+- http://localhost:3000/ (Grafana)
 
 ### Manual installation 🖥
 

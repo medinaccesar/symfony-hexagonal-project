@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 readonly class HealthCheckController
 {
-    #[Route('/api/user/health-check', name: 'get_user_by_id', methods: ['GET'])]
+    #[Route('/api/user/health-check', name: 'user_health_check', methods: ['GET'])]
     public function __invoke($id): JsonApiResponse
     {
         return new JsonApiResponse(['status' => 'ok']);

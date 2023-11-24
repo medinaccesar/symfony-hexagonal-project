@@ -19,6 +19,10 @@ services:
   Common\:
     resource: '../../../../../Common'
 
+  Common\Infrastructure\Adapter\REST\Symfony\Controller\:
+    resource: '../../../../../Common/Infrastructure/Adapter/REST/Symfony/Controller'
+    tags: [ 'controller.service_arguments' ]
+
   # Exception Listener
   Common\Infrastructure\Adapter\REST\Symfony\Listener\JsonTransformerExceptionListener:
     tags:

@@ -23,8 +23,10 @@ final class PrometheusMonitor
     {
         $this->registry = new CollectorRegistry(
             new Redis(
-                ['host' => $_ENV["REDIS_HOST"],
-                    'port' => $_ENV["REDIS_PORT"]]
+                [
+                    'host' => $_ENV["REDIS_HOST"],
+                    'port' => $_ENV["REDIS_PORT"]
+                ]
             )
         );
     }
