@@ -1,14 +1,12 @@
 <?php
 
-namespace User\Test\Command;
+namespace Common\Tests\User\Command;
 
 
 use Common\Domain\Bus\Event\EventBusInterface;
 use Common\Domain\Exception\DuplicateValidationResourceException;
-use Common\Domain\Service\Interface\UuidGeneratorServiceInterface;
 use Common\Domain\ValueObject\Uuid;
 use PHPUnit\Framework\TestCase;
-use User\Application\Command\CreateUser\CreateUser;
 use User\Application\Command\CreateUser\CreateUserCommand;
 use User\Application\Command\CreateUser\CreateUserCommandHandler;
 use User\Application\Command\CreateUser\UserCreator;

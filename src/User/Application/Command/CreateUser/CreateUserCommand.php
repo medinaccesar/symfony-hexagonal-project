@@ -6,6 +6,12 @@ namespace User\Application\Command\CreateUser;
 
 use Common\Domain\Bus\Command\CommandInterface;
 
+/**
+ * Command for creating a new user.
+ *
+ * This class serves as a data transfer object for user creation operations.
+ * It encapsulates the necessary information (username, password, roles).
+ */
 final readonly class CreateUserCommand implements CommandInterface
 {
     public function __construct(
@@ -13,9 +19,7 @@ final readonly class CreateUserCommand implements CommandInterface
         private string $password,
         private ?array $roles
     )
-    {
-
-    }
+    {}
 
     public function getUsername(): string
     {

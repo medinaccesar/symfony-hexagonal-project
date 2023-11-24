@@ -12,8 +12,7 @@ final readonly class CreateUserCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private UserCreator $creator
-    )
-    {
+    ){
     }
 
     /**
