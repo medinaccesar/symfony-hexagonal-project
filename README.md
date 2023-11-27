@@ -1,7 +1,10 @@
 # Symfony hexagonal project
 > - Version **Symfony 6.3.***
 
-## Index 📖
+## Introduction 🌟
+This project is a template for creating a Symfony application using the hexagonal architecture. It is based on the [php-ddd-example](https://github.com/CodelyTV/php-ddd-example) project, but with some changes and improvements.
+
+## Table of contents 📖
 - [Hexagonal Architecture](#hexagonal-architecture-)
 - [Prerequisites for manual installation](#prerequisites-for-manual-installation-)
 - [Installation](#installation-)
@@ -9,9 +12,9 @@
   - [Manual installation](#manual-installation-)
 - [Bundles](#bundles-)
 
-## Hexagonal Architecture 🎯
+## Hexagonal architecture overview 🎯
 
-> **Module example (Symfony)**:
+ **Module example (Symfony)**:
 ```
 └── Module
     ├── Application
@@ -56,9 +59,6 @@
         │   │           └── HealthCheckController
         │   │               └── HealthCheckController.php
         │   │           
-        │   │               
-        │   │               
-        │   │               
         │   └── Security
         │       └── Symfony
         │           ├── ModuleAdapter.php
@@ -66,9 +66,9 @@
         └── Config
             └── Symfony
                 ├── Package
-                │   └── user-doctrine.yaml
+                │   └── module-doctrine.yaml
                 └── Service
-                    └── user.yaml
+                    └── module.yaml
 
 ```
 ## Prerequisites for manual installation 🧾️
@@ -79,6 +79,15 @@
 - Redis
 - Symfony CLI (optional)
 - Grafana (optional)
+
+#### Required PHP extensions
+This project requires the following PHP extensions to be installed and enabled:
+
+- **ext-amqp**: For working with RabbitMQ.
+- **ext-ctype**: Used for character type checking.
+- **ext-iconv**: For character encoding conversion.
+- **ext-pdo**: Essential for PHP Data Object (PDO) database connections.
+- **ext-redis**: Required for Redis integration.
 
 ## Installation 🚀
 
