@@ -21,7 +21,7 @@ final readonly class CreateUserCommand implements CommandInterface
     )
     {}
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
