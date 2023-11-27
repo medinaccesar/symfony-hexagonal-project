@@ -29,4 +29,5 @@ class ConfigArchitectureTest
             Selector::classname(DomainException::class),
         ];
     }
+
 }
