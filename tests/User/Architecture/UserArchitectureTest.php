@@ -5,7 +5,7 @@ namespace Tests\User\Architecture;
 use PHPat\Selector\Selector;
 use PHPat\Test\Builder\Rule;
 use PHPat\Test\PHPat;
-use Tests\Architecture\ConfigArchitectureTest;
+use Tests\Api\Architecture\ConfigArchitectureTest;
 
 final class UserArchitectureTest
 {

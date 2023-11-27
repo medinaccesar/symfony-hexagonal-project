@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Architecture;
+namespace Tests\Api\Architecture;
 
 use DateTimeImmutable;
 use DateTimeInterface;

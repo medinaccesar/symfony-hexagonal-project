@@ -9,7 +9,7 @@ parameters:
 
 services:
 	-
-		class: Tests\Architecture\ApiArchitectureTest
+		class: Tests\Api\Architecture\ApiArchitectureTest
 		tags:
 			- phpat.test
 	-

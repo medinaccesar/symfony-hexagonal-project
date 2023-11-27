@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Architecture;
+namespace Tests\Api\Architecture;
 
 use PHPat\Selector\Selector;
 use PHPat\Test\Builder\Rule;
