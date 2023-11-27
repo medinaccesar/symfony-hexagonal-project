@@ -9,6 +9,10 @@ use Tests\Api\Architecture\ConfigArchitectureTest;
 
 final class UserArchitectureTest
 {
+    /**
+     * The Domain layer can ONLY communicate with itself or with the Common\Domain layer
+     * @return Rule
+     */
     public static function testDomainRules(): Rule
     {
         return PHPat::rule()
@@ -18,9 +22,13 @@ final class UserArchitectureTest
                 Selector::inNamespace('User\Domain'),
                 Selector::inNamespace('Common\Domain'),
             ]))
-            ->because('User domain can only import itself');
+            ->because(ConfigArchitectureTest::DOMAIN_ERROR_MESSAGE);
     }
 
+    /**
+     * The Application layer can "known" or communicate ONLY with the Domain layer
+     * @return Rule
+     */
     public static function testApplicationRules(): Rule
     {
         return PHPat::rule()
@@ -29,22 +37,29 @@ final class UserArchitectureTest
             ->classes(...array_merge(ConfigArchitectureTest::languageClasses(), [
                 Selector::inNamespace('User\Application'),
                 Selector::inNamespace('User\Domain'),
-                Selector::inNamespace('Common\Domain'),
+
+                Selector::inNamespace('Common\Domain')
             ]))
-            ->because('User application can only import itself and Common');
+            ->because(ConfigArchitectureTest::APPLICATION_ERROR_MESSAGE);
     }
 
-
+    /**
+     * The Infrastructure layer can "know" or communicate with the Application and Domain layers
+     * @return Rule
+     */
     public static function testInfrastructureRules(): Rule
     {
         return PHPat::rule()
             ->classes(Selector::inNamespace('User\Infrastructure'))
-            ->shouldNotDependOn()
-            ->classes(Selector::inNamespace('User'))
-            ->excluding(
+            ->canOnlyDependOn()
+            ->classes(
                 Selector::inNamespace('User'),
-                Selector::inNamespace('Common'),
+                Selector::inNamespace('Common\Domain'),
+                Selector::inNamespace('Common\Infrastructure'),
+
+                Selector::inNamespace('Symfony'),
+                Selector::inNamespace('Doctrine')
             )
-            ->because('User infrastructure can only import module User and Common');
+            ->because(ConfigArchitectureTest::INFRASTRUCTURE_ERROR_MESSAGE);
     }
 }

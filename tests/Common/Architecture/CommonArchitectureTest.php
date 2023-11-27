@@ -17,6 +17,6 @@ final class CommonArchitectureTest
             ->classes(...array_merge(ConfigArchitectureTest::languageClasses(), [
                 Selector::inNamespace('Common\Domain')
             ]))
-            ->because('Common domain can only import itself');
+            ->because(ConfigArchitectureTest::DOMAIN_ERROR_MESSAGE);
     }
 }
