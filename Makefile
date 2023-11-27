@@ -48,3 +48,6 @@ cc: ## cache clear
 
 sh-redis: ## sh into redis container
 	docker exec -it --user ${UID} ${REDIS_CONTAINER} sh
+
+test-architecture:
+	docker exec --user ${UID} ${PHP_CONTAINER} php -d memory_limit=4G ./vendor/bin/phpstan analyse --error-format=github

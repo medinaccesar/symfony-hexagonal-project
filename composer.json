@@ -51,7 +51,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Common\\Tests\\": "tests/"
+            "Tests\\": "tests/"
         }
     },
     "replace": {
@@ -85,6 +85,8 @@
         }
     },
     "require-dev": {
+        "phpat/phpat": "^0.10.11",
+        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "6.3.*",
         "symfony/css-selector": "6.3.*",

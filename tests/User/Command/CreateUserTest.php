@@ -1,6 +1,6 @@
 <?php
 
-namespace Common\Tests\User\Command;
+namespace Tests\User\Command;
 
 
 use Common\Domain\Bus\Event\EventBusInterface;
@@ -9,6 +9,7 @@ use Common\Domain\ValueObject\Uuid;
 use PHPUnit\Framework\TestCase;
 use User\Application\Command\CreateUser\CreateUserCommand;
 use User\Application\Command\CreateUser\CreateUserCommandHandler;
+use User\Application\Command\CreateUser\CreateUserResponse;
 use User\Application\Command\CreateUser\UserCreator;
 use User\Domain\Model\User;
 use User\Infrastructure\Adapter\Persistence\ORM\Doctrine\Repository\DoctrineUserRepository;
@@ -35,11 +36,10 @@ class CreateUserTest extends TestCase
     public function testHandleCreatesNewUserSuccessfully()
     {
         $command = new CreateUserCommand('username', 'password', ['ROLE_USER']);
-        $uuid = Uuid::generateUuid();
         $this->userRepository->method('findByUsername')->willReturn(null);
         $response = ($this->createUserHandler)($command);
-        $this->assertInstanceOf(UserCreator::class, $response);
-        $this->assertEquals($uuid, $response->userId);
+        $this->assertInstanceOf(CreateUserResponse::class, $response);
+        $this->assertTrue(Uuid::validateUuid($response->id));
     }
 
     public function testHandleThrowsExceptionForDuplicateUser()
