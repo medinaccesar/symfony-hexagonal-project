@@ -14,9 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 🎻 Install dependencies
+        run: make install
+
       - name: 🧪 PHP Unit
         run: make phpunit
       
-      - name: 🎻 Architecture test
+      - name: 🎯 Architecture test
         run: make phpat-github
 
