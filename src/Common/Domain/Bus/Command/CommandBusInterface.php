@@ -16,5 +16,7 @@ interface CommandBusInterface
      * @param CommandInterface $command The command to dispatch.
      */
     public function dispatch(CommandInterface $command): void;
+
+
 }
 

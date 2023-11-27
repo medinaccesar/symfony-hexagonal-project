@@ -12,4 +12,10 @@ final readonly class CreateUserResponse
     )
     {
     }
+
+    public function e(): true
+    {
+        return true;
+
+    }
 }

@@ -12,3 +12,11 @@ services:
 		class: Tests\Architecture\ApiArchitectureTest
 		tags:
 			- phpat.test
+	-
+		class: Tests\Common\Architecture\CommonArchitectureTest
+		tags:
+			- phpat.test
+	-
+		class: Tests\User\Architecture\UserArchitectureTest
+		tags:
+			- phpat.test
