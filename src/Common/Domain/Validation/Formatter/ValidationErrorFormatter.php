@@ -9,8 +9,9 @@ class ValidationErrorFormatter
     /**
      * Format a validation message.
      *
+     * @param string $constraint
      * @param string $field The field associated with the validation.
-     * @param string $message The validation message.
+     * @param $value
      * @return array An associative array containing the field and message.
      */
     public static function format(string $constraint, string $field, $value): array

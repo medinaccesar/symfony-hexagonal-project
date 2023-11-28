@@ -72,7 +72,7 @@ This project is a template for creating a Symfony application using the hexagona
 
 ```
 ## Prerequisites for manual installation 🧾️
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - Composer
 - MySQL or MariaDB
 - RabbitMQ

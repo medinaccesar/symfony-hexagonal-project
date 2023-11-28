@@ -17,11 +17,6 @@ readonly class UserAdapter implements UserInterface, PasswordAuthenticatedUserIn
     {
     }
 
-    public function getUsername(): string
-    {
-        return $this->user->getUsername();
-    }
-
     public function getPassword(): string
     {
         return $this->user->getPassword();
@@ -39,7 +34,7 @@ readonly class UserAdapter implements UserInterface, PasswordAuthenticatedUserIn
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->user->getUsername();
+        return $this->user->getUsername();
     }
 
     /**

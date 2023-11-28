@@ -4,11 +4,14 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
+
         "ext-amqp": "*",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-pdo": "*",
+        "ext-redis": "*",
+
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
@@ -30,14 +33,14 @@
         "symfony/serializer": "6.3.*",
         "symfony/uid": "6.3.*",
         "symfony/validator": "6.3.*",
-        "symfony/yaml": "6.3.*",
-        "ext-redis": "*"
+        "symfony/yaml": "6.3.*"
     },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "phpro/grumphp-shim": true
         },
         "sort-packages": true
     },
@@ -86,6 +89,8 @@
     },
     "require-dev": {
         "phpat/phpat": "^0.10.11",
+        "phpmd/phpmd": "@stable",
+        "phpro/grumphp-shim": "^2.3",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "6.3.*",
@@ -94,6 +99,7 @@
         "symfony/maker-bundle": "^1.51",
         "symfony/phpunit-bridge": "^6.3",
         "symfony/stopwatch": "6.3.*",
-        "symfony/web-profiler-bundle": "6.3.*"
+        "symfony/web-profiler-bundle": "6.3.*",
+        "vimeo/psalm": "^5.16"
     }
 }

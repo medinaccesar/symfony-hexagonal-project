@@ -1,8 +1,8 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.3-fpm-alpine
 
 ARG UID
-ENV AMQP_VERSION=2.1.0
-ENV XDEBUG_VERSION=3.2.2
+# PHP 8.3 xdebug version
+ENV XDEBUG_VERSION=3.3.0alpha3
 
 # Add a non-privileged user 'appuser' with the specified UID
 RUN adduser -u ${UID} --disabled-password --gecos "" appuser \
@@ -21,7 +21,9 @@ RUN apk --update upgrade \
     icu-dev \
     libzip-dev \
     rabbitmq-c-dev \
-    linux-headers
+    linux-headers \
+    oniguruma-dev
+
 
 # Install PHP extensions
 RUN docker-php-ext-install \
@@ -31,8 +33,9 @@ RUN docker-php-ext-install \
     opcache \
     intl \
     pdo_mysql \
-    &&  pecl install  \
-    amqp-${AMQP_VERSION}  \
+    mbstring \
+    && pecl install  \
+    amqp  \
     xdebug-${XDEBUG_VERSION} \
     redis \
     && docker-php-ext-enable  \
@@ -40,11 +43,9 @@ RUN docker-php-ext-install \
     xdebug \
     redis
 
-
 # Install Composer globally
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN curl -sS https://get.symfony.com/cli/installer | bash -s - --install-dir /usr/local/bin
-
 
 COPY conf /usr/local/etc/php/
 

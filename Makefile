@@ -49,11 +49,19 @@ cc: ## cache clear
 sh-redis: ## sh into redis container
 	docker exec -it --user ${UID} ${REDIS_CONTAINER} sh
 
+## Tests
 phpunit:
 	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/phpunit
 
-phpat:
-	docker exec --user ${UID} ${PHP_CONTAINER} php -d memory_limit=4G ./vendor/bin/phpstan analyse
+psalm:
+	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/psalm
 
+phpmd:
+	docker exec --user ${UID} ${PHP_CONTAINER} ./vendor/bin/phpmd src text phpmd.xml
+
+phpat:
+	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/phpstan analyse
+
+## Github Actions
 phpat-github:
-	docker exec --user ${UID} ${PHP_CONTAINER} php -d memory_limit=4G ./vendor/bin/phpstan analyse --error-format=github
+	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/phpstan analyse --error-format=github

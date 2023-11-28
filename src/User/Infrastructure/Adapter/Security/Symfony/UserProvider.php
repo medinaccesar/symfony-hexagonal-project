@@ -52,7 +52,7 @@ readonly class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(ExceptionMessage::NOT_SUPPORTED);
         }
 
-        $username = $user->getUsername();
+        $username = $user->getUserIdentifier();
         return $this->loadUserByUsername($username);
     }
 

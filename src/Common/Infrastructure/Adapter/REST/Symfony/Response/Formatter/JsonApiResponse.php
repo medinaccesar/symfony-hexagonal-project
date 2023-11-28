@@ -26,11 +26,9 @@ final class JsonApiResponse extends JsonResponse
      *
      * @param mixed $data The response data.
      * @param int $status HTTP status code, defaults to 200.
-     * @param string $type Type of response, e.g., 'success' or 'error'.
      * @param string $message Response message.
+     * @param string $type Type of response, e.g., 'success' or 'error'.
      * @param bool $error Indicates if the response is an error.
-     * @param string $timestamp Timestamp of the response.
-     * @param string $path Request path related to the response.
      */
     public function __construct(
         $data = null,
