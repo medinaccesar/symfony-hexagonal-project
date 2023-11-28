@@ -31,7 +31,7 @@ start: ## Start the containers
 stop: ## Stop the containers
 	U_ID=${UID} docker-compose stop
 
-down: ## Stop the containers
+down: ## Stop the containers.
 	U_ID=${UID} docker-compose down
 
 restart: ## Restart the containers
