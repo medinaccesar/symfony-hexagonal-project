@@ -12,9 +12,6 @@ trait RolesValidationTrait
 {
     /**
      * Validates an array of roles.
-     *
-     * @param array $roles
-     * @return array
      */
     public function validateRoles(array $roles): array
     {
@@ -35,14 +32,9 @@ trait RolesValidationTrait
 
     /**
      * Checks if a role is valid.
-     *
-     * @param string $role
-     * @return bool
      */
     protected function isRoleValid(string $role): bool
     {
         return in_array($role, AllowedRoles::getRoles());
     }
 }
-
-

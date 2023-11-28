@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Common\Domain\ValueObject;
 
 /**
- * Abstract class Uuid
+ * Abstract class Uuid.
  *
  * Provides functionalities for generating and validating UUIDs.
  * This class uses Symfony's Uuid component (LEAK), which is an exception to the
@@ -17,7 +17,8 @@ abstract class Uuid
 {
     /**
      * Generate a new UUID.
-     * @return string The generated UUID in RFC 4122 format.
+     *
+     * @return string the generated UUID in RFC 4122 format
      */
     public static function generateUuid(): string
     {
@@ -26,8 +27,8 @@ abstract class Uuid
 
     /**
      * Validate a given UUID.
-     * @param string $uuid
-     * @return bool True if the UUID is valid, false otherwise.
+     *
+     * @return bool true if the UUID is valid, false otherwise
      */
     public static function validateUuid(string $uuid): bool
     {

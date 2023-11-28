@@ -18,13 +18,14 @@ use Common\Domain\Exception\Constant\ExceptionType;
 class ValidationException extends ApiException
 {
     /**
-     * @var array An array containing details about the validation violations.
+     * @var array an array containing details about the validation violations
      */
     private array $violations;
 
     /**
      * Constructor for the ValidationException class.
-     * @param array $violations An array detailing the validation errors encountered.
+     *
+     * @param array $violations an array detailing the validation errors encountered
      */
     public function __construct(array $violations)
     {
@@ -34,7 +35,8 @@ class ValidationException extends ApiException
 
     /**
      * Retrieves the validation violations.
-     * @return array An array of validation violations.
+     *
+     * @return array an array of validation violations
      */
     public function getViolations(): array
     {

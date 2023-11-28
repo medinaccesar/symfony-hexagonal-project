@@ -16,10 +16,10 @@ use Exception;
  * for API error handling, allowing for a consistent structure across
  * API-related error management.
  */
-class ApiException extends Exception
+class ApiException extends \Exception
 {
     /**
-     * @var string $type A string indicating the type of the exception.
+     * @var string a string indicating the type of the exception
      */
     protected string $type;
 
@@ -30,16 +30,15 @@ class ApiException extends Exception
      * an optional message, and a type. If no message or type is provided,
      * default values are used.
      *
-     * @param int $statusCode The HTTP status code related to the exception, defaults to 500.
-     * @param string $message The error message, defaults to an empty string.
-     * @param string $type The type of the exception, defaults to a general exception type.
+     * @param int    $statusCode the HTTP status code related to the exception, defaults to 500
+     * @param string $message    the error message, defaults to an empty string
+     * @param string $type       the type of the exception, defaults to a general exception type
      */
     public function __construct(
-        int    $statusCode = 500,
+        int $statusCode = 500,
         string $message = ExceptionMessage::INTERNAL,
         string $type = ExceptionType::EXCEPTION
-    )
-    {
+    ) {
         $this->type = $type;
         parent::__construct($message, $statusCode);
     }
@@ -47,7 +46,7 @@ class ApiException extends Exception
     /**
      * Retrieves the type of the exception.
      *
-     * @return string The type of the exception.
+     * @return string the type of the exception
      */
     public function getType(): string
     {

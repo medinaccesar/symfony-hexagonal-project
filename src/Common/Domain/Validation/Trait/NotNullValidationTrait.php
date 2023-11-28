@@ -11,9 +11,11 @@ trait NotNullValidationTrait
 {
     /**
      * Validates that a value is not null.
-     * @param mixed  $value     The value to validate.
-     * @param string $fieldName The name of the field for error messaging.
-     * @return array An array containing a formatted validation error if the value is null.
+     *
+     * @param mixed  $value     the value to validate
+     * @param string $fieldName the name of the field for error messaging
+     *
+     * @return array an array containing a formatted validation error if the value is null
      */
     public function validateNotNull(mixed $value, string $fieldName): array
     {
@@ -24,6 +26,7 @@ trait NotNullValidationTrait
                 $value
             );
         }
+
         return [];
     }
 }

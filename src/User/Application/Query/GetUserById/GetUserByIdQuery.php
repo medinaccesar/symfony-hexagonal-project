@@ -8,8 +8,6 @@ readonly class GetUserByIdQuery
 {
     public function __construct(
         public string $userId
-    )
-    {
+    ) {
     }
 }
-

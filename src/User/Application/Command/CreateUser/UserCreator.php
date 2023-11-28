@@ -13,9 +13,8 @@ final readonly class UserCreator
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
-        private EventBusInterface       $bus
-    )
-    {
+        private EventBusInterface $bus
+    ) {
     }
 
     /**
@@ -24,13 +23,13 @@ final readonly class UserCreator
     public function __invoke($id, $username, $password, $roles): User
     {
         $existingUser = $this->userRepository->findByUsername($username);
-        if ($existingUser !== null) {
+        if (null !== $existingUser) {
             throw new DuplicateValidationResourceException();
         }
         $user = User::create($id, $username, $password, $roles);
         $this->userRepository->save($user);
         $this->bus->publish(...$user->pullDomainEvents());
+
         return $user;
     }
-
 }

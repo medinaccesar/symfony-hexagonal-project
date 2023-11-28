@@ -7,7 +7,6 @@ namespace User\Infrastructure\Adapter\REST\Symfony\Controller\HealthCheckControl
 use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 readonly class HealthCheckController
 {
     #[Route('/api/user/health-check', name: 'user_health_check', methods: ['GET'])]

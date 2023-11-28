@@ -8,27 +8,27 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
-use function in_array;
 
 readonly class RequestTransformer
 {
     private const string ALLOWED_CONTENT_TYPE = 'application/json';
     private const array SUPPORTED_METHODS = [
         Request::METHOD_GET,
-        Request::METHOD_POST
+        Request::METHOD_POST,
     ];
 
     public function __construct(
         private SerializerInterface $serializer
-    )
-    {
+    ) {
     }
 
     /**
-     * @param Request $request The HTTP request to transform.
-     * @param string $dtoClass The DTO class to which the request will be transformed.
-     * @return object|void The transformed DTO.
-     * @throws BadRequestException If the request cannot be transformed.
+     * @param Request $request  the HTTP request to transform
+     * @param string  $dtoClass the DTO class to which the request will be transformed
+     *
+     * @return object|void the transformed DTO
+     *
+     * @throws BadRequestException if the request cannot be transformed
      */
     public function transform(Request $request, string $dtoClass)
     {
@@ -38,45 +38,49 @@ readonly class RequestTransformer
         if ($this->isContentMethod($request->getMethod())) {
             return $this->transformContent($request, $dtoClass);
         }
-
     }
 
     /**
-     * @param Request $request The HTTP request.
-     * @throws BadRequestException If the content type is not supported.
+     * @param Request $request the HTTP request
+     *
+     * @throws BadRequestException if the content type is not supported
      */
     private function validateContentType(Request $request): void
     {
-        if ($request->headers->get('Content-Type') !== self::ALLOWED_CONTENT_TYPE) {
+        if (self::ALLOWED_CONTENT_TYPE !== $request->headers->get('Content-Type')) {
             throw new BadRequestException(sprintf('[%s] is the only Content-Type allowed', self::ALLOWED_CONTENT_TYPE), Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
         }
     }
 
     /**
-     * @param Request $request The HTTP request.
-     * @throws BadRequestException If the method is not supported.
+     * @param Request $request the HTTP request
+     *
+     * @throws BadRequestException if the method is not supported
      */
     private function validateRequestMethod(Request $request): void
     {
-        if (!in_array($request->getMethod(), self::SUPPORTED_METHODS, true)) {
+        if (!\in_array($request->getMethod(), self::SUPPORTED_METHODS, true)) {
             throw new BadRequestException('REST method not supported', Response::HTTP_METHOD_NOT_ALLOWED);
         }
     }
 
     /**
-     * @param string $method The HTTP method.
-     * @return bool True if the method typically contains content.
+     * @param string $method the HTTP method
+     *
+     * @return bool true if the method typically contains content
      */
     private function isContentMethod(string $method): bool
     {
-        return in_array($method, [Request::METHOD_POST, Request::METHOD_PUT, Request::METHOD_PATCH], true);
+        return \in_array($method, [Request::METHOD_POST, Request::METHOD_PUT, Request::METHOD_PATCH], true);
     }
 
     /**
-     * @param Request $request The HTTP request.
-     * @param string $dtoClass The DTO class to which the content will be transformed.
-     * @return mixed The transformed DTO.
-     * @throws BadRequestException If the content is invalid or the transformation fails.
+     * @param Request $request  the HTTP request
+     * @param string  $dtoClass the DTO class to which the content will be transformed
+     *
+     * @return mixed the transformed DTO
+     *
+     * @throws BadRequestException if the content is invalid or the transformation fails
      */
     private function transformContent(Request $request, string $dtoClass): mixed
     {
@@ -91,5 +95,3 @@ readonly class RequestTransformer
         }
     }
 }
-
-

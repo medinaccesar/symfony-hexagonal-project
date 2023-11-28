@@ -8,7 +8,6 @@ use Common\Domain\Utils\Trait\DateUtil;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 
 final class MySqlDoctrineEventBus implements EventBusInterface
 {
@@ -20,7 +19,7 @@ final class MySqlDoctrineEventBus implements EventBusInterface
     /**
      * Constructor for MySqlDoctrineEventBus.
      *
-     * @param EntityManager $entityManager The EntityManager instance.
+     * @param EntityManager $entityManager the EntityManager instance
      */
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -31,7 +30,8 @@ final class MySqlDoctrineEventBus implements EventBusInterface
      * Publishes the given domain events.
      *
      * @param DomainEvent ...$events The domain events to publish.
-     * @throws Exception
+     *
+     * @throws \Exception
      */
     public function publish(DomainEvent ...$events): void
     {
@@ -43,8 +43,9 @@ final class MySqlDoctrineEventBus implements EventBusInterface
     /**
      * Publishes a single domain event.
      *
-     * @param DomainEvent $domainEvent The domain event to publish.
-     * @throws Exception
+     * @param DomainEvent $domainEvent the domain event to publish
+     *
+     * @throws \Exception
      */
     private function publishEvent(DomainEvent $domainEvent): void
     {

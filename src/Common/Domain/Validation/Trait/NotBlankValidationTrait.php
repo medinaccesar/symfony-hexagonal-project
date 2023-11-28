@@ -11,9 +11,11 @@ trait NotBlankValidationTrait
 {
     /**
      * Validates that a string is not blank.
-     * @param string|null $value     The string to validate.
-     * @param string      $fieldName The name of the field for error messaging.
-     * @return array An array containing a formatted validation error if the string is blank.
+     *
+     * @param string|null $value     the string to validate
+     * @param string      $fieldName the name of the field for error messaging
+     *
+     * @return array an array containing a formatted validation error if the string is blank
      */
     public function validateNotBlank(?string $value, string $fieldName): array
     {
@@ -24,6 +26,7 @@ trait NotBlankValidationTrait
                 $value
             );
         }
+
         return [];
     }
 }

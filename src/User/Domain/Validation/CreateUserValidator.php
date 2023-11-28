@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace User\Domain\Validation;
 
-use Common\Domain\Validation\Trait\LengthValidationTrait;
 use Common\Domain\Exception\ValidationException;
+use Common\Domain\Validation\Trait\LengthValidationTrait;
 use Common\Domain\Validation\Trait\NotBlankValidationTrait;
 use Common\Domain\Validation\Trait\RangeValidationTrait;
 use User\Domain\Validation\Trait\RolesValidationTrait;
@@ -17,10 +17,10 @@ class CreateUserValidator
     use NotBlankValidationTrait;
     use LengthValidationTrait;
 
-    private const USERNAME_MIN_LENGTH = 4;
-    private const USERNAME_MAX_LENGTH = 20;
-    private const PASSWORD_MIN_LENGTH = 8;
-    private const PASSWORD_MAX_LENGTH = 255;
+    private const int USERNAME_MIN_LENGTH = 4;
+    private const int USERNAME_MAX_LENGTH = 20;
+    private const int PASSWORD_MIN_LENGTH = 8;
+    private const int PASSWORD_MAX_LENGTH = 255;
 
     /**
      * @throws ValidationException
@@ -42,7 +42,7 @@ class CreateUserValidator
     {
         return array_filter([
             $this->validateNotBlank($value, $fieldName),
-            $this->validateLengthIfNotBlank($value, $minLength, $maxLength, $fieldName)
+            $this->validateLengthIfNotBlank($value, $minLength, $maxLength, $fieldName),
         ]);
     }
 
@@ -56,6 +56,3 @@ class CreateUserValidator
         return empty($value) ? [] : $this->validateLength($value, $min, $max, $fieldName);
     }
 }
-
-
-

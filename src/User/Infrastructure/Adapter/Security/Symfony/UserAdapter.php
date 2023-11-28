@@ -10,11 +10,9 @@ use User\Domain\Model\User;
 
 readonly class UserAdapter implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
     public function __construct(
         private User $user
-    )
-    {
+    ) {
     }
 
     public function getPassword(): string
@@ -28,7 +26,7 @@ readonly class UserAdapter implements UserInterface, PasswordAuthenticatedUserIn
     }
 
     /**
-     * The public representation of the user (e.g. a username, an email address, etc.)
+     * The public representation of the user (e.g. a username, an email address, etc.).
      *
      * @see UserInterface
      */

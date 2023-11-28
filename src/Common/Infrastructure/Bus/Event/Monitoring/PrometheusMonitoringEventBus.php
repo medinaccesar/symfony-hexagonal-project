@@ -20,9 +20,8 @@ final readonly class PrometheusMonitoringEventBus implements EventBusInterface
     public function __construct(
         private EventBusInterface $bus,
         private PrometheusMonitor $monitor,
-        private string            $appName
-    )
-    {
+        private string $appName
+    ) {
     }
 
     /**
@@ -33,7 +32,6 @@ final readonly class PrometheusMonitoringEventBus implements EventBusInterface
      * underlying event bus for handling.
      *
      * @param DomainEvent ...$events A variadic list of domain events to be published.
-     * @return void
      */
     public function publish(DomainEvent ...$events): void
     {

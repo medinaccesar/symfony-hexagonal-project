@@ -7,8 +7,6 @@ namespace Common\Infrastructure\Bus\Event;
 use Common\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Common\Infrastructure\Bus\CallableFirstParameterExtractor;
 use Common\Infrastructure\Bus\Event\RabbitMQ\Formatter\RabbitMqQueueNameFormatter;
-use Exception;
-use RuntimeException;
 use Traversable;
 
 /**
@@ -24,9 +22,9 @@ final class DomainEventSubscriberLocator
      * Initializes the subscriber locator with an iterable mapping of event subscribers.
      * Converts the Traversable mapping to an array for internal use.
      *
-     * @param Traversable $mapping The iterable mapping of event subscribers.
+     * @param \Traversable $mapping the iterable mapping of event subscribers
      */
-    public function __construct(Traversable $mapping)
+    public function __construct(\Traversable $mapping)
     {
         $this->mapping = iterator_to_array($mapping);
     }
@@ -34,12 +32,14 @@ final class DomainEventSubscriberLocator
     /**
      * Retrieves all subscribers subscribed to a specific event class.
      *
-     * @param string $eventClass The class name of the event.
-     * @return array An array of subscribers for the specified event class.
+     * @param string $eventClass the class name of the event
+     *
+     * @return array an array of subscribers for the specified event class
      */
     public function allSubscribedTo(string $eventClass): array
     {
         $subscribers = CallableFirstParameterExtractor::forCallables($this->mapping);
+
         return $subscribers[$eventClass] ?? [];
     }
 
@@ -47,9 +47,11 @@ final class DomainEventSubscriberLocator
      * Retrieves a subscriber by a specific RabbitMQ queue name.
      * Searches through the mapping for a subscriber whose queue name matches the given name.
      *
-     * @param string $queueName The name of the RabbitMQ queue.
-     * @return DomainEventSubscriberInterface The subscriber associated with the given queue name.
-     * @throws RuntimeException|Exception If no subscriber is found for the specified queue name.
+     * @param string $queueName the name of the RabbitMQ queue
+     *
+     * @return DomainEventSubscriberInterface the subscriber associated with the given queue name
+     *
+     * @throws \RuntimeException|\Exception if no subscriber is found for the specified queue name
      */
     public function withRabbitMqQueueNamed(string $queueName): DomainEventSubscriberInterface
     {
@@ -58,13 +60,13 @@ final class DomainEventSubscriberLocator
                 return $subscriber;
             }
         }
-        throw new RuntimeException("No subscribers for the <$queueName> queue");
+        throw new \RuntimeException("No subscribers for the <$queueName> queue");
     }
 
     /**
      * Retrieves all subscribers.
      *
-     * @return array An array of all subscribers.
+     * @return array an array of all subscribers
      */
     public function all(): array
     {

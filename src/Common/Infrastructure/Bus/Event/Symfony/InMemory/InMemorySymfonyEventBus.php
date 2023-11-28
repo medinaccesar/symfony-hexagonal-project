@@ -23,7 +23,7 @@ class InMemorySymfonyEventBus implements EventBusInterface
     private MessageBus $bus;
 
     /**
-     * @param iterable $subscribers The iterable list of event subscribers.
+     * @param iterable $subscribers the iterable list of event subscribers
      */
     public function __construct(iterable $subscribers)
     {

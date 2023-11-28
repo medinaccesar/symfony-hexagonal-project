@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Common\Infrastructure\Adapter\REST\Symfony\Resolver;
 
 use Common\Infrastructure\Adapter\REST\Symfony\Transformer\RequestTransformer;
-use Generator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -18,9 +17,6 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  */
 readonly class RequestArgumentResolver implements ValueResolverInterface
 {
-    /**
-     * @param RequestTransformer $requestTransformer
-     */
     public function __construct(
         private RequestTransformer $requestTransformer
     ) {
@@ -31,11 +27,12 @@ readonly class RequestArgumentResolver implements ValueResolverInterface
      * This method is called by Symfony to transform the request into suitable arguments for
      * the controller method being invoked. It leverages the RequestTransformer to achieve this.
      *
-     * @param Request          $request   The current HTTP request.
-     * @param ArgumentMetadata $argument  Metadata about the controller argument being resolved.
-     * @return Generator       Yields the transformed argument for the controller method.
+     * @param Request          $request  the current HTTP request
+     * @param ArgumentMetadata $argument metadata about the controller argument being resolved
+     *
+     * @return \Generator yields the transformed argument for the controller method
      */
-    public function resolve(Request $request, ArgumentMetadata $argument): Generator
+    public function resolve(Request $request, ArgumentMetadata $argument): \Generator
     {
         yield $this->requestTransformer->transform($request, $argument->getType());
     }

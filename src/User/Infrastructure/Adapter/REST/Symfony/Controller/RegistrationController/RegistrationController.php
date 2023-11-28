@@ -6,23 +6,21 @@ namespace User\Infrastructure\Adapter\REST\Symfony\Controller\RegistrationContro
 
 use Common\Domain\Exception\DuplicateValidationResourceException;
 use Common\Domain\Exception\ValidationException;
-use User\Infrastructure\Adapter\REST\Symfony\Controller\RegistrationController\DTO\RegistrationRequestDTO;
 use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use User\Application\Command\CreateUser\CreateUserCommand;
 use User\Application\Command\CreateUser\CreateUserCommandHandler;
 use User\Domain\Validation\CreateUserValidator;
-
+use User\Infrastructure\Adapter\REST\Symfony\Controller\RegistrationController\DTO\RegistrationRequestDTO;
 
 readonly class RegistrationController
 {
     public function __construct(
-        private CreateUserCommandHandler    $handler,
-        private CreateUserValidator         $validator,
+        private CreateUserCommandHandler $handler,
+        private CreateUserValidator $validator,
         private UserPasswordHasherInterface $passwordHasher
-    )
-    {
+    ) {
     }
 
     /**

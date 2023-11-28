@@ -6,7 +6,6 @@ namespace Common\Domain\Bus\Event;
 
 use Common\Domain\Utils\Trait\DateUtil;
 use Common\Domain\ValueObject\Uuid;
-use DateTimeImmutable;
 
 /**
  * Abstract class for domain events in a domain-driven design context.
@@ -23,52 +22,46 @@ abstract readonly class DomainEvent
 
     /**
      * Constructs a DomainEvent.
-     *
-     * @param string $aggregateId
-     * @param string|null $eventId
-     * @param string|null $occurredOn
      */
     public function __construct(
         private string $aggregateId,
-        string         $eventId = null,
-        string         $occurredOn = null
-    )
-    {
+        string $eventId = null,
+        string $occurredOn = null
+    ) {
         $this->eventId = $eventId ?: Uuid::generateUuid();
-        $this->occurredOn = $occurredOn ?: $this->dateToString(new DateTimeImmutable());
+        $this->occurredOn = $occurredOn ?: $this->dateToString(new \DateTimeImmutable());
     }
 
     /**
      * Factory method to create an instance of a DomainEvent from primitive values.
-     * @param string $aggregateId
-     * @param array $body
-     * @param string $eventId
-     * @param string $occurredOn
      *
-     * @return static A new instance of a subclass of DomainEvent.
+     * @return static a new instance of a subclass of DomainEvent
      */
     abstract public static function fromPrimitives(
         string $aggregateId,
-        array  $body,
+        array $body,
         string $eventId,
         string $occurredOn
     ): self;
 
     /**
      * Returns the name of the event.
-     * @return string The name of the event.
+     *
+     * @return string the name of the event
      */
     abstract public static function eventName(): string;
 
     /**
      * Converts the DomainEvent to an array of primitive types.
-     * @return array The array representation of the event.
+     *
+     * @return array the array representation of the event
      */
     abstract public function toPrimitives(): array;
 
     /**
      * Gets the aggregate identifier related to the event.
-     * @return string The identifier of the aggregate.
+     *
+     * @return string the identifier of the aggregate
      */
     final public function aggregateId(): string
     {
@@ -77,7 +70,8 @@ abstract readonly class DomainEvent
 
     /**
      * Gets the unique identifier of the event.
-     * @return string The unique identifier of the event.
+     *
+     * @return string the unique identifier of the event
      */
     final public function eventId(): string
     {
@@ -86,7 +80,8 @@ abstract readonly class DomainEvent
 
     /**
      * Gets the time when the event occurred.
-     * @return string The occurrence time of the event.
+     *
+     * @return string the occurrence time of the event
      */
     final public function occurredOn(): string
     {

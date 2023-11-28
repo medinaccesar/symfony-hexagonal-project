@@ -14,7 +14,7 @@ use Common\Domain\Bus\Event\DomainEvent;
 class AggregateRoot
 {
     /**
-     * @var DomainEvent[] Array to store domain events.
+     * @var DomainEvent[] array to store domain events
      */
     private array $domainEvents = [];
 
@@ -23,7 +23,7 @@ class AggregateRoot
      * This method returns the list of domain events recorded by the aggregate root and then resets the list.
      * Typically used for event publishing after a transaction is completed.
      *
-     * @return DomainEvent[] The list of domain events.
+     * @return DomainEvent[] the list of domain events
      */
     final public function pullDomainEvents(): array
     {
@@ -36,8 +36,6 @@ class AggregateRoot
     /**
      * Records a domain event.
      * Adds a given domain event to the list of events. These events can later be retrieved and published.
-     *
-     * @param DomainEvent $domainEvent
      */
     final protected function record(DomainEvent $domainEvent): void
     {

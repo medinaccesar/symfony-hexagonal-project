@@ -12,8 +12,7 @@ final readonly class MetricController
 {
     public function __construct(
         private PrometheusMonitor $monitor
-    )
-    {
+    ) {
     }
 
     #[Route('/metrics', name: 'app_metrics', methods: ['GET'])]

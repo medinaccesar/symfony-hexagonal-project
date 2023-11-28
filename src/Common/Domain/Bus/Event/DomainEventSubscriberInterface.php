@@ -17,7 +17,7 @@ interface DomainEventSubscriberInterface
      * This method should return an array of domain event class names that the subscriber wants to handle.
      * The event bus uses this information to route the appropriate events to the subscriber.
      *
-     * @return string[] An array of domain event class names.
+     * @return string[] an array of domain event class names
      */
     public static function subscribedTo(): array;
 }

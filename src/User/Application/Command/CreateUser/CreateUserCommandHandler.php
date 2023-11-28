@@ -12,7 +12,7 @@ final readonly class CreateUserCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private UserCreator $creator
-    ){
+    ) {
     }
 
     /**
@@ -21,6 +21,7 @@ final readonly class CreateUserCommandHandler implements CommandHandlerInterface
     public function __invoke(CreateUserCommand $command): CreateUserResponse
     {
         $user = $this->creator->__invoke(Uuid::generateUuid(), $command->getUsername(), $command->getPassword(), $command->getRoles());
+
         return new CreateUserResponse($user->getId());
     }
 }

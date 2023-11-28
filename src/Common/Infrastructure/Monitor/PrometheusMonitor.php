@@ -24,8 +24,8 @@ final class PrometheusMonitor
         $this->registry = new CollectorRegistry(
             new Redis(
                 [
-                    'host' => $_ENV["REDIS_HOST"],
-                    'port' => $_ENV["REDIS_PORT"]
+                    'host' => $_ENV['REDIS_HOST'],
+                    'port' => $_ENV['REDIS_PORT'],
                 ]
             )
         );
@@ -37,7 +37,7 @@ final class PrometheusMonitor
      * This method provides access to the CollectorRegistry, allowing the application
      * to register and collect metrics.
      *
-     * @return CollectorRegistry The CollectorRegistry instance.
+     * @return CollectorRegistry the CollectorRegistry instance
      */
     public function registry(): CollectorRegistry
     {

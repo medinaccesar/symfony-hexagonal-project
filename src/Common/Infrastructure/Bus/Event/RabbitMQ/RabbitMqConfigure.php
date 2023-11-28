@@ -4,28 +4,24 @@ declare(strict_types=1);
 
 namespace Common\Infrastructure\Bus\Event\RabbitMQ;
 
-use AMQPChannelException;
-use AMQPConnectionException;
-use AMQPExchangeException;
-use AMQPQueue;
 use Common\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Common\Infrastructure\Bus\Event\RabbitMQ\Formatter\RabbitMqExchangeNameFormatter;
 use Common\Infrastructure\Bus\Event\RabbitMQ\Formatter\RabbitMqQueueNameFormatter;
-use Exception;
 
 final readonly class RabbitMqConfigure
 {
     public function __construct(
         private RabbitMqConnection $connection
-    ){
+    ) {
     }
 
     /**
      * Configures exchanges and queues for the given subscribers.
      *
-     * @param string $exchangeName Name of the main exchange.
+     * @param string                         $exchangeName   name of the main exchange
      * @param DomainEventSubscriberInterface ...$subscribers The event subscribers.
-     * @throws Exception
+     *
+     * @throws \Exception
      */
     public function configure(string $exchangeName, DomainEventSubscriberInterface ...$subscribers): void
     {
@@ -48,21 +44,20 @@ final readonly class RabbitMqConfigure
         $exchange = $this->connection->exchange($exchangeName);
         $exchange->setType(AMQP_EX_TYPE_TOPIC);
         $exchange->setFlags(AMQP_DURABLE);
-        $this->safeDeclare(fn() => $exchange->declareExchange());
+        $this->safeDeclare(fn () => $exchange->declareExchange());
     }
 
     // Refactoring queue declaration for each subscriber
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function declareQueues(
-        string                         $exchangeName,
-        string                         $retryExchangeName,
-        string                         $deadLetterExchangeName,
+        string $exchangeName,
+        string $retryExchangeName,
+        string $deadLetterExchangeName,
         DomainEventSubscriberInterface ...$subscribers
-    ): void
-    {
+    ): void {
         foreach ($subscribers as $subscriber) {
             $this->declareSubscriberQueues($subscriber, $exchangeName, $retryExchangeName, $deadLetterExchangeName);
         }
@@ -71,15 +66,14 @@ final readonly class RabbitMqConfigure
     // Handling queue declarations per subscriber with enhanced readability and error handling
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function declareSubscriberQueues(
         DomainEventSubscriberInterface $subscriber,
-        string                         $exchangeName,
-        string                         $retryExchangeName,
-        string                         $deadLetterExchangeName
-    ): void
-    {
+        string $exchangeName,
+        string $retryExchangeName,
+        string $deadLetterExchangeName
+    ): void {
         $queueName = RabbitMqQueueNameFormatter::format($subscriber);
         $retryQueueName = RabbitMqQueueNameFormatter::formatRetry($subscriber);
         $deadLetterQueueName = RabbitMqQueueNameFormatter::formatDeadLetter($subscriber);
@@ -99,28 +93,27 @@ final readonly class RabbitMqConfigure
 
     // Queue declaration with error handling for robustness
     private function declareQueue(
-        string  $name,
-        ?string $deadLetterExchange = null,
-        ?string $deadLetterRoutingKey = null,
-        ?int    $messageTtl = null
-    ): AMQPQueue
-    {
+        string $name,
+        string $deadLetterExchange = null,
+        string $deadLetterRoutingKey = null,
+        int $messageTtl = null
+    ): \AMQPQueue {
         $queue = $this->connection->queue($name);
 
-        if ($deadLetterExchange !== null) {
+        if (null !== $deadLetterExchange) {
             $queue->setArgument('x-dead-letter-exchange', $deadLetterExchange);
         }
 
-        if ($deadLetterRoutingKey !== null) {
+        if (null !== $deadLetterRoutingKey) {
             $queue->setArgument('x-dead-letter-routing-key', $deadLetterRoutingKey);
         }
 
-        if ($messageTtl !== null) {
+        if (null !== $messageTtl) {
             $queue->setArgument('x-message-ttl', $messageTtl);
         }
 
         $queue->setFlags(AMQP_DURABLE);
-        $this->safeDeclare(fn() => $queue->declareQueue());
+        $this->safeDeclare(fn () => $queue->declareQueue());
 
         return $queue;
     }
@@ -130,18 +123,18 @@ final readonly class RabbitMqConfigure
     {
         try {
             $declareCallable();
-        } catch (AMQPChannelException|AMQPConnectionException|AMQPExchangeException) {
-            //TODO catch
+        } catch (\AMQPChannelException|\AMQPConnectionException|\AMQPExchangeException) {
+            // TODO catch
         }
     }
 
     // Centralized error handling for binding queues
-    private function safeBindQueue(AMQPQueue $queue, string $exchangeName, string $routingKey): void
+    private function safeBindQueue(\AMQPQueue $queue, string $exchangeName, string $routingKey): void
     {
         try {
             $queue->bind($exchangeName, $routingKey);
-        } catch (AMQPChannelException|AMQPConnectionException) {
-            //TODO catch
+        } catch (\AMQPChannelException|\AMQPConnectionException) {
+            // TODO catch
         }
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace User\Domain\Model;
 
-use User\Domain\Event\CreateUserDomainEvent;
 use Common\Domain\Aggregate\AggregateRoot;
+use User\Domain\Event\CreateUserDomainEvent;
 
 class User extends AggregateRoot
 {
@@ -14,12 +14,14 @@ class User extends AggregateRoot
         private string $username,
         private string $password,
         private readonly array $roles
-    ) {}
+    ) {
+    }
 
     public static function create(string $id, string $username, string $password, array $roles): self
     {
         $user = new self($id, $username, $password, $roles);
         $user->record(new CreateUserDomainEvent($id, $username));
+
         return $user;
     }
 
@@ -36,6 +38,7 @@ class User extends AggregateRoot
     public function setUsername(string $username): static
     {
         $this->username = $username;
+
         return $this;
     }
 
@@ -52,6 +55,7 @@ class User extends AggregateRoot
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
         return $this;
     }
 }

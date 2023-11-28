@@ -18,8 +18,8 @@ final readonly class CreateUserCommand implements CommandInterface
         private string $username,
         private string $password,
         private ?array $roles
-    )
-    {}
+    ) {
+    }
 
     public function getUsername(): string
     {

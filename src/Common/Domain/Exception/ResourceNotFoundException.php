@@ -15,7 +15,7 @@ use Common\Domain\Exception\Constant\ExceptionMessage;
  */
 class ResourceNotFoundException extends ApiException
 {
-    const int STATUS_CODE = 404;
+    public const int STATUS_CODE = 404;
 
     /**
      * Constructor for the ResourceNotFoundException class.

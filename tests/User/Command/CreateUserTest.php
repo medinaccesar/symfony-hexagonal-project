@@ -2,7 +2,6 @@
 
 namespace Tests\User\Command;
 
-
 use Common\Domain\Bus\Event\EventBusInterface;
 use Common\Domain\Exception\DuplicateValidationResourceException;
 use Common\Domain\ValueObject\Uuid;
@@ -13,7 +12,6 @@ use User\Application\Command\CreateUser\CreateUserResponse;
 use User\Application\Command\CreateUser\UserCreator;
 use User\Domain\Model\User;
 use User\Infrastructure\Adapter\Persistence\ORM\Doctrine\Repository\DoctrineUserRepository;
-
 
 class CreateUserTest extends TestCase
 {

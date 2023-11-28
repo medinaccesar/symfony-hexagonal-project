@@ -13,10 +13,7 @@ interface CommandBusInterface
     /**
      * Dispatches a command to its appropriate handler.
      *
-     * @param CommandInterface $command The command to dispatch.
+     * @param CommandInterface $command the command to dispatch
      */
     public function dispatch(CommandInterface $command): void;
-
-
 }
-

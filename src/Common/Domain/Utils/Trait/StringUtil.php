@@ -19,14 +19,16 @@ trait StringUtil
      * It's particularly useful for formatting identifiers or keys where snake_case is the convention,
      * such as database fields, JSON keys, etc.
      *
-     * @param string $text The string to convert to snake_case.
-     * @return string The snake_case formatted string.
+     * @param string $text the string to convert to snake_case
+     *
+     * @return string the snake_case formatted string
      */
     public static function toSnakeCase(string $text): string
     {
         if (ctype_lower($text)) {
             return $text;
         }
+
         return strtolower(preg_replace('/([^A-Z\s])([A-Z])/', '$1_$2', $text));
     }
 }

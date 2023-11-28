@@ -14,8 +14,7 @@ readonly class GetUserByIdController
 {
     public function __construct(
         private GetUserByIdFinder $handler
-    )
-    {
+    ) {
     }
 
     /**

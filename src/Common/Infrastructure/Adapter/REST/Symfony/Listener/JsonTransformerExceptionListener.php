@@ -10,15 +10,13 @@ use Common\Domain\Exception\ValidationException;
 use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Throwable;
-
 
 class JsonTransformerExceptionListener
 {
     /**
      * This method is called when an exception occurs in the kernel.
      *
-     * @param ExceptionEvent $event The event object containing the exception and request details.
+     * @param ExceptionEvent $event the event object containing the exception and request details
      */
     public function onKernelException(ExceptionEvent $event): void
     {
@@ -30,14 +28,17 @@ class JsonTransformerExceptionListener
     /**
      * Creates a JSON response based on the exception and the request.
      *
-     * @param Throwable $exception The caught exception.
-     * @param Request $request The current request.
-     * @return JsonApiResponse The JSON response to be returned.
+     * @param \Throwable $exception the caught exception
+     * @param Request    $request   the current request
+     *
+     * @return JsonApiResponse the JSON response to be returned
      */
-    private function createJsonResponse(Throwable $exception, Request $request): JsonApiResponse
+    private function createJsonResponse(\Throwable $exception, Request $request): JsonApiResponse
     {
         $errorData = $this->getErrorData($exception);
-        $statusCode = $exception->getCode() ?: (method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500);
+
+        $rawStatusCode = $exception->getCode() ?: (method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500);
+        $statusCode = is_int($rawStatusCode) ? $rawStatusCode : 500;
 
         $message = $this->getErrorMessage($exception, $statusCode);
 
@@ -53,10 +54,11 @@ class JsonTransformerExceptionListener
     /**
      * Retrieves error data from the exception if applicable.
      *
-     * @param Throwable $exception The caught exception.
-     * @return mixed Error data or null.
+     * @param \Throwable $exception the caught exception
+     *
+     * @return mixed error data or null
      */
-    private function getErrorData(Throwable $exception): mixed
+    private function getErrorData(\Throwable $exception): mixed
     {
         return $exception instanceof ValidationException ? $exception->getViolations() : null;
     }
@@ -64,29 +66,29 @@ class JsonTransformerExceptionListener
     /**
      * Generates an appropriate error message or throws a ValidationException.
      *
-     * @param Throwable $exception The caught exception.
-     * @param int $statusCode The HTTP status code.
-     * @return string The error message.
+     * @param \Throwable $exception  the caught exception
+     * @param int        $statusCode the HTTP status code
+     *
+     * @return string the error message
      */
-    private function getErrorMessage(Throwable $exception, int $statusCode): string
+    private function getErrorMessage(\Throwable $exception, int $statusCode): string
     {
-        if ($statusCode === 500) {
+        if (500 === $statusCode) {
             return ExceptionMessage::INTERNAL;
         }
-        return $exception->getMessage();
 
+        return $exception->getMessage();
     }
 
     /**
      * Determines the type of error based on the exception.
      *
-     * @param Throwable $exception The caught exception.
-     * @return string The error type.
+     * @param \Throwable $exception the caught exception
+     *
+     * @return string the error type
      */
-    private function getErrorType(Throwable $exception): string
+    private function getErrorType(\Throwable $exception): string
     {
         return method_exists($exception, 'getType') ? $exception->getType() : ExceptionType::EXCEPTION;
     }
 }
-
-
