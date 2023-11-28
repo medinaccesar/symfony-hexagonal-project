@@ -62,6 +62,9 @@ phpmd:
 phpat:
 	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/phpstan analyse
 
+grumphp:
+	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/grumphp run
+
 ## Github Actions
 phpat-github:
 	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/phpstan analyse --error-format=github
