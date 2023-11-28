@@ -13,10 +13,10 @@ namespace Common\Domain\Exception\Constant;
  */
 class ExceptionMessage
 {
-    const INTERNAL = 'internal_error';
-    const VALIDATION = 'validation_error';
-    const NOT_FOUND = 'not_found';
-    const DUPLICATE = 'duplicate';
-    const NOT_SUPPORTED = 'not_supported';
+    const string INTERNAL = 'internal_error';
+    const string VALIDATION = 'validation_error';
+    const string NOT_FOUND = 'not_found';
+    const string DUPLICATE = 'duplicate';
+    const string NOT_SUPPORTED = 'not_supported';
 
 }

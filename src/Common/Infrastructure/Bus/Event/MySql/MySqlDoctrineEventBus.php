@@ -14,7 +14,7 @@ final class MySqlDoctrineEventBus implements EventBusInterface
 {
     use DateUtil;
 
-    private const DATABASE_TIMESTAMP_FORMAT = 'Y-m-d H:i:s';
+    private const string DATABASE_TIMESTAMP_FORMAT = 'Y-m-d H:i:s';
     private readonly Connection $connection;
 
     /**

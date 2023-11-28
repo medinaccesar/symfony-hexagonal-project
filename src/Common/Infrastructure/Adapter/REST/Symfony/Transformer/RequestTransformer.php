@@ -12,8 +12,8 @@ use function in_array;
 
 readonly class RequestTransformer
 {
-    private const ALLOWED_CONTENT_TYPE = 'application/json';
-    private const SUPPORTED_METHODS = [
+    private const string ALLOWED_CONTENT_TYPE = 'application/json';
+    private const array SUPPORTED_METHODS = [
         Request::METHOD_GET,
         Request::METHOD_POST
     ];

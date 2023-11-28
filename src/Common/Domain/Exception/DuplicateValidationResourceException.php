@@ -16,7 +16,7 @@ use Common\Domain\Exception\Constant\ExceptionMessage;
  */
 class DuplicateValidationResourceException extends ApiException
 {
-    const STATUS_CODE = 409;
+    const int STATUS_CODE = 409;
 
     /**
      * Constructor for the DuplicateValidationResourceException class.

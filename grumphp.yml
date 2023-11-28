@@ -2,6 +2,10 @@ grumphp:
     tasks:
         psalm:
             config: './psalm.xml'
-        phpmd:
-            ruleset: ['./phpmd.xml']
-            triggered_by: [ 'php' ]
+        phpunit:
+            config_file: ~
+            testsuite: ~
+            group: [ ]
+            exclude_group: [ ]
+            always_execute: false
+            order: null

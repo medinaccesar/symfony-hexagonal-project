@@ -13,7 +13,7 @@ namespace Common\Domain\Exception\Constant;
  */
 class ExceptionType
 {
-    const EXCEPTION = 'exception';
-    const VALIDATION = 'validation';
+    const string EXCEPTION = 'exception';
+    const string VALIDATION = 'validation';
 
 }

@@ -10,11 +10,11 @@ namespace Common\Domain\Validation;
  */
 class ConstraintType
 {
-    public const REQUIRED = 'required';
-    public const LENGTH = 'length';
-    public const FORMAT = 'format';
-    public const NOT_BLANK = 'not_blank';
-    public const NOT_NULL = 'not_null';
-    public const RANGE = 'range';
-    public const ROLE = 'invalid_role';
+    public const string REQUIRED = 'required';
+    public const string LENGTH = 'length';
+    public const string FORMAT = 'format';
+    public const string NOT_BLANK = 'not_blank';
+    public const string NOT_NULL = 'not_null';
+    public const string RANGE = 'range';
+    public const string ROLE = 'invalid_role';
 }

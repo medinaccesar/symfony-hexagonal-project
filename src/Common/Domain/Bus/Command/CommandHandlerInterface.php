@@ -9,7 +9,5 @@ namespace Common\Domain\Bus\Command;
  * Interface for a command handler.
  * Implementers of this interface handle specific types of command objects, executing the necessary business logic.
  */
-interface CommandHandlerInterface
-{
-}
+interface CommandHandlerInterface{}
 

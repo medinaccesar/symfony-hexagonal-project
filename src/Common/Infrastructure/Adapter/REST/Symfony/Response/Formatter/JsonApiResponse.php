@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 final class JsonApiResponse extends JsonResponse
 {
-    const DEFAULT_TYPE = 'success';
-    const DEFAULT_MESSAGE = 'success_response';
+    const string DEFAULT_TYPE = 'success';
+    const string DEFAULT_MESSAGE = 'success_response';
 
     /**
      * Constructor for the JsonApiResponse class.

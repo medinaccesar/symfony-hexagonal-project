@@ -40,7 +40,7 @@ restart: ## Restart the containers
 sh: ## sh into container
 	docker exec -it --user ${UID} ${PHP_CONTAINER} sh
 
-cc: ## cache clear
+cc: ## cache clear.
 	docker exec --user ${UID} ${PHP_CONTAINER} php bin/console doctrine:cache:clear-metadata
 	docker exec --user ${UID} ${PHP_CONTAINER} php bin/console doctrine:cache:clear-query
 	docker exec --user ${UID} ${PHP_CONTAINER} php bin/console doctrine:cache:clear-result
@@ -55,9 +55,6 @@ phpunit:
 
 psalm:
 	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/psalm
-
-phpmd:
-	docker exec --user ${UID} ${PHP_CONTAINER} ./vendor/bin/phpmd src text phpmd.xml
 
 phpat:
 	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/phpstan analyse
