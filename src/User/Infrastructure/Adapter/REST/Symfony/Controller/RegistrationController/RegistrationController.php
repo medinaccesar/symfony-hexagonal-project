@@ -14,8 +14,16 @@ use User\Application\Command\CreateUser\CreateUserCommandHandler;
 use User\Domain\Validation\CreateUserValidator;
 use User\Infrastructure\Adapter\REST\Symfony\Controller\RegistrationController\DTO\RegistrationRequestDTO;
 
+/**
+ * Handles user registration requests.
+ */
 readonly class RegistrationController
 {
+    /**
+     * @param CreateUserCommandHandler    $handler        command handler for creating users
+     * @param CreateUserValidator         $validator      validator for user creation data
+     * @param UserPasswordHasherInterface $passwordHasher service for hashing passwords
+     */
     public function __construct(
         private CreateUserCommandHandler $handler,
         private CreateUserValidator $validator,
@@ -24,7 +32,14 @@ readonly class RegistrationController
     }
 
     /**
-     * @throws ValidationException|DuplicateValidationResourceException
+     * Handles the registration request.
+     *
+     * @param RegistrationRequestDTO $requestDTO data transfer object containing the user registration data
+     *
+     * @return JsonApiResponse the response after processing the registration request
+     *
+     * @throws ValidationException                  if validation fails
+     * @throws DuplicateValidationResourceException if a duplicate resource is detected
      */
     #[Route('/register', name: 'register_user', methods: ['POST'])]
     public function __invoke(RegistrationRequestDTO $requestDTO): JsonApiResponse

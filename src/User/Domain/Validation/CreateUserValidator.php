@@ -10,6 +10,9 @@ use Common\Domain\Validation\Trait\NotBlankValidationTrait;
 use Common\Domain\Validation\Trait\RangeValidationTrait;
 use User\Domain\Validation\Trait\RolesValidationTrait;
 
+/**
+ * Validator for user creation. It ensures that all required fields meet the specified criteria.
+ */
 class CreateUserValidator
 {
     use RangeValidationTrait;
@@ -23,7 +26,11 @@ class CreateUserValidator
     private const int PASSWORD_MAX_LENGTH = 255;
 
     /**
-     * @throws ValidationException
+     * Validates the user object and throws a ValidationException if any violations are found.
+     *
+     * @param object $user the user object to validate
+     *
+     * @throws ValidationException if validation fails
      */
     public function validateAndThrows(object $user): void
     {

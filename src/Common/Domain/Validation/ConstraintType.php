@@ -16,5 +16,5 @@ class ConstraintType
     public const string NOT_BLANK = 'not_blank';
     public const string NOT_NULL = 'not_null';
     public const string RANGE = 'range';
-    public const string ROLE = 'invalid_role';
+    public const string INVALID = 'invalid';
 }

@@ -9,11 +9,19 @@ use Doctrine\ORM\EntityRepository;
 use User\Domain\Model\User;
 use User\Domain\Repository\UserRepositoryInterface;
 
+/**
+ * An implementation of UserRepositoryInterface using Doctrine ORM for persistence.
+ */
 class DoctrineUserRepository implements UserRepositoryInterface
 {
     private EntityRepository $userRepository;
     private EntityManagerInterface $entityManager;
 
+    /**
+     * Constructor for DoctrineUserRepository.
+     *
+     * @param EntityManagerInterface $entityManager the Doctrine entity manager
+     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;

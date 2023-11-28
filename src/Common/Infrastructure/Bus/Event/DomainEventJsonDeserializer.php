@@ -29,7 +29,6 @@ final readonly class DomainEventJsonDeserializer
      */
     public function deserialize(string $domainEvent): DomainEvent
     {
-        dd($domainEvent);
         $eventData = json_decode($domainEvent, true, 512, JSON_THROW_ON_ERROR);
         $eventName = $eventData['data']['type'];
         $eventClass = $this->mapping->for($eventName);

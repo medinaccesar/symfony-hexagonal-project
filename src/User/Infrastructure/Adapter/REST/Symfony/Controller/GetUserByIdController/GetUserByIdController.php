@@ -10,6 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use User\Application\Query\GetUserById\GetUserByIdFinder;
 use User\Application\Query\GetUserById\GetUserByIdQuery;
 
+/**
+ * Handles the request to get a user by their ID.
+ */
 readonly class GetUserByIdController
 {
     public function __construct(
@@ -18,10 +21,16 @@ readonly class GetUserByIdController
     }
 
     /**
-     * @throws ResourceNotFoundException
+     * Retrieves a user by their ID.
+     *
+     * @param string $id the Uuid of the user
+     *
+     * @return JsonApiResponse the response in JSON format
+     *
+     * @throws ResourceNotFoundException if the user is not found
      */
     #[Route('/api/user/get/{id}', name: 'get_user_by_id', methods: ['GET'])]
-    public function __invoke($id): JsonApiResponse
+    public function __invoke(string $id): JsonApiResponse
     {
         $query = new GetUserByIdQuery($id);
         $responseDTO = ($this->handler)($query);

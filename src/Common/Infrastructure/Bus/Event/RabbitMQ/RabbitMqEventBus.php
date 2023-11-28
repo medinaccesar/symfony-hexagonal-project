@@ -18,11 +18,11 @@ final readonly class RabbitMqEventBus implements EventBusInterface
 {
     /**
      * Constructor for RabbitMqEventBus.
-     * Initializes the connection to RabbitMQ, the exchange name, and the failover publisher.
+     * Initializes the connection to RabbitMQ, the exchange name, and the fail over publisher.
      *
      * @param RabbitMqConnection    $connection        connection instance for RabbitMQ
      * @param string                $exchangeName      name of the main exchange
-     * @param MySqlDoctrineEventBus $failoverPublisher failover event publisher
+     * @param MySqlDoctrineEventBus $failoverPublisher fail over event publisher
      */
     public function __construct(
         private RabbitMqConnection $connection,
