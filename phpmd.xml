@@ -9,7 +9,7 @@
 
 
     <!-- Fix BooleanArgumentFlag -->
-    <exclude-pattern>src/Common/Infrastructure/Adapter/REST/Symfony/Response/Formatter/JsonApiResponse.php</exclude-pattern>
+<!--    <exclude-pattern>src/Common/Infrastructure/Adapter/REST/Symfony/Response/Formatter/JsonApiResponse.php</exclude-pattern>-->
 
     <rule ref="rulesets/cleancode.xml/BooleanArgumentFlag"/>
 
