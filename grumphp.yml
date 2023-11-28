@@ -3,9 +3,3 @@ grumphp:
         psalm:
             config: './psalm.xml'
         phpunit:
-            config_file: ~
-            testsuite: ~
-            group: [ ]
-            exclude_group: [ ]
-            always_execute: false
-            order: null
