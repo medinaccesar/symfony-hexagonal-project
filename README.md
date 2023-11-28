@@ -5,7 +5,7 @@
 This project is a template for creating a Symfony application using the hexagonal architecture. It is based on the [php-ddd-example](https://github.com/CodelyTV/php-ddd-example) project, but with some changes and improvements.
 
 ## Table of contents 📖
-- [Hexagonal Architecture](#hexagonal-architecture-)
+- [Hexagonal Architecture](#hexagonal-architecture-overview-)
 - [Prerequisites for manual installation](#prerequisites-for-manual-installation-)
 - [Installation](#installation-)
   - [Docker](#docker-)

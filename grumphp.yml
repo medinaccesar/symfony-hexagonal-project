@@ -1,2 +1,4 @@
 grumphp:
-    tasks: { phpmd: null, phpstan: null, psalm: null }
+    tasks:
+        psalm:
+            config: './psalm.xml'
