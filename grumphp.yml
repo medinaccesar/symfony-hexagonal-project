@@ -2,3 +2,6 @@ grumphp:
     tasks:
         psalm:
             config: './psalm.xml'
+        phpmd:
+            ruleset: ['./phpmd.xml']
+            triggered_by: [ 'php' ]
