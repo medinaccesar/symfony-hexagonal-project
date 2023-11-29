@@ -14,7 +14,7 @@ use Common\Domain\Exception\Constant\ExceptionMessage;
  * the ApiException class, setting a specific HTTP status code (409 Conflict) and a
  * predefined error message indicating a duplication error.
  */
-class DuplicateValidationResourceException extends ApiException
+final class DuplicateValidationResourceException extends ApiException
 {
     public const int STATUS_CODE = 409;
 

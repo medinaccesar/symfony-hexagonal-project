@@ -38,6 +38,12 @@ services:
     arguments: [ '!tagged_iterator common.domain_event_subscriber' ]
     lazy: true
 
+  Common\Infrastructure\Bus\Command\Symfony\InMemorySymfonyCommandBus:
+    arguments: [ !tagged common.command_handler ]
+
+  Common\Infrastructure\Bus\Query\Symfony\InMemorySymfonyQueryBus:
+    arguments: [ !tagged common.query_handler ]
+
   # Domain Event Mapping
   Common\Infrastructure\Bus\Event\DomainEventMapping:
     arguments: [ '!tagged_iterator common.domain_event_subscriber' ]

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Common\Infrastructure\Bus\Event\RabbitMQ;
 
-use AMQPException;
 use Common\Domain\Bus\Event\DomainEvent;
 use Common\Domain\Bus\Event\EventBusInterface;
 use Common\Infrastructure\Bus\Event\DomainEventJsonSerializer;

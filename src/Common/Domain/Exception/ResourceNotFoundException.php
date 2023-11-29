@@ -13,7 +13,7 @@ use Common\Domain\Exception\Constant\ExceptionMessage;
  * It extends the ApiException class, setting a specific HTTP status code (404 Not Found)
  * and a predefined error message indicating a resource not found error.
  */
-class ResourceNotFoundException extends ApiException
+final class ResourceNotFoundException extends ApiException
 {
     public const int STATUS_CODE = 404;
 

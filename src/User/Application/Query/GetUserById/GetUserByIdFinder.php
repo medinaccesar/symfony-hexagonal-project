@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace User\Application\Query\GetUserById;
 
+use Common\Domain\Bus\Query\QueryFinderInterface;
 use Common\Domain\Exception\ResourceNotFoundException;
 use User\Domain\Repository\UserRepositoryInterface;
 
@@ -13,7 +14,7 @@ use User\Domain\Repository\UserRepositoryInterface;
  * This class is responsible for handling the 'get user by ID' query, retrieving
  * user information based on their ID.
  */
-final readonly class GetUserByIdFinder
+final readonly class GetUserByIdFinder implements QueryFinderInterface
 {
     /**
      * Constructor with UserRepositoryInterface injection.

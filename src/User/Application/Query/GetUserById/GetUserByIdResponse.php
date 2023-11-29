@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace User\Application\Query\GetUserById;
 
+use Common\Domain\Bus\Query\QueryResponseInterface;
+
 /**
  * GetUserByIdResponse class.
  *
  * This class represents the response data for a query to retrieve a user by their ID.
  * It includes the user's ID, username, and roles.
  */
-final readonly class GetUserByIdResponse
+final readonly class GetUserByIdResponse implements QueryResponseInterface
 {
     /**
      * Constructor for GetUserByIdResponse.
