@@ -40,6 +40,9 @@ class User extends AggregateRoot
      */
     public static function create(string $id, string $username, string $password, array $roles): self
     {
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
         $user = new self($id, $username, $password, $roles);
         $user->record(new CreateUserDomainEvent($id, $username));
 
@@ -47,11 +50,11 @@ class User extends AggregateRoot
     }
 
     /**
-     * Get the user's ID.
+     * Get the user's Uuid.
      *
-     * @return string|null user's ID
+     * @return string user's Uuid
      */
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }

@@ -42,7 +42,7 @@ abstract readonly class DomainEvent
         array $body,
         string $eventId,
         string $occurredOn
-    ): self;
+    ): static;
 
     /**
      * Returns the name of the event.

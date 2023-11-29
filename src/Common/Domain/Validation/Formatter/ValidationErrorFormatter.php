@@ -7,13 +7,11 @@ namespace Common\Domain\Validation\Formatter;
 class ValidationErrorFormatter
 {
     /**
-     * Format a validation message.
+     * Formats a validation error.
      *
-     * @param string $field the field associated with the validation
-     *
-     * @return array an associative array containing the field and message
+     * @return array the formatted validation error
      */
-    public static function format(string $constraint, string $field, $value): array
+    public static function format(string $constraint, string $field, mixed $value): array
     {
         return [
             'constraint' => $constraint,

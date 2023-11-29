@@ -40,7 +40,7 @@ final readonly class CreateUserCommandHandler implements CommandHandlerInterface
             Uuid::generateUuid(),
             $command->getUsername(),
             $command->getPassword(),
-            $command->getRoles()
+            $command->getRoles() ?? []
         );
 
         // Return the response containing the new user's ID (Uuid).

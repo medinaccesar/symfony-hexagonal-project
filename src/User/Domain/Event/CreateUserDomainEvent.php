@@ -57,7 +57,7 @@ readonly class CreateUserDomainEvent extends DomainEvent
         string $eventId,
         string $occurredOn
     ): static {
-        return new self($aggregateId, $body['username'], $eventId, $occurredOn);
+        return new static($aggregateId, $body['username'], $eventId, $occurredOn);
     }
 
     /**

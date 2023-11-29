@@ -13,7 +13,7 @@ use User\Domain\Repository\UserRepositoryInterface;
  * UserCreator is responsible for handling the user creation logic.
  * It checks for duplicate users and persists the new user to the repository.
  */
-final class UserCreator
+final readonly class UserCreator
 {
     /**
      * Constructor for UserCreator.

@@ -47,6 +47,7 @@ readonly class RegistrationController
         $this->validator->validateAndThrows($requestDTO);
 
         $password = $this->passwordHasher->hashPassword($requestDTO, $requestDTO->password);
+
         $createUserCommand = new CreateUserCommand($requestDTO->username, $password, $requestDTO->roles);
         $response = ($this->handler)($createUserCommand);
 

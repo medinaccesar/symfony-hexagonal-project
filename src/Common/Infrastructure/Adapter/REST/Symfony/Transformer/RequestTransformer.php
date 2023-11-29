@@ -23,14 +23,12 @@ readonly class RequestTransformer
     }
 
     /**
-     * @param Request $request  the HTTP request to transform
-     * @param string  $dtoClass the DTO class to which the request will be transformed
+     * @param Request     $request  the HTTP request to transform
+     * @param string|null $dtoClass the DTO class to which the request will be transformed
      *
      * @return object|void the transformed DTO
-     *
-     * @throws BadRequestException if the request cannot be transformed
      */
-    public function transform(Request $request, string $dtoClass)
+    public function transform(Request $request, ?string $dtoClass)
     {
         $this->validateContentType($request);
         $this->validateRequestMethod($request);
@@ -75,20 +73,22 @@ readonly class RequestTransformer
     }
 
     /**
-     * @param Request $request  the HTTP request
-     * @param string  $dtoClass the DTO class to which the content will be transformed
+     * @param Request     $request  the HTTP request
+     * @param string|null $dtoClass the DTO class to which the content will be transformed
      *
-     * @return mixed the transformed DTO
-     *
-     * @throws BadRequestException if the content is invalid or the transformation fails
+     * @return object the transformed DTO
      */
-    private function transformContent(Request $request, string $dtoClass): mixed
+    private function transformContent(Request $request, ?string $dtoClass): object
     {
         $content = trim($request->getContent());
         if (empty($content)) {
             throw new BadRequestException('Request body cannot be empty for this method', Response::HTTP_BAD_REQUEST);
         }
         try {
+            if (null === $dtoClass) {
+                return $request;
+            }
+
             return $this->serializer->deserialize($content, $dtoClass, 'json');
         } catch (\Throwable) {
             throw new BadRequestException('Invalid JSON payload', Response::HTTP_BAD_REQUEST);

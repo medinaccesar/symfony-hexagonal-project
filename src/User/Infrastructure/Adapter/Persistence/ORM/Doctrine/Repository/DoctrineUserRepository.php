@@ -14,17 +14,15 @@ use User\Domain\Repository\UserRepositoryInterface;
  */
 class DoctrineUserRepository implements UserRepositoryInterface
 {
+    /** @var EntityRepository<User> */
     private EntityRepository $userRepository;
-    private EntityManagerInterface $entityManager;
 
     /**
-     * Constructor for DoctrineUserRepository.
-     *
      * @param EntityManagerInterface $entityManager the Doctrine entity manager
      */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager
+    ) {
         $this->userRepository = $entityManager->getRepository(User::class);
     }
 

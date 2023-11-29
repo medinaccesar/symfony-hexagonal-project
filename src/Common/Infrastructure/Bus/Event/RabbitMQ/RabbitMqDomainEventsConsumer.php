@@ -54,7 +54,9 @@ final readonly class RabbitMqDomainEventsConsumer
             $event = $this->deserializer->deserialize($envelope->getBody());
 
             try {
-                $subscriber($event);
+                if (is_callable($subscriber)) {
+                    $subscriber($event);
+                }
             } catch (\Throwable $error) {
                 $this->handleConsumptionError($envelope, $queue);
                 throw $error;

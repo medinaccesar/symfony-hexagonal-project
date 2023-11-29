@@ -16,7 +16,7 @@ use User\Application\Query\GetUserById\GetUserByIdQuery;
 readonly class GetUserByIdController
 {
     public function __construct(
-        private GetUserByIdFinder $handler
+        private GetUserByIdFinder $finder
     ) {
     }
 
@@ -33,7 +33,7 @@ readonly class GetUserByIdController
     public function __invoke(string $id): JsonApiResponse
     {
         $query = new GetUserByIdQuery($id);
-        $responseDTO = ($this->handler)($query);
+        $responseDTO = ($this->finder)($query);
 
         return JsonApiResponse::get($responseDTO);
     }
