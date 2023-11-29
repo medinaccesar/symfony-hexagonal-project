@@ -54,6 +54,9 @@ cc: ## cache clear.
 sh-redis: ## sh into redis container
 	docker exec -it --user ${UID} ${REDIS_CONTAINER} sh
 
+phpcsfixer: ## Run php-cs-fixer
+	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/php-cs-fixer fix
+
 phpunit: ## Run phpunit
 	docker exec --user ${UID} ${PHP_CONTAINER} php ./vendor/bin/phpunit
 
