@@ -13,29 +13,20 @@ use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 
 /**
- * Class InMemorySymfonyCommandBus.
- *
- * This class implements the CommandBusInterface and provides an in-memory command bus.
- * It uses Symfony's MessageBus to handle commands.
+ * Implements CommandBusInterface using Symfony's MessageBus for in-memory command handling.
  */
 final readonly class InMemorySymfonyCommandBus implements CommandBusInterface
 {
-    /**
-     * @var MessageBus the message bus used to handle commands
-     */
     private MessageBus $bus;
 
-    /**
-     * InMemorySymfonyCommandBus constructor.
-     *
-     * Initializes the message bus with a middleware that uses a handlers locator,
-     * which in turn uses the CallableFirstParameterExtractor to extract the first parameter for callables.
-     *
-     * @param iterable $commandHandlers the handlers for the commands
-     */
     public function __construct(iterable $commandHandlers)
     {
-        $this->bus = new MessageBus(
+        $this->bus = $this->initializeMessageBus($commandHandlers);
+    }
+
+    private function initializeMessageBus(iterable $commandHandlers): MessageBus
+    {
+        return new MessageBus(
             [
                 new HandleMessageMiddleware(
                     new HandlersLocator(

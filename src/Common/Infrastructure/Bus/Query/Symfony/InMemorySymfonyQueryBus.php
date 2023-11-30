@@ -14,36 +14,26 @@ use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 /**
- * Class InMemorySymfonyQueryBus.
- *
- * This class implements the QueryBusInterface and provides an in-memory query bus.
- * It uses Symfony's MessageBus to handle queries.
+ * Implements QueryBusInterface using Symfony's MessageBus for in-memory query handling.
  */
 final readonly class InMemorySymfonyQueryBus implements QueryBusInterface
 {
-    /**
-     * @var MessageBus the message bus used to handle queries
-     */
     private MessageBus $bus;
 
-    /**
-     * InMemorySymfonyQueryBus constructor.
-     *
-     * Initializes the message bus with a middleware that uses a handlers locator,
-     * which in turn uses the CallableFirstParameterExtractor to extract the first parameter for callables.
-     *
-     * @param iterable $queryHandlers the handlers for the queries
-     */
     public function __construct(iterable $queryHandlers)
     {
-        $this->bus = new MessageBus([
-                new HandleMessageMiddleware(
-                    new HandlersLocator(
-                        CallableFirstParameterExtractor::forCallables($queryHandlers)
-                    )
-                ),
-            ]
-        );
+        $this->bus = $this->initializeMessageBus($queryHandlers);
+    }
+
+    private function initializeMessageBus(iterable $queryHandlers): MessageBus
+    {
+        return new MessageBus([
+            new HandleMessageMiddleware(
+                new HandlersLocator(
+                    CallableFirstParameterExtractor::forCallables($queryHandlers)
+                )
+            ),
+        ]);
     }
 
     /**
@@ -62,7 +52,8 @@ final readonly class InMemorySymfonyQueryBus implements QueryBusInterface
     {
         try {
             /* @var HandledStamp $stamp */
-            return $this->bus->dispatch($query)->last(HandledStamp::class)->getResult();
+            $stamp = $this->bus->dispatch($query)->last(HandledStamp::class);
+            return $stamp ? $stamp->getResult() : throw new QueryNotRegisteredException($query);
         } catch (NoHandlerForMessageException) {
             throw new QueryNotRegisteredException($query);
         }

@@ -1,4 +1,119 @@
-imports:
-  - { resource: '../src/Home/Infrastructure/Config/Symfony/Service/home.yaml' }
-  - { resource: '../src/User/Infrastructure/Config/Symfony/Service/user.yaml' }
-  - { resource: '../src/Common/Infrastructure/Config/Symfony/Service/common.yaml' }
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  # -- COMMON MODULE --
+
+  Common\:
+    resource: '../src/Common'
+
+  common.domain_event_subscriber:
+    class: 'Common\Domain\Bus\Event\DomainEventSubscriberInterface'
+
+  _instanceof:
+    Common\Domain\Bus\Event\DomainEventSubscriberInterface:
+      tags: [ common.domain_event_subscriber ]
+    Common\Domain\Bus\Command\CommandHandlerInterface:
+      tags: [ common.command_handler ]
+    Common\Domain\Bus\Query\QueryHandlerInterface:
+      tags: [ common.query_handler ]
+
+  Common\Infrastructure\Adapter\REST\Symfony\Controller\:
+    resource: '../src/Common/Infrastructure/Adapter/REST/Symfony/Controller'
+    tags: [ controller.service_arguments ]
+
+  # Exception Listener
+  Common\Infrastructure\Adapter\REST\Symfony\Listener\JsonTransformerExceptionListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+  # Service Arguments Resolver
+  Common\Infrastructure\Adapter\REST\Symfony\Resolver\:
+    resource: '../src/Common/Infrastructure/Adapter/REST/Symfony/Resolver'
+    tags: [ controller.service_arguments ]
+
+  # In-Memory Event Bus
+  Common\Infrastructure\Bus\Event\Symfony\InMemory\InMemorySymfonyEventBus:
+    arguments: [ !tagged_iterator common.domain_event_subscriber ]
+    lazy: true
+
+  Common\Infrastructure\Bus\Command\Symfony\InMemorySymfonyCommandBus:
+    arguments: [ !tagged_iterator common.command_handler ]
+
+  Common\Infrastructure\Bus\Query\Symfony\InMemorySymfonyQueryBus:
+    arguments: [ !tagged_iterator common.query_handler ]
+
+  # Domain Event Mapping
+  Common\Infrastructure\Bus\Event\DomainEventMapping:
+    arguments: [ !tagged_iterator common.domain_event_subscriber ]
+
+  # Domain Event Subscriber Locator
+  Common\Infrastructure\Bus\Event\DomainEventSubscriberLocator:
+    arguments: [ !tagged_iterator common.domain_event_subscriber ]
+
+  # RabbitMQ Connection Configuration
+  Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection:
+    arguments:
+      $configuration:
+        host: '%env(RABBITMQ_HOST)%'
+        port: '%env(RABBITMQ_PORT)%'
+        vhost: '%env(RABBITMQ_VHOST)%'
+        login: '%env(RABBITMQ_LOGIN)%'
+        password: '%env(RABBITMQ_PASSWORD)%'
+        read_timeout: 2
+        write_timeout: 2
+        connect_timeout: 5
+
+  # RabbitMQ Event Bus
+  Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqEventBus:
+    arguments:
+      $connection: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection'
+      $exchangeName: '%env(RABBITMQ_EXCHANGE)%'
+      $failoverPublisher: '@Common\Infrastructure\Bus\Event\MySql\MySqlDoctrineEventBus'
+
+  # RabbitMQ Domain Events Consumer
+  Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqDomainEventsConsumer:
+    arguments:
+      $connection: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection'
+      $deserializer: '@Common\Infrastructure\Bus\Event\DomainEventJsonDeserializer'
+      $exchangeName: '%env(RABBITMQ_EXCHANGE)%'
+      $maxRetries: '%env(RABBITMQ_MAX_RETRIES)%'
+
+  # RabbitMQ Configure
+  Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConfigure:
+    arguments:
+      $connection: '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqConnection'
+
+  # -- IMPLEMENTATIONS SELECTOR --
+  Common\Domain\Bus\Event\EventBusInterface: '@Common\Infrastructure\Bus\Event\Monitoring\PrometheusMonitoringEventBus'
+
+  Common\Infrastructure\Bus\Event\Monitoring\PrometheusMonitoringEventBus:
+    arguments:
+      - '@Common\Infrastructure\Bus\Event\RabbitMQ\RabbitMqEventBus' # EventBusInterface
+      - '@Common\Infrastructure\Monitor\PrometheusMonitor'          # PrometheusMonitor
+      - 'symfony_app'                                                      # string appName
+
+
+  # -- HOME MODULE --
+
+  Home\Infrastructure\UI\Symfony\Controller\:
+    resource: '../src/Home/Infrastructure/UI/Symfony/Controller'
+    tags: [ 'controller.service_arguments' ]
+
+  Home\Infrastructure\REST\Symfony\Controller\:
+    resource: '../src/Home/Infrastructure/REST/Symfony/Controller'
+    tags: [ 'controller.service_arguments' ]
+
+  # -- USER MODULE --
+
+  User\:
+    resource: '../src/User'
+    exclude:
+      - '../src/User/Domain/Model'
+
+  User\Infrastructure\Adapter\REST\Symfony\Controller\:
+    resource: '../src/User/Infrastructure/Adapter/REST/Symfony/Controller'
+    tags: [ 'controller.service_arguments' ]
+
+

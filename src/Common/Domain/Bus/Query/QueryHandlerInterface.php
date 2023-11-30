@@ -2,7 +2,7 @@
 
 namespace Common\Domain\Bus\Query;
 
-interface QueryFinderInterface
+interface QueryHandlerInterface
 {
 
 }
