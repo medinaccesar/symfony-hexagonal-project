@@ -13,10 +13,10 @@ readonly class GetUserByIdController extends ApiController
 {
     /**
      * Retrieves a user by their uuid.
+     *
      * @param string $id the Uuid of the user
      *
      * @return JsonApiResponse the response in JSON format
-     *
      */
     #[Route('/api/user/get/{id}', name: 'get_user_by_id', methods: ['GET'])]
     public function __invoke(string $id): JsonApiResponse

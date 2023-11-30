@@ -12,7 +12,7 @@ use User\Domain\Repository\UserRepositoryInterface;
  * This class is responsible for handling the 'get user by ID' query, retrieving
  * user information based on their ID.
  */
-final readonly class GetUserByIdQueryHandlerInterface implements QueryHandlerInterface
+final readonly class GetUserByIdQueryHandler implements QueryHandlerInterface
 {
     /**
      * Constructor with UserRepositoryInterface injection.
