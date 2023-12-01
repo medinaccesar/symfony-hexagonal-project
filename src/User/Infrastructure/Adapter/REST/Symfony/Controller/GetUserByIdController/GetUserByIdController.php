@@ -8,6 +8,7 @@ use Common\Infrastructure\Adapter\REST\Symfony\Controller\ApiController\ApiContr
 use Common\Infrastructure\Adapter\REST\Symfony\Response\Formatter\JsonApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use User\Application\Query\GetUserById\GetUserByIdQuery;
+use User\Application\Query\GetUserById\GetUserByIdResponse;
 
 readonly class GetUserByIdController extends ApiController
 {
@@ -21,10 +22,9 @@ readonly class GetUserByIdController extends ApiController
     #[Route('/api/user/get/{id}', name: 'get_user_by_id', methods: ['GET'])]
     public function __invoke(string $id): JsonApiResponse
     {
-        return JsonApiResponse::get(
-            $this->ask(
-                new GetUserByIdQuery($id)
-            )
-        );
+        /** @var GetUserByIdResponse $response */
+        $response = $this->ask(new GetUserByIdQuery($id));
+
+        return JsonApiResponse::get($response);
     }
 }
