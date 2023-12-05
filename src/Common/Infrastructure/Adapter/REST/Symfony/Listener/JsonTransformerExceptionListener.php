@@ -21,7 +21,6 @@ class JsonTransformerExceptionListener
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
-        dd($exception);
         $response = $this->createJsonResponse($exception, $event->getRequest());
         $event->setResponse($response);
     }
